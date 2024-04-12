@@ -1,6 +1,17 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
-  transpileDependencies: true
+  transpileDependencies: true,
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://47.95.6.197:18080/api/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    }
+  }
 })
 
 // 导入组件
