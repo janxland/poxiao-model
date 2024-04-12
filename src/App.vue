@@ -1,12 +1,26 @@
 <template>
-  <ReviewMain></ReviewMain>
+
+    <ReviewMain></ReviewMain>
+      <!-- <t-layout>
+              <t-aside>
+                <div>hel</div>
+      <router-link :to="{path:'/knowledge'}">知识图谱</router-link>
+      <router-link to="/incorrect">错题本</router-link>
+                </t-aside>
+                </t-layout>
+      <div>
+      
+      <router-view>aaaa</router-view>
+    </div>-->
+
+  
 </template>
 
 <script>
 import ReviewMain from './layout/ReviewMain.vue'
 
 export default {
-  name: 'App',
+  name: 'app',
   components: {
     ReviewMain
   }

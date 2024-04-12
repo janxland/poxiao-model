@@ -6,6 +6,10 @@ import KnowledgeIndex from '@/layout/KnowledgeIndex.vue'
 
 const routes = [
   {
+    path: '/',
+    component: ReviewIndex,
+    // children: [{ path: 'home', component: Home }],
+  },{
     path: '/index',
     component: ReviewIndex,
     // children: [{ path: 'home', component: Home }],
