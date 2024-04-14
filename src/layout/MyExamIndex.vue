@@ -195,7 +195,8 @@ export default {
   cursor: pointer;
 }
 #MyExamIndex {
-  
+  height: 100vh;
+  overflow-y: scroll;
 }
 #MyExamIndex .menu-header{
   height: 82px;

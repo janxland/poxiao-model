@@ -48,7 +48,119 @@ import { Icon } from 'tdesign-icons-vue-next';
 import * as d3 from 'd3';
 const networkContainer = ref(null);
 
-const atlasData = ref([]);
+const atlasData = ref([
+  {
+    "areasId": 1,
+    "areasName": "小学",
+    "subjectVoList": [
+      {
+        "subjectId": 2,
+        "subjectName": "数学",
+        "sortNum": 1,
+        "remark": "数学科目",
+        "examKnowledgeVoList": [
+          {
+            "knowledgeId": 1,
+            "knowledge": "线性代数",
+            "parentName": null,
+            "parentId": 0,
+            "children": [
+              {
+                "knowledgeId": 2,
+                "knowledge": "线性代数2",
+                "parentName": null,
+                "parentId": 1,
+                "children": []
+              },
+              {
+                "knowledgeId": 6,
+                "knowledge": "矩阵",
+                "parentName": null,
+                "parentId": 1,
+                "children": []
+              }
+            ]
+          },
+          {
+            "knowledgeId": 11,
+            "knowledge": "教育法律框架",
+            "parentName": null,
+            "parentId": 0,
+            "children": []
+          }
+        ]
+      },
+      {
+        "subjectId": 3,
+        "subjectName": "音乐",
+        "sortNum": 2,
+        "remark": null,
+        "examKnowledgeVoList": [
+          {
+            "knowledgeId": 7,
+            "knowledge": "乐器",
+            "parentName": null,
+            "parentId": 0,
+            "children": [
+              {
+                "knowledgeId": 8,
+                "knowledge": "小提琴",
+                "parentName": null,
+                "parentId": 7,
+                "children": []
+              },
+              {
+                "knowledgeId": 9,
+                "knowledge": "大提琴",
+                "parentName": null,
+                "parentId": 7,
+                "children": []
+              },
+              {
+                "knowledgeId": 10,
+                "knowledge": "二胡",
+                "parentName": null,
+                "parentId": 7,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "subjectId": 4,
+        "subjectName": "中学",
+        "sortNum": 3,
+        "remark": null,
+        "examKnowledgeVoList": [
+          {
+            "knowledgeId": 3,
+            "knowledge": "综合素质",
+            "parentName": null,
+            "parentId": 0,
+            "children": [
+              {
+                "knowledgeId": 4,
+                "knowledge": "体育",
+                "parentName": null,
+                "parentId": 3,
+                "children": [
+                  {
+                    "knowledgeId": 5,
+                    "knowledge": "跑步",
+                    "parentName": null,
+                    "parentId": 4,
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]);
 const activeAreas = ref('小学');
 
 const contentData = ref({});
@@ -205,7 +317,8 @@ onMounted(() => {
   cursor: pointer;
 }
 #KnowledgeIndex {
-
+  height: 100vh;
+  overflow-y: scroll;
 }
 #KnowledgeIndex .menu-header{
   height: 82px;
