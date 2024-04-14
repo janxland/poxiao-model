@@ -195,7 +195,7 @@ export default {
   cursor: pointer;
 }
 #MyExamIndex {
-
+  
 }
 #MyExamIndex .menu-header{
   height: 82px;

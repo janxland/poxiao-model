@@ -24,7 +24,9 @@
         </t-aside>
         <t-layout>
           <t-content>
-            {{ contentData }}
+            <div class="knowledgeGraph-main-content">
+              <div ref="networkContainer" style="height: 800px;width:800px"></div>
+            </div>
           </t-content>
           <t-footer></t-footer>
         </t-layout>
@@ -43,12 +45,138 @@
 <script setup>
 import {  ref,onMounted,watch  } from 'vue'
 import { Icon } from 'tdesign-icons-vue-next';
+import * as d3 from 'd3';
+const networkContainer = ref(null);
 
-// const answerMap = ["A", "B", "C", "D", "E"];
 const atlasData = ref([]);
-const activeAreas = ref('英语');
+const activeAreas = ref('小学');
 
 const contentData = ref({});
+const transformData = () => {
+  
+}
+const buildGraphData = () =>  {
+  const data = {
+    nodes: [
+      { id: 1, label: 'Node 1' },
+      { id: 2, label: 'Node 2' },
+      { id: 3, label: 'Node 3' },
+    ],
+    links: [
+      { source: 1, target: 2 },
+      { source: 1, target: 3 },
+    ],
+  };
+  const container = networkContainer.value;
+  const width = container.offsetWidth;
+  const height = container.offsetHeight;
+  const svg = d3.select(container)
+    .append('svg')
+    .attr('width', width)
+    .attr('height', height);
+  const simulation =  d3.forceSimulation(data.nodes)
+    .force('link', d3.forceLink(data.links)
+      .id(d => d.id)
+      .distance(100) // 调整连接线的距离
+    )
+    .force('charge', d3.forceManyBody().strength(-100))
+    .force('center', d3.forceCenter(width / 2, height / 2))
+    .force('collide', d3.forceCollide().radius(10).strength(100)); // 添加节点碰撞力
+
+
+  data.nodes.forEach((node, index) => {
+    node.x = simulation.nodes()[index].x;
+    node.y = simulation.nodes()[index].y;
+  });
+
+  const link = svg.selectAll('line')
+  .data(data.links)
+  .join('path')
+  .attr('stroke', 'gray')
+  .attr('fill', 'none')
+    
+  const node = svg.selectAll('g')
+    .data(data.nodes)
+    .join('g')
+    .call(drag(simulation))
+
+  const circle = node.append('circle')
+    .attr('r', 5);
+
+  const text = node.append('text')
+    .text((d) => d.label)
+    .style('font-size', '16px')
+    .style('fill', 'white')
+    .attr('text-anchor', 'middle')
+    .attr('dy', '0.35em');
+
+  node.each(function () {
+    const nodeWidth = this.getBBox().width + 3;
+    circle.attr('r', nodeWidth / 2);
+    text.attr('x', 0).attr('y', 0).attr('transform', `scale(${nodeWidth / 100},${nodeWidth / 100})`);
+  });
+  let nodeWeights = Array(data.nodes.length).fill(0);
+  data.links.forEach(link => {
+    let source = link.source.id;
+    if (!nodeWeights[source]) {
+      nodeWeights[source] = 0;
+    }
+    nodeWeights[source] += 1;
+  });
+  let maxValue = Math.max(...nodeWeights);
+  let minValue = Math.min(...nodeWeights);
+  nodeWeights = nodeWeights.map((weight) => (weight - minValue) / (maxValue - minValue));
+  simulation.on('tick', () => {
+    link.attr('d', (d) => {
+      const path = d3.path();
+      path.moveTo(d.source.x, d.source.y);
+      path.quadraticCurveTo(
+        (d.source.x + d.target.x) / 2, // 控制点的x坐标
+        d.source.y, // 控制点的y坐标
+        d.target.x, d.target.y
+      );
+      return path.toString();
+    });
+    node.attr('transform', (d) => `translate(${d.x},${d.y})`);
+    node.attr('fill', d => {
+      const nodeWeight = nodeWeights[d.id] || 0;
+        if (nodeWeight >= 0.8) {
+          return 'orange'; 
+        } else if (nodeWeight >=  0.5) {
+          return 'yellow'; 
+        } else {
+          return 'gray'; 
+        }
+    });
+  });
+
+  function drag(simulation) {
+    function dragstarted(event, d) {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      d.fx = d.x;
+      d.fy = d.y;
+    }
+
+    function dragged(event, d) {
+      d.fx = event.x;
+      d.fy = event.y;
+    }
+
+    function dragended(event, d) {
+      if (!event.active) simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+    }
+
+    return d3.drag()
+      .on('start', dragstarted)
+      .on('drag', dragged)
+      .on('end', dragended);
+  }
+}
+const loadNetwork = () => {
+  
+}
 const fetchApiData = async () => {
   try {
     const response = await fetch('/api/reviewmaster/atlas/list');
@@ -56,17 +184,18 @@ const fetchApiData = async () => {
     if(data.code === 200) {
       atlasData.value = data.data;
     }
-    console.log(data);
   } catch (error) {
     console.error('Error fetching API data:', error);
   }
 };
 watch(activeAreas, (newValue) => {
-  console.log('activeAreas changed:', newValue);
   contentData.value = atlasData.value.find(item => item.areasName === newValue);
+  transformData()
 });
 onMounted(() => {
   fetchApiData()
+  loadNetwork()
+  buildGraphData()
 })
 
 </script>
@@ -129,82 +258,14 @@ onMounted(() => {
   min-height: 100vh;
   background: rgba(255, 255, 255, 1);
 }
-#KnowledgeIndex  .myexam-main-content {
+#KnowledgeIndex  .knowledgeGraph-main-content {
   background: #fff;
   margin-left: 80px;
   height: 100%;
   padding: 20px 20px;
   border-radius: 32px 32px 0px 0px;
 }
-#KnowledgeIndex  .myexam-list-item .t-list-item-main{
-  align-items:start;
-  display: flex;
-  flex-direction: column;
-}
-#KnowledgeIndex  .myexam-list-item .t-list-item__meta-title {
-  text-align: left;
-  line-height: var(--td-size-10);
-}
-#KnowledgeIndex  .myexam-list-item .t-list-item__action {
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  line-height: var(--td-size-12);
-  align-items: start;
-  color:#000;
-}
-#KnowledgeIndex  .myexam-list-item.row .t-list-item__action{
-  text-align: left;
-  display: flex;
-  flex-direction: row;
-  line-height: var(--td-size-12);
-  justify-content: space-between;
-  width: 100%;
-  color:#000;
-}
-#KnowledgeIndex  .myexam-list-item .myexam-list-item-answer {
-  margin: 2px 0;
-}
-#KnowledgeIndex  .myexam-list-item .myexam-list-item-answer label{
-  border: none;
-}
-#KnowledgeIndex  .myexam-list-item .myexam-list-item-answer:hover .chose-icon,
-#KnowledgeIndex  .myexam-list-item-answer .chosen .chose-icon{
-  background:#4566FC;
-  color:#fff;
-}
-#KnowledgeIndex  .myexam-list-item .t-textarea{
-  vertical-align: text-top;
-  display: inline-block;
-  width:380px;
-}
-#KnowledgeIndex  .myexam-list-item .chose-icon {
-  display: inline-block;
-  border-radius: 50%;
-  background-color: #EBEEF0;
-  color:#A6A6A6;
-  height: var(--td-size-10);
-  width: var(--td-size-10);
-  line-height: var(--td-size-10);
-  margin-right: var(--td-size-4);
-  text-align: center;
-}
-#KnowledgeIndex  .myexam-list-item .chose-type-3-button {
-  width: 48px;
-  height: 48px;
-  margin-top:5px;
-  font-size: var(--td-size-10);
-  background-color: #EBEEF0;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-#KnowledgeIndex .chosen .chose-type-3-button ,
-#KnowledgeIndex .chose-type-3-button:hover{
-  background:#4566FC;
-  color:#fff;
-}
+
 #KnowledgeIndex .myexam-menu-side {
   background: none;
   position: sticky;
