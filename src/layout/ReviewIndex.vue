@@ -225,15 +225,15 @@
                                 <t-layout id="id-t-layout-quick-conf" >
                                   <t-content width="70%" id="id-t-content-quick-conf"  > 
                                     <div class="quick-conf-item-list"  >  
-                                      <div class="quick-conf-item-list-box" :class="id ==quick_conf_input_index?'quick-conf-item-list-box-active':''" v-for="(iconItem,id) in quick_conf_icon_data" :key="id" :index="id">
+                                      <div class="quick-conf-item-list-box"  :class="id ==quick_conf_input_index?'quick-conf-item-list-box-active':''" v-for="(iconItem,id) in quick_conf_icon_data" :key="id" :index="id">
                                         <div class="quick-conf-item-list-title" v-if="quick_conf_input_ary[id]==0 &&id !=quick_conf_input_index">
-                                          <t-image @click="quick_conf_click_enter(id,$event)" :src="iconItem.icon_path" fit="fill" :style="{ width: '30px', height: '30px'}"></t-image>
+                                          <t-image :src="iconItem.icon_path" @click="quick_conf_click_enter(id,$event)" fit="fill" :style="{ width: '30px', height: '30px'}"></t-image>
                                         </div> 
-                                        <div class="quick-conf-item-list-title-active" v-else-if="id !=quick_conf_input_index">
-                                          <t-image @click="quick_conf_click_enter(id,$event)" :src="iconItem.icon_path" fit="fill" :style="{ width: '30px', height: '30px'}"></t-image>
+                                        <div @click="quick_conf_click_enter(id,$event)" class="quick-conf-item-list-title-active" v-else-if="id !=quick_conf_input_index">
+                                          <span>{{ quick_conf_input_ary[id] }}</span>
                                         </div>  
                                         <div v-if="id !=quick_conf_input_index" :class="quick_conf_input_ary[id]==0?'quick-conf-item-list-desc':'quick-conf-item-list-desc-active'">
-                                          {{iconItem.q_name}} {{quick_conf_input_ary[id]}}
+                                          {{iconItem.q_name}}
                                           <!-- <t-button variant="text" shape="square">
                                             判断0 
                                           </t-button> -->
@@ -280,7 +280,7 @@
                   <t-avatar :image="userIcon" :hide-on-load-failed="false" />
                 </t-row>
                 <t-row class="t-row--head--subtitle">
-                  现在开始复习考研英语吧
+                  现在开始复习吧
                 </t-row>
                 <t-row class="t-row--head--content">
                   以下是基于AI算法为你生成的个性化内容
@@ -301,7 +301,7 @@
                           <div class="sg-content">
                             <div class="sg-item-box">
                               <div class="sg-item">
-                                <t-row class="sg-item-title">语法知识111s</t-row>
+                                <t-row class="sg-item-title">生成客观题</t-row>
                                 <t-row class="sg-item-viewer">
                                   <!-- <icon name="circle" style="color: red" />
                                   <icon name="bamboo-shoot" color="green" /> -->
@@ -309,11 +309,11 @@
                                   12.2w
                                   <icon name="bamboo-shoot" color="green" />
                                 </t-row>
-                                <t-row class="sg-item-content">11学会撰写不同类型学会撰写不同类型的文章的文章</t-row>
+                                <t-row class="sg-item-content">帮我生成会计学（国学）选择题</t-row>
                               </div>
 
                               <!-- <t-skeleton :loading="loading" theme="tab"> -->
-                                <div class="sg-item"  v-for="item in tipsWords" :key="item.id" :index=index>
+                                <div class="sg-item"  v-for="item in tipsWords_1" :key="item.id" :index=index>
                                   <div>
                                     <t-row class="sg-item-title">{{ item.title }}
                                       <!-- <t-input type="input" :value="leftLength+item.content.length"></t-input> -->
@@ -330,7 +330,7 @@
                             </div>
                             
                             <div class="sg-item-box" >
-                              <div class="sg-item" v-for="item in tipsWords" :key="item.id" :index=index>
+                              <div class="sg-item" v-for="item in tipsWords_2" :key="item.id" :index=index>
                                 <div>
                                   <t-row class="sg-item-title">{{ item.title }}
                                     <!-- <t-input type="input" :value="leftLength+item.content.length"></t-input> -->
@@ -389,13 +389,17 @@ const quickItemIShareIcon=require("@/assets/images/分享.png");
 const userIcon=require("@/assets/images/R-C.jpg");
 const loading = ref(false);
 const imgurl=require("@/assets/images/头像.png");
-
+function splitArray(array) {
+  const middle = Math.ceil(array.length / 2);
+  return [array.slice(0, middle), array.slice(middle)];
+}
 const tipsWords=[
-      {"id":'1001',"title":'大头兵1',"counts":'11.2w',"content":'1依赖发送到水电费时代峰峻欧舒丹1依赖发送到水电费时代峰峻欧舒丹'},
-      {"id":'1002',"title":'大头兵2',"counts":'13.2w',"content":'2依赖发送到水电费时代峰峻欧舒丹'},
-      {"id":'1003',"title":'大头兵3',"counts":'10.2w',"content":'3依赖发送到水电费时代峰峻欧舒丹3依赖发送到水电费时代峰峻欧舒丹3依赖发送到水电费时代峰峻欧舒丹3依赖发送到水电费时代峰峻欧舒丹'},
-      {"id":'1004',"title":'大头兵4',"counts":'9.2w',"content":'4依赖发送到水电费时代峰峻欧舒丹'},
+      {"id":'1001',"title":'线性代数出题',"counts":'11.2w',"content":'出题线性代数选择题及填空题，难度中等，涉及知识点：行列式定义及性质、矩阵概念以及矩阵运算'},
+      {"id":'1002',"title":'四级英语',"counts":'13.2w',"content":'帮我出四级英语阅读理解题，要求题目简单，易于学生理解，涉及知识点：单词、语法、句子结构、逻辑推理、主旨理解等'},
+      {"id":'1003',"title":'小学语文',"counts":'10.2w',"content":'给我出小学语文题，要求激发学生对汉字的兴趣，提高学生汉字书写能力，培养学生汉字阅读能力'},
+      {"id":'1004',"title":'小学数学',"counts":'12.2w',"content":'帮我出小学数学题，要求题目简单，易于学生理解，涉及知识点：加减法、乘除法、分数、小数、方程、函数、统计图表等'},
     ];
+const [tipsWords_1, tipsWords_2] = splitArray(tipsWords);
 const computeContentLength = (val)=>{
   return val;
 }

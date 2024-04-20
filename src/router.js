@@ -3,6 +3,7 @@ import ReviewIndex from '@/layout/ReviewIndex.vue'
 import MyExamIndex from '@/layout/MyExamIndex.vue'
 import IncorrectIndex from '@/layout/IncorrectIndex.vue'
 import KnowledgeIndex from '@/layout/KnowledgeIndex.vue'
+import MyIndex from './layout/MyIndex.vue'
 
 const routes = [
   {
@@ -15,7 +16,16 @@ const routes = [
     // children: [{ path: 'home', component: Home }],
   },{
     path: '/myexam',
-    component: MyExamIndex
+    component: MyExamIndex,
+    meta: {  
+      hiddenNav: true // 对应的菜单项应该被隐藏  
+    }  
+  },{
+    path: '/myindex',
+    component: MyIndex,
+    meta: {  
+      hiddenNav: true // 对应的菜单项应该被隐藏  
+    }  
   },{
     path: '/incorrect',
     component: IncorrectIndex

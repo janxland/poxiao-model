@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "d3": "^7.9.0",
     "tdesign-icons-vue-next": "^0.2.2",
     "tdesign-vue-next": "^1.9.0",
+    "vis-network": "^9.1.9",
     "vue": "^3.2.13",
     "vue-router": "^4.3.0"
   },
@@ -22,6 +24,8 @@
     "@vue/cli-service": "~5.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
+    "sass": "^1.75.0",
+    "sass-loader": "^12.6.0",
     "unplugin-auto-import": "^0.17.5",
     "unplugin-vue-components": "^0.26.0"
   },

@@ -64,13 +64,13 @@
 
       <div>
         <t-layout>
-          <t-aside>
+          <t-aside class="main-menu-aside" :class="{'hiddenNav':route.meta.hiddenNav}">
             <t-layout class="fill-layout">
               <div class="fill-lf-bg-color lf-bg-layout">
                 <!-- TOP info -->
                 <div class="m-lf-layout-top">
                   <div class="m-lf-layout-row">
-                    <t-image :src="logo" fit="fill" :style="{ width: '30px', height: '30px'}"></t-image>
+                    <t-image :src="logo"  :style="{ width: '30px', height: '30px','background-color': 'transparent'}"></t-image>
                     <router-link :to="{path:'/'}">复习大师</router-link>
                   </div>
 
@@ -81,10 +81,10 @@
                     <t-image :src="imgurl" fit="fill" :style="{ width: '30px', height: '30px',borderRadius:'100%' }"></t-image>
                     <router-link :to="{path:'/myexam'}">我的题库</router-link>
                   </div>
-                  <div class="m-lf-layout-row">
+                  <!-- <div class="m-lf-layout-row">
                     <t-image :src="imgurl" fit="fill" :style="{ width: '30px', height: '30px',borderRadius:'100%' }"></t-image>
                     <router-link :to="{path:'/knowledge'}">知识图谱</router-link>
-                  </div>
+                  </div> -->
                   <div class="m-lf-layout-row">
                     <t-image :src="imgurl" fit="fill" :style="{ width: '30px', height: '30px',borderRadius:'100%' }"></t-image>
                     <!-- <router-link :to="{path:'/incorrect'}">错题本</router-link> -->
@@ -98,7 +98,7 @@
                   <div>
                     <t-row class="t-row--center t-row--head--title">
                       <t-avatar :image="userIcon" :hide-on-load-failed="false" />
-                      <router-link :to="{path:'/'}">天女散花</router-link>
+                      <router-link :to="{path:'/myindex'}">天女散花</router-link>
                     </t-row>
                     <t-row class="t-row--center font-small">在线客服</t-row>
                     <t-row class="t-row--center font-small">版本：V1.29</t-row>
@@ -351,7 +351,7 @@
                   </t-space>
                   </t-row>
                 </t-space>  
-              </div> 
+              </div>
             </div>
             <div class="login-type">
                 <t-button style="border-radius:999px;" type="submit" size="large">开始体验</t-button>
@@ -376,6 +376,10 @@ import { Icon } from 'tdesign-icons-vue-next';
 // import { ThumbUpIcon, ChatIcon, ShareIcon } from 'tdesign-icons-vue-next';
 
 // const loading = ref(false);
+import { useRoute } from 'vue-router';  
+  
+// 获取当前路由对象  
+const route = useRoute();  
 const isLogin= ref(true);
 const isLogin2= ref(true);
 const isLogin3= ref(true);
@@ -748,5 +752,13 @@ aside{
 
 .t-skeleton-demo-paragraph {
   line-height: 25px;
+}
+.hiddenNav {
+  width:0;
+  overflow: hidden;
+  transition: .3s
+}
+.main-menu-aside section{
+  width:200px;
 }
 </style>

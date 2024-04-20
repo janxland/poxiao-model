@@ -79,53 +79,41 @@
           <div title="二级——所有迁移" class="myexam-menu-side-item"><icon title="二级——所有迁移" name="folder-import" ></icon></div>
           <div title="删除" class="myexam-menu-side-item"><icon title="删除" name="delete" ></icon></div>
         </t-aside>
-        <t-aside class="myexam-date-side" width="15%" style="border-top: 1px solid var(--component-border)">
+        <!-- <t-aside class="myexam-date-side" width="15%" style="border-top: 1px solid var(--component-border)">
           <t-date-picker v-model="activeDate" clearable :prefix-icon="renderPrefixIcon"></t-date-picker>
-        </t-aside>
+        </t-aside> -->
       </t-layout>
     </t-layout>
   </div>
 </template>
-<script>
-import { Icon } from 'tdesign-icons-vue-next';
-export default {
-  /* 罗进兴 */
-  components: {
-    Icon
-  },
-  name: 'MyExamIndex',
-  props: {
-    msg: String
-  },
-  data() {
-    return {
-      answerMap:["A","B","C","D","E"],
-      activeDate: '2024-04-01',
-      activeSubject: '英语',
-      //练习日期
-      examDates: [
-        {
-          date: '2024-04-01',
-        },
-        {
-          date: '2024-04-02',
-        }
-      ],
-      subjects: [
-        {
-          name: '英语',
-          id: '1'
-        },
-        {
-          name: '语文',
-          id: '2'
-        },
-        {
-          name: '数学',
-          id: '3'
-        }
-      ],
-      examList: [
+<script setup>  
+/* eslint-disable */
+import { ref,onMounted } from 'vue';  
+import { Icon } from 'tdesign-icons-vue-next';  
+import { useRoute, useRouter } from 'vue-router';  
+  
+// 获取当前路由对象  
+const route = useRoute();  
+  
+// 获取路由实例  
+const router = useRouter();  
+onMounted(() => {
+  console.log("aaaaaaaaaaaaaaa",route,router);
+})
+// 定义响应式数据  
+const answerMap = ref(["A", "B", "C", "D", "E"]);  
+const activeDate = ref('2024-04-01');  
+const activeSubject = ref('英语');  
+const examDates = ref([  
+  { date: '2024-04-01' },  
+  { date: '2024-04-02' }  
+]);  
+const subjects = ref([  
+  { name: '英语', id: '1' },  
+  { name: '语文', id: '2' },  
+  { name: '数学', id: '3' }  
+]);  
+const examList = ref([
         {
           name: '选择题',
           type: 1,
@@ -184,10 +172,7 @@ export default {
             }
           ]
         },
-      ]
-    }
-  }
-}
+      ]);  
 </script>
 
 <style>
