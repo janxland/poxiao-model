@@ -71,11 +71,11 @@ const loadNetwork = () => {
   const container = networkContainer.value;
   console.log(container);
   const nodes = new DataSet([
-      { id: 1, label: '实习' },
-      { id: 2, label: '刚写好的逻辑' },
-      { id: 3, label: '问一下' },
-      { id: 4, label: '就换了' },
-      { id: 5, label: '痴线' }
+      { id: 1, label: '1' },
+      { id: 2, label: '2' },
+      { id: 3, label: '3' },
+      { id: 4, label: '4' },
+      { id: 5, label: '5' }
     ]);
   const edges = new DataSet([
       { from: 1, to: 2 },

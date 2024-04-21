@@ -11,13 +11,17 @@
       </t-header>
       <t-layout class="header-layout">
           <t-content>
-            <div class="user-header" :style="{'background-image': `url(${image||'https://mybox-1257251314.cos.ap-chengdu.myqcloud.com/www/image_2496.png'})`}"> 
+            <div class="user-header" :style="{'background-image': `url(${user.background||'https://mybox-1257251314.cos.ap-chengdu.myqcloud.com/www/image_2496.png'})`}"> 
               <div class="user-avatar">
-                <t-image src="https://tdesign.gtimg.com/site/avatar.jpg"></t-image>
+                <t-image :src="user.avatar || iconUrl.defaultAvatar" shape="circle"></t-image>
               </div>
               <div class="user-info">
-                <div class="user-name">用户名</div>
-                <div class="user-desc">绑定手机号: 123456789</div>
+                <div class="user-name">{{ user.name || "未设置用户名" }}</div>
+                <div class="user-desc">绑定手机号: {{ user.mobile }}</div>
+              </div>
+              <div style="position: absolute;right:28px;top:28px;text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
+                <icon class="icon" name="image" color="#fff" style="font-size: 24px;margin:0 10px;" />
+                <icon class="icon" name="edit-2" color="#fff" style="font-size: 24px;margin:0 10px;" />
               </div>
             </div>
           </t-content>
@@ -28,7 +32,7 @@
                 padding: 20px 40px;
                 font-size: var(--td-size-7);">
                 <span>积分充值</span>
-                <span>当前积分剩余:<span style="color:#4566FC">435</span></span>
+                <span>当前积分剩余:<span style="color:#4566FC">{{ user.point }}</span></span>
               </div>
               <div class="chonzhi-content">
                 <div  style="width:100%;position: relative;">
@@ -36,7 +40,7 @@
 
                   <div class="vip-list">
                     <div class="vip-list-item" :key="index" v-for="item,index in vipList">
-                      <div class="vip-list-item-name"><span style="font-size: var(--td-size-14);letter-spacing: 2px;">{{item.num}}</span>积分</div>
+                      <div class="vip-list-item-name"><span style="font-size: var(--td-size-12);letter-spacing: 1.68px;">{{item.num}}</span>积分</div>
                       <div class="vip-list-item-price">¥ {{item.price}}</div>
                       <div class="vip-list-item-value">立减{{item.value - item.price}}</div>
                     </div>
@@ -64,10 +68,12 @@
                 <div>
                   <t-list :split="true">
                     <t-list-item>
+                      <icon class="icon" name="link-1" color="#fff" style="margin-right: 10px;font-size: 28px; padding: 10px; border-radius: 50%; background-color: #0062E3;" />
                       <t-list-item-meta :image="imageUrl" title="链接邀请" description="好友通过此链接注册成功，双方均可获得积分"></t-list-item-meta>
                     </t-list-item>
                     <t-list-item>
-                      <t-list-item-meta :image="imageUrl" title="邀请码邀请：TS13QUEEN" description="好友注册时填入该邀请码，双方均可获得积分"></t-list-item-meta>
+                      <icon class="icon" name="code" color="#fff" style="margin-right: 10px;font-size: 28px; padding: 10px; border-radius: 50%; background-color: #00BAAD;" />
+                      <t-list-item-meta :image="imageUrl" :title="`邀请码邀请：${user.inviteCode}`" description="好友注册时填入该邀请码，双方均可获得积分"></t-list-item-meta>
                     </t-list-item>
                   </t-list>
                 </div>
@@ -83,11 +89,19 @@
 import {  ref,onMounted,watch  } from 'vue'
 import { Icon } from 'tdesign-icons-vue-next';
 const iconUrl = {
+  defaultAvatar: require("@/assets/images/头像.png"),
   staying:require("@/assets/images/敬请期待.svg"),
   jifenImage: require("@/assets/images/个人中心-积分权益.png"),
   vipTips:require("@/assets/images/过年不停学，充值享优惠.png"),
 };
-const user = ref({});
+const user = ref({
+  name:"天女散花",
+  mobile:"13036853707",
+  avatar:"",
+  background:"",
+  point: 458,
+  inviteCode:"TS13QUEEN"
+})
 const contentData = ref({});
 const vipList = ref([{
   name: '',
@@ -116,10 +130,15 @@ const vipList = ref([{
 ])
 const fetchApiData = async () => {
   try {
-    const response = await fetch('/api/reviewmaster/atlas/list');
+    const response = await fetch('/api/sso/auth/user', {
+      headers:{
+        'Authorization': `${localStorage.getItem('token')}`
+      }
+    });
     const data = await response.json();
     if(data.code === 200) {
       contentData.value = data.data;
+      user.value = Object.assign({}, user.value, contentData.value);
     }
   } catch (error) {
     console.error('Error fetching API data:', error);
@@ -137,10 +156,6 @@ onMounted(() => {
 <style lang="scss">
 .t-icon {
   cursor: pointer;
-}
-#MyIndex {
-  height: 100vh;
-  overflow-y: scroll;
 }
 #MyIndex .menu-header{
   height: 82px;
@@ -187,7 +202,7 @@ onMounted(() => {
 
 #MyIndex .user-header {
   height:280px;
-  width: 80%;
+  width: 85%;
   margin:auto;
   display: flex;
   flex-direction: row;
@@ -195,6 +210,7 @@ onMounted(() => {
   position: relative;
   padding: 50px 0 50px 60px;
   border-radius: 32px;
+  background-color: #fff;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -224,7 +240,7 @@ onMounted(() => {
   border-radius: 50%;
 }
 #MyIndex .content-layout {
-  width: 80%;
+  width: 85%;
   min-height: 600px;
   margin: 32px auto ;
 }
@@ -287,10 +303,14 @@ onMounted(() => {
 }
 #MyIndex .content-layout-right{
   border-radius: 32px;
+  width: 360px;
 }
 #MyIndex .content-layout-right .content-item {
   text-align: left;
   padding: 20px 20px;
   flex: 1;
+  .t-list-item__meta-title,.t-list-item__meta-description{
+    margin:0
+  }
 }
 </style>
