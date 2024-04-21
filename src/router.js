@@ -17,13 +17,13 @@ const routes = [
     path: '/myexam',
     component: MyExamIndex,
     meta: {  
-      hiddenNav: true // 对应的菜单项应该被隐藏  
+      hiddenNav: true // 对应的左侧菜单项应该被平滑隐藏  
     }  
   },{
     path: '/myindex',
     component: MyIndex,
     meta: {  
-      hiddenNav: true // 对应的菜单项应该被隐藏  
+      hiddenNav: true // 对应的左侧菜单项应该被平滑隐藏
     }  
   },{
     path: '/incorrect',
