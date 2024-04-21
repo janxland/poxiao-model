@@ -736,9 +736,9 @@ onMounted(() => {
 header{
   background-color: var(--td-success-color-5);
 }
-main,section{
+/* main,section{
   background-color: white; 
-}
+} */
 aside{
   /* background-color: var(--td-success-color-5); */
 }

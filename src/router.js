@@ -1,7 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import ReviewIndex from '@/layout/ReviewIndex.vue'
 import MyExamIndex from '@/layout/MyExamIndex.vue'
-import IncorrectIndex from '@/layout/IncorrectIndex.vue'
 import KnowledgeIndex from '@/layout/KnowledgeIndex.vue'
 import MyIndex from './layout/MyIndex.vue'
 
@@ -28,7 +27,10 @@ const routes = [
     }  
   },{
     path: '/incorrect',
-    component: IncorrectIndex
+    component: ()=>import('./layout/IncorrectIndex.vue'),
+    meta: {  
+        hiddenNav: true // 对应的菜单项应该被隐藏  
+      }
   },{
     path: '/knowledge',
     component: KnowledgeIndex
