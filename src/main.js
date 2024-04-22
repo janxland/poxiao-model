@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
 
 // 引入路由
@@ -13,5 +14,8 @@ import 'tdesign-vue-next/es/style/index.css';
 import './index.css'
 
 
-const vue = createApp(App).use(routes).use(TDesign).mount('#app')
+const pinia = createPinia()
+const vue = createApp(App).use(routes).use(TDesign).mount('#app').use(pinia)
+
+
 console.info(vue)
