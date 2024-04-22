@@ -26,50 +26,7 @@
           <t-content>
             <div class="myexam-main-content">
               <t-space direction="vertical">
-                <t-list  :split="false" :title="examBox.name" 
-                  :key="'exam-box'+index" v-for="examBox,index in questionList"
-                >
-                  <t-list-item :split="false">
-                    <t-list-item-meta class="myexam-list-item-question" :title="questionTypeMap[Number(examBox.type)]?.label"></t-list-item-meta>
-                  </t-list-item>
-                  <t-list-item 
-                    class="myexam-list-item"
-                    :class="{row:examBox.row}"
-                    :key="'myexam-list-item'+index2" 
-                    v-for="examItem,index2 in examBox.questionVoList"
-                    >
-                    <!-- <t-checkbox v-model="examItem.select" value="0" style="position: absolute;right: 10px;bottom: 10px;"></t-checkbox> -->
-                    <t-list-item-meta class="myexam-list-item-question" :image="imageUrl" :title="(index2+1)+'.'+ examItem.stem"></t-list-item-meta>
-                    <template #action>
-                      <t-radio-group v-model="questionList[index].questionVoList[index2].ans" class="myexam-list-item-answer" :key="'exam-item-answer'+index2+''+index3" v-for="answer,index3 in examItem.content">
-                        <t-radio-button v-if="examBox.type === '1'" class="chose-text" :class="{chosen:index3===examItem.ans}" :value="index3">
-                          <div class="chose-icon" :class="{chosen:index3===examItem.ans}"> {{answerMap[index3]}} </div>
-                          {{ answer.content }}
-                        </t-radio-button>
-                      </t-radio-group>
-                      <div v-if="['2','3','5','6','7'].includes(examBox.type) " >
-                        <span style="display: inline;">答案：</span>
-                        <t-textarea  placeholder="在此输入你的作答内容"
-                          v-model="questionList[index].questionVoList[index2].ans"
-                          :autosize="{ minRows: 3}"
-                          >
-                        </t-textarea>
-                      </div>
-                      <t-radio-group v-if="examBox.type === '4'" v-model="questionList[index].questionVoList[index2].ans" class="myexam-list-item-answer">
-                        <t-radio-button  class="chose-text" :class="{chosen:0===examItem.ans}" :value="0">
-                          <div class="chose-type-3-button">
-                            <icon name="check"></icon>
-                          </div>
-                        </t-radio-button>
-                        <t-radio-button class="chose-text" :class="{chosen:1===examItem.ans}" :value="1">
-                          <div class="chose-type-3-button">
-                            <icon name="close"></icon>
-                          </div>
-                        </t-radio-button>
-                      </t-radio-group>
-                    </template>
-                  </t-list-item>
-                </t-list>
+                <Exam :questionList="questionList" ></Exam>
               </t-space>
             </div>
           </t-content>
@@ -104,7 +61,7 @@
 import { ref,onMounted,watch } from 'vue';  
 import { Icon } from 'tdesign-icons-vue-next';  
 import { useRoute, useRouter } from 'vue-router';  
-  
+import Exam from '@/components/Exam.vue';
 // 获取当前路由对象  
 const route = useRoute();  
   
