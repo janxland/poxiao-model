@@ -61,6 +61,7 @@
 import { ref,onMounted,watch } from 'vue';  
 import { Icon } from 'tdesign-icons-vue-next';  
 import { useRoute, useRouter } from 'vue-router';  
+import { getQuestionList,getExamQuestions } from '@/api/question';
 import Exam from '@/components/Exam.vue';
 // 获取当前路由对象  
 const route = useRoute();  
@@ -151,44 +152,27 @@ const questionList = ref([
         },
       ]);  
   const fetchExamRecords = async () => {
-    try {
-      const response = await fetch('/api/reviewmaster/question/records', {
-        headers:{
-          'Authorization': `${localStorage.getItem('token')}`
-        }
-      });
-      const data = await response.json();
+    getQuestionList().then(res => {
+      const { data } = res 
       if(data.code === 200) {
         ExamRecords.value = data.data;
-        console.log("SAXI",ExamRecords.value);
         activeExamId.value =  ExamRecords.value[0].examId
       }
-    } catch (error) {
-      console.error('Error fetching API data:', error);
-    }
+    })
   };
   const fetchExamQuestions = async (examId) => {
-    try {
-      const response = await fetch(`/api/reviewmaster/question/record/questions?examId=${examId}`, {
-        headers:{
-          'Authorization': `${localStorage.getItem('token')}`
-        }
-      });
-      const data = await response.json();
+    getExamQuestions(examId).then(res => {
+      const { data } = res 
       if(data.code === 200) {
         const targetIndex = data.data.findIndex(obj => obj.type === "1");
         if (targetIndex !== -1 && data.data[targetIndex].questionVoList) {
           data.data[targetIndex].questionVoList.forEach(question => {
             question.content = JSON.parse(question.content);
           });
-
         }
-        console.log( data.data);
         questionList.value = data.data;
       }
-    } catch (error) {
-      console.error('Error fetching API data:', error);
-    }
+    })
   };
   watch(activeExamId, (newValue) => {
     fetchExamQuestions(newValue);

@@ -2,7 +2,7 @@ import axios from 'axios'
 // import { useUserStore } from '@/stores'
 
 const service = axios.create({
-  baseURL: 'http://47.95.6.197:18080/api', // 基础地址
+  baseURL: '/api', // 基础地址
   timeout: 10000
 })
 
@@ -13,9 +13,10 @@ service.interceptors.request.use((config) => {
   // if (store.user?.token && config.headers) {
   //   config.headers.Authorization = `Bearer ${store.user.token}`
   // }
-  // return config
+  config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`
+  
+  return config
 }, (error) => {
-  // 失败执行promise
   return Promise.reject(error)
 })
 

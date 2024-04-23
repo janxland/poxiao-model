@@ -19,10 +19,34 @@
                 <div class="user-name">{{ user.name || "未设置用户名" }}</div>
                 <div class="user-desc">绑定手机号: {{ user.mobile }}</div>
               </div>
-              <div style="position: absolute;right:28px;top:28px;text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
-                <icon class="icon" name="image" color="#fff" style="font-size: 24px;margin:0 10px;" />
-                <icon class="icon" name="edit-2" color="#fff" style="font-size: 24px;margin:0 10px;" />
+              <div class="absolute top-5 right-5 select-none" style="text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
+                <span class="cursor-pointer">修改密码</span> <span class="mx-2">|</span> <span class="cursor-pointer">退出登录</span>
               </div>
+              <div class="filter drop-shadow selcet-none flex absolute bottom-5 right-5 text-xl justify-around" style="width:150px">
+                <t-badge  count="new">
+                  <icon class="icon text-3xl" @click="visibles.mailBox = true" name="mail" color="#fff"  />
+                </t-badge>
+                <icon class="icon text-3xl" name="image" color="#fff" />
+                <icon class="icon text-3xl" name="edit-2" color="#fff"/>
+              </div>
+              <t-dialog header="收信箱" :footer="false" :visible="visibles.mailBox" :onClose="()=> visibles.mailBox = false">
+                <div slot="body">
+                  <div class="text-left ">
+                    <span class="text-xl text-black">未读</span>
+                    <li class="flex justify-between p-2 my-2 border-2 border-blue-500 rounded-lg">
+                      <span>请你给我出100道关于教师资格证考试...</span>
+                      <span>24/04/19</span>
+                    </li>
+                  </div>
+                  <div class="text-left ">
+                    <span class="text-xl text-black">已读</span>
+                    <li class="flex justify-between p-2 my-2 bg-gray-300 rounded-lg">
+                      <span>请你给我出100道关于教师资格证考试...</span>
+                      <span>24/04/19</span>
+                    </li>
+                  </div>
+                </div>
+              </t-dialog>
             </div>
           </t-content>
           <t-layout class="content-layout">
@@ -88,12 +112,16 @@
 /* eslint-disable */
 import {  ref,onMounted,watch  } from 'vue'
 import { Icon } from 'tdesign-icons-vue-next';
+import { getUserInfo } from '@/api/user';
 const iconUrl = {
   defaultAvatar: require("@/assets/images/头像.png"),
   staying:require("@/assets/images/敬请期待.svg"),
   jifenImage: require("@/assets/images/个人中心-积分权益.png"),
   vipTips:require("@/assets/images/过年不停学，充值享优惠.png"),
 };
+const visibles = ref({
+  emailBox: false,
+});
 const user = ref({
   name:"天女散花",
   mobile:"13036853707",
@@ -129,20 +157,13 @@ const vipList = ref([{
 },
 ])
 const fetchApiData = async () => {
-  try {
-    const response = await fetch('/api/sso/auth/user', {
-      headers:{
-        'Authorization': `${localStorage.getItem('token')}`
-      }
-    });
-    const data = await response.json();
+  getUserInfo().then(res => {
+    const { data } = res
     if(data.code === 200) {
       contentData.value = data.data;
       user.value = Object.assign({}, user.value, contentData.value);
-    }
-  } catch (error) {
-    console.error('Error fetching API data:', error);
-  }
+    } 
+  } );
 };
 watch(contentData, (newValue) => {
   console.log(newValue);
