@@ -15,7 +15,7 @@ import './index.css'
 
 
 const pinia = createPinia()
-const vue = createApp(App).use(routes).use(TDesign).mount('#app').use(pinia)
+const vue = createApp(App).use(routes).use(TDesign).use(pinia).mount('#app')
 
 
 console.info(vue)
