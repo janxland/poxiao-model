@@ -112,6 +112,7 @@
 /* eslint-disable */
 import {  ref,onMounted,watch  } from 'vue'
 import { Icon } from 'tdesign-icons-vue-next';
+import { getUserInfo } from '@/api/user';
 const iconUrl = {
   defaultAvatar: require("@/assets/images/头像.png"),
   staying:require("@/assets/images/敬请期待.svg"),
@@ -156,20 +157,13 @@ const vipList = ref([{
 },
 ])
 const fetchApiData = async () => {
-  try {
-    const response = await fetch('/api/sso/auth/user', {
-      headers:{
-        'Authorization': `${localStorage.getItem('token')}`
-      }
-    });
-    const data = await response.json();
+  getUserInfo().then(res => {
+    const { data } = res
     if(data.code === 200) {
       contentData.value = data.data;
       user.value = Object.assign({}, user.value, contentData.value);
-    }
-  } catch (error) {
-    console.error('Error fetching API data:', error);
-  }
+    } 
+  } );
 };
 watch(contentData, (newValue) => {
   console.log(newValue);
