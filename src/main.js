@@ -15,7 +15,6 @@ import './index.css'
 
 
 const pinia = createPinia()
-const vue = createApp(App).use(routes).use(TDesign).mount('#app').use(pinia)
-
-
+//解决pinia引入顺序问题
+const vue = createApp(App).use(routes).use(TDesign).use(pinia).mount('#app')
 console.info(vue)

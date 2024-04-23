@@ -9,6 +9,7 @@ module.exports = {
             colors: {
                 primary: '#eeeeee',
                 menu_border: 'rgba(69, 102, 252, 1)',
+                record_bg: 'rgba(22, 38, 88, 1)'
             },
         },
     },

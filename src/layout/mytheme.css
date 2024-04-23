@@ -43,11 +43,14 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-bottom: 35px;
+  /* margin-bottom: 10px; */
   letter-spacing: 2px;
   opacity: 0.82;
+  padding: 20px;
 }
-
+:hover.m-lf-layout-row{
+  background-color: rgba(22, 38, 88, 1);
+}
 a {
   text-decoration: none;
   color: white;

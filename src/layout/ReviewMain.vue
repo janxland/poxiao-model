@@ -64,50 +64,90 @@
 
       <div>
         <t-layout>
-          <t-aside class="main-menu-aside" :class="{'hiddenNav':route.meta.hiddenNav}">
+          <t-aside class="main-menu-aside" :class="{ 'hiddenNav': route.meta.hiddenNav }">
             <t-layout class="fill-layout">
               <div class="fill-lf-bg-color lf-bg-layout">
                 <!-- TOP info -->
                 <div class="m-lf-layout-top">
                   <div class="m-lf-layout-row">
-                    <t-image :src="logo"  :style="{ width: '30px', height: '30px','background-color': 'transparent'}"></t-image>
-                    <router-link :to="{path:'/'}">复习大师</router-link>
+                    <t-image :src="logo"
+                      :style="{ width: '30px', height: '30px', 'background-color': 'transparent' }"></t-image>
+                    <router-link :to="{ path: '/' }">复习大师</router-link>
                   </div>
 
                 </div>
                 <!-- Middle info -->
-                <div class="m-lf-layout-content">
+                <div class="m-lf-layout-content cursor-pointer ">
                   <div class="m-lf-layout-row">
-                    <t-image :src="imgurl" fit="fill" :style="{ width: '30px', height: '30px',borderRadius:'100%' }"></t-image>
-                    <router-link :to="{path:'/myexam'}">我的题库</router-link>
+                    <t-image :src="imgurl" fit="fill"
+                      :style="{ width: '30px', height: '30px', borderRadius: '100%' }"></t-image>
+                    <router-link :to="{ path: '/myexam' }">我的题库</router-link>
                   </div>
                   <!-- <div class="m-lf-layout-row">
                     <t-image :src="imgurl" fit="fill" :style="{ width: '30px', height: '30px',borderRadius:'100%' }"></t-image>
                     <router-link :to="{path:'/knowledge'}">知识图谱</router-link>
                   </div> -->
-                  <div class="m-lf-layout-row">
-                    <t-image :src="imgurl" fit="fill" :style="{ width: '30px', height: '30px',borderRadius:'100%' }"></t-image>
+                  <div class="m-lf-layout-row" @click="router.push('/incorrect')">
+                    <icon name="system-log" size="20px" class="w-[30px] h-[30px] mr-4" />
                     <!-- <router-link :to="{path:'/incorrect'}">错题本</router-link> -->
-                    <router-link to="/incorrect">错题本</router-link>
-                  </div> 
-                  
-                  
+                    错题本
+                  </div>
+                  <div class="m-lf-layout-row" @click="recordShow = !recordShow" :class="recordShow?'bg-record_bg':''">
+                    <icon name="time" size="20px" class="w-[30px] h-[30px] mr-4" />
+                    历史记录
+                  </div>
+                  <div class="absolute h-[500px] w-[350px] top-[20vh] left-[200px] z-[9999] rounded-2xl p-4" v-show="recordShow"
+                    style="background-color: rgba(26, 71, 126, 1);">
+                    <div class="text-left ">历史记录</div>
+                    <div class="flex items-center mt-2">
+                      <t-input placeholder="搜索历史出题记录"
+                        class="flex-1 *:bg-record_bg  *:border-0 ">
+                        <template #suffixIcon>
+                          <icon name="search" style="cursor: pointer;" color="white"></icon>
+                        </template>
+                      </t-input>
+                      <div class="w-9 h-9 leading-9 bg-record_bg rounded-full ml-2">
+                        <icon name="delete" size="20" color="white"></icon>
+                      </div>
+                    </div>
+                    <div class="mt-4">
+                      <div class="flex flex-nowrap overflow-auto">
+                        <div v-for="i, index in recordList"
+                          class="min-w-24 text-gray-300 cursor-pointer transition-all duration-300 transform"
+                          :class="activeRecord == index ? 'text-green-400' : ''" :key="'recordList' + index"
+                          @click="activeRecord = index">
+                          {{ i.type }}
+                          <div class="h-1 bg-slate-700 transition-all duration-300 transform"
+                            :class="activeRecord == index ? 'bg-green-400' : ''"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="h-[350px] mt-4 overflow-auto">
+                      <div class="bg-record_bg rounded-2xl text-left px-4 py-2 flex items-center justify-between my-1 cursor-pointer"
+                        v-for="i, index in recordList[activeRecord].data" :key="'recordListData' + index">
+                        <div class="w-5/6 text-ellipsis text-nowrap overflow-hidden">{{ i.title }}</div>
+                        <div class="h-[25px] w-[25px] rounded-full " :style="{background: i.type ? 'rgba(67, 207, 124, 1)' : 'rgba(255, 87, 51, 1)'}">
+                          <icon :name="i.type ? 'check' :'error'" color="white" size="25"></icon>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <!-- Foot info  -->
                 <div class="m-lf-layout-foot">
                   <div>
                     <t-row class="t-row--center t-row--head--title">
                       <t-avatar :image="userIcon" :hide-on-load-failed="false" />
-                      <router-link :to="{path:'/myindex'}">天女散花</router-link>
+                      <router-link :to="{ path: '/myindex' }">天女散花</router-link>
                     </t-row>
                     <t-row class="t-row--center font-small">在线客服</t-row>
                     <t-row class="t-row--center font-small">版本：V1.29</t-row>
                     <t-row class="t-row--center font-small">《复习大师用户协议》|《复习大师隐私策略》</t-row>
                   </div>
-                  
+
                 </div>
               </div>
-              
+
             </t-layout>
 
           </t-aside>
@@ -124,41 +164,25 @@
 
     <!-- 弹出框---登录1 -->
     <t-space v-if="!isLogin">
-    <!-- <t-button theme="primary" @click="onClick">基础确认对话框</t-button> -->
-    <t-dialog 
-      v-model:visible="visible"
-      header="对话框标题"
-      width="36%"
-      placement="center"
-
-      :closeOnOverlayClick="false"
-      showOverlay
-      mode="model"
-      showInAttachedElement
-      destroyOnClose
-      :footer="false"
-
-      :confirm-on-enter="true"
-      :on-cancel="onCancel"
-      :on-esc-keydown="onEscKeydown"
-      :on-close-btn-click="onCloseBtnClick"
-      :on-overlay-click="onOverlayClick"
-      :on-close="close"
-      :on-confirm="onConfirmAnother"
-    >
+      <!-- <t-button theme="primary" @click="onClick">基础确认对话框</t-button> -->
+      <t-dialog v-model:visible="visible" header="对话框标题" width="36%" placement="center" :closeOnOverlayClick="false"
+        showOverlay mode="model" showInAttachedElement destroyOnClose :footer="false" :confirm-on-enter="true"
+        :on-cancel="onCancel" :on-esc-keydown="onEscKeydown" :on-close-btn-click="onCloseBtnClick"
+        :on-overlay-click="onOverlayClick" :on-close="close" :on-confirm="onConfirmAnother">
         <template #header>
-          <t-row class="login-header-main"> 
+          <t-row class="login-header-main">
             <t-col class="login-header-bg">
-              <t-image  @click="headerImageClick1" :src="phone_icon" fit="fill" :style="{ width: '100px', height: '100px',borderTopLeftRadius:'30px' }"></t-image>
-            </t-col> 
+              <t-image @click="headerImageClick1" :src="phone_icon" fit="fill"
+                :style="{ width: '100px', height: '100px', borderTopLeftRadius: '30px' }"></t-image>
+            </t-col>
             <!-- <t-col><t-image :src="imgurl" fit="fill" :style="{ width: '20px', height: '20px',borderRadius:'100%' }"></t-image></t-col> -->
             <t-col>
               <t-row>
                 <t-col>
-                  
+
                 </t-col>
                 <t-col class="login-header-info">
-                  <icon name="arrow-left" color="blue" size="17px" /> 
+                  <icon name="arrow-left" color="blue" size="17px" />
                   <span class="login-header-info-phone">手机验证码登录</span>
                 </t-col>
               </t-row>
@@ -167,77 +191,64 @@
         </template>
         <template #body>
           <div class="login-zone">
-          <!-- <t-space direction="vertical" style="width: 100%"> -->
+            <!-- <t-space direction="vertical" style="width: 100%"> -->
             <div class="login-title">
               微信扫码一键登录
-            </div> 
+            </div>
             <div class="login-subtitle">
               未注册的微信号将自动注册账户
             </div>
             <div class="login-barcode">
-              <div class="login-barcode-image" > 
-                <t-image :src="barcode" fit="fill" :style="{ width: '180px', height: '180px',margin:'6px 6px'}"></t-image>
+              <div class="login-barcode-image">
+                <t-image :src="barcode" fit="fill"
+                  :style="{ width: '180px', height: '180px', margin: '6px 6px' }"></t-image>
               </div>
             </div>
             <div class="login-type">
-                <div class="login-type-item"> 
-                  <t-image :src="xl_icon" fit="fill" :style="{ width: '40px', height: '40px',borderRadius:'50%'}"></t-image>
-                </div>
-                <div class="login-type-item">
-                  <t-image :src="qq_icon" fit="fill" :style="{ width: '40px', height: '40px',borderRadius:'50%'}"></t-image>
-                </div>
+              <div class="login-type-item">
+                <t-image :src="xl_icon" fit="fill"
+                  :style="{ width: '40px', height: '40px', borderRadius: '50%' }"></t-image>
+              </div>
+              <div class="login-type-item">
+                <t-image :src="qq_icon" fit="fill"
+                  :style="{ width: '40px', height: '40px', borderRadius: '50%' }"></t-image>
+              </div>
             </div>
-              
-              
+
+
             <div class="login-info">
               <p>登录即代表同意用户服务协议</p>
             </div>
             <!-- <t-pagination v-model="current" v-model:pageSize="pageSize" :total="30" /> -->
-          <!-- </t-space> -->
-        </div>
-      </template>
-      
-    </t-dialog>
-  </t-space>
-  <!-- 弹出框 end---登录1 -->
+            <!-- </t-space> -->
+          </div>
+        </template>
 
-   <!-- 弹出框---登录2 -->
-   <t-space v-if="!isLogin2">
-    <!-- <t-button theme="primary" @click="onClick">基础确认对话框</t-button> -->
-    <t-dialog 
-      v-model:visible="visible2"
-      header="对话框标题"
-      width="36%"
-      placement="center"
+      </t-dialog>
+    </t-space>
+    <!-- 弹出框 end---登录1 -->
 
-      :closeOnOverlayClick="false"
-      showOverlay
-      mode="model"
-      showInAttachedElement
-      destroyOnClose
-      :footer="false"
-
-      :confirm-on-enter="true"
-      :on-cancel="onCancel2"
-      :on-esc-keydown="onEscKeydown2"
-      :on-close-btn-click="onCloseBtnClick2"
-      :on-overlay-click="onOverlayClick2"
-      :on-close="close2"
-      :on-confirm="onConfirmAnother2"
-    >
+    <!-- 弹出框---登录2 -->
+    <t-space v-if="!isLogin2">
+      <!-- <t-button theme="primary" @click="onClick">基础确认对话框</t-button> -->
+      <t-dialog v-model:visible="visible2" header="对话框标题" width="36%" placement="center" :closeOnOverlayClick="false"
+        showOverlay mode="model" showInAttachedElement destroyOnClose :footer="false" :confirm-on-enter="true"
+        :on-cancel="onCancel2" :on-esc-keydown="onEscKeydown2" :on-close-btn-click="onCloseBtnClick2"
+        :on-overlay-click="onOverlayClick2" :on-close="close2" :on-confirm="onConfirmAnother2">
         <template #header>
-          <t-row class="login-header-main"> 
+          <t-row class="login-header-main">
             <t-col class="login-header-bg">
-              <t-image @click="headerImageClick2" :src="barcode" fit="fill" :style="{ width: '100px', height: '100px',borderTopLeftRadius:'30px' }"></t-image>
-            </t-col> 
+              <t-image @click="headerImageClick2" :src="barcode" fit="fill"
+                :style="{ width: '100px', height: '100px', borderTopLeftRadius: '30px' }"></t-image>
+            </t-col>
             <!-- <t-col><t-image :src="imgurl" fit="fill" :style="{ width: '20px', height: '20px',borderRadius:'100%' }"></t-image></t-col> -->
             <t-col>
               <t-row>
                 <t-col>
-                  
+
                 </t-col>
                 <t-col class="login-header-info">
-                  <icon name="arrow-left" color="blue" size="17px" /> 
+                  <icon name="arrow-left" color="blue" size="17px" />
                   <span class="login-header-info-phone">手机扫码登录</span>
                 </t-col>
               </t-row>
@@ -246,34 +257,34 @@
         </template>
         <template #body>
           <div class="login-zone">
-          <!-- <t-space direction="vertical" style="width: 100%"> -->
+            <!-- <t-space direction="vertical" style="width: 100%"> -->
             <div class="login-title">
               短信验证码登录
-            </div> 
+            </div>
             <div class="login-subtitle">
               未注册的微信号将自动注册账号
             </div>
 
             <form>
-            <div class="login-barcode"> 
-              <div class="login-barcode-input" >  
-                <!-- <t-image :src="barcode" fit="fill" :style="{ width: '200px', height: '200px',margin:'6px 6px'}"></t-image> -->
-                <t-space direction="vertical">
-                <t-row>
-                    
-                  <t-input placeholder="请输入手机号码(+86)"   maxlength="11">
-                    <template #suffixIcon>
-                      <t-button class="t-input-button">获取验证码</t-button>
-                    </template>
-                  </t-input>
-                  </t-row>
-                  <t-row>
-                    <t-input placeholder="请输入收到的短信验证码" clearable></t-input>
-                  </t-row>
-                </t-space>  
+              <div class="login-barcode">
+                <div class="login-barcode-input">
+                  <!-- <t-image :src="barcode" fit="fill" :style="{ width: '200px', height: '200px',margin:'6px 6px'}"></t-image> -->
+                  <t-space direction="vertical">
+                    <t-row>
+
+                      <t-input placeholder="请输入手机号码(+86)" maxlength="11">
+                        <template #suffixIcon>
+                          <t-button class="t-input-button">获取验证码</t-button>
+                        </template>
+                      </t-input>
+                    </t-row>
+                    <t-row>
+                      <t-input placeholder="请输入收到的短信验证码" clearable></t-input>
+                    </t-row>
+                  </t-space>
+                </div>
               </div>
-            </div>
-            <div class="login-type">
+              <div class="login-type">
                 <!-- <div class="login-type-item"> 
                   <t-image :src="xl_icon" fit="fill" :style="{ width: '40px', height: '40px',borderRadius:'50%'}"></t-image>
                 </div>
@@ -281,115 +292,101 @@
                   <t-image :src="qq_icon" fit="fill" :style="{ width: '40px', height: '40px',borderRadius:'50%'}"></t-image>
                 </div> -->
                 <t-button type="submit" size="large" style="border-radius:12px;">登录</t-button>
-            </div>
+              </div>
             </form>
-              
+
             <div class="login-info">
               <p>登录即代表同意用户服务协议</p>
             </div>
             <!-- <t-pagination v-model="current" v-model:pageSize="pageSize" :total="30" /> -->
-          <!-- </t-space> -->
-        </div>
-      </template>
-      
-    </t-dialog>
-  </t-space>
-  <!-- 弹出框 end---登录2 -->
+            <!-- </t-space> -->
+          </div>
+        </template>
+
+      </t-dialog>
+    </t-space>
+    <!-- 弹出框 end---登录2 -->
 
 
-  <!-- 弹出框---兴趣选项 -->
-  <t-space v-if="!isLogin3" class="">
-    <!-- <t-button theme="primary" @click="onClick">基础确认对话框</t-button> -->
-    <t-dialog 
-      v-model:visible="visible3"
-      header="对话框标题"
-      width="36%"
-      placement="center"
-
-      :closeOnOverlayClick="false"
-      showOverlay
-      mode="model"
-      showInAttachedElement
-      destroyOnClose
-      :footer="false"
-
-      :confirm-on-enter="true"
-      :on-cancel="onCancel3"
-      :on-esc-keydown="onEscKeydown3"
-      :on-close-btn-click="onCloseBtnClick3"
-      :on-overlay-click="onOverlayClick3"
-      :on-close="close3"
-      :on-confirm="onConfirmAnother3"
-    >
+    <!-- 弹出框---兴趣选项 -->
+    <t-space v-if="!isLogin3" class="">
+      <!-- <t-button theme="primary" @click="onClick">基础确认对话框</t-button> -->
+      <t-dialog v-model:visible="visible3" header="对话框标题" width="36%" placement="center" :closeOnOverlayClick="false"
+        showOverlay mode="model" showInAttachedElement destroyOnClose :footer="false" :confirm-on-enter="true"
+        :on-cancel="onCancel3" :on-esc-keydown="onEscKeydown3" :on-close-btn-click="onCloseBtnClick3"
+        :on-overlay-click="onOverlayClick3" :on-close="close3" :on-confirm="onConfirmAnother3">
         <template #header>
-          <t-row class="login-header-main"> 
-             
-            
+          <t-row class="login-header-main">
+
+
           </t-row>
         </template>
         <template #body>
           <div class="login-zone">
-          <!-- <t-space direction="vertical" style="width: 100%"> -->
+            <!-- <t-space direction="vertical" style="width: 100%"> -->
             <div class="login-title">
               选择您感兴趣的复习领域
             </div>
 
             <form>
-            <div class="login-barcode"> 
-              <div class="interest-input" >  
-                <t-space direction="vertical">
-                  
-                  <t-row v-for="item in interestList" :key="item.code" :index=index>
-                    <t-space direction="vertical">
-                    <div class="interest-list-title">{{ item.name }}</div>
-                    <div class="interest-list">
-                      <div class="interest-list-item" v-for="(child,index1) in item.children"  :key="child.code" :index=index1>
-                        <t-check-tag @click="this.checked=true" :checked="index1%3==0?true:false" shape="round" size="medium" >{{ child.name }} </t-check-tag>
-                      </div>
-                    </div>
-                    <!-- <t-divider /> -->
+              <div class="login-barcode">
+                <div class="interest-input">
+                  <t-space direction="vertical">
+
+                    <t-row v-for="item in interestList" :key="item.code" :index=index>
+                      <t-space direction="vertical">
+                        <div class="interest-list-title">{{ item.name }}</div>
+                        <div class="interest-list">
+                          <div class="interest-list-item" v-for="(child, index1) in item.children" :key="child.code"
+                            :index=index1>
+                            <t-check-tag @click="this.checked = true" :checked="index1 % 3 == 0 ? true : false"
+                              shape="round" size="medium">{{ child.name }} </t-check-tag>
+                          </div>
+                        </div>
+                        <!-- <t-divider /> -->
+                      </t-space>
+                    </t-row>
                   </t-space>
-                  </t-row>
-                </t-space>  
+                </div>
               </div>
-            </div>
-            <div class="login-type">
+              <div class="login-type">
                 <t-button style="border-radius:999px;" type="submit" size="large">开始体验</t-button>
-            </div> 
+              </div>
             </form>
-        </div>
-      </template>
-      
-    </t-dialog>
-  </t-space>
-  <!-- 弹出框 end---兴趣选项 -->
+          </div>
+        </template>
+
+      </t-dialog>
+    </t-space>
+    <!-- 弹出框 end---兴趣选项 -->
 
   </div>
 </template>
 
 <script setup>
 // import { computed, reactive, ref } from 'vue'
-import {  ref,onMounted  } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Icon } from 'tdesign-icons-vue-next';
 // import { MessagePlugin } from 'tdesign-vue-next';
 // import { Delete1Icon } from 'tdesign-icons-vue-next';
 // import { ThumbUpIcon, ChatIcon, ShareIcon } from 'tdesign-icons-vue-next';
 
 // const loading = ref(false);
-import { useRoute } from 'vue-router';  
-  
+import { useRoute, useRouter } from 'vue-router';
+
 // 获取当前路由对象  
-const route = useRoute();  
-const isLogin= ref(true);
-const isLogin2= ref(true);
-const isLogin3= ref(true);
-const imgurl=require("@/assets/images/头像.png");
-const userIcon=require("@/assets/images/R-C.jpg");
+const route = useRoute();
+const router = useRouter()
+const isLogin = ref(true);
+const isLogin2 = ref(true);
+const isLogin3 = ref(true);
+const imgurl = require("@/assets/images/头像.png");
+const userIcon = require("@/assets/images/R-C.jpg");
 // const quickItemIcon=require("@/assets/images/icon-2-42.png");
 // const quickItemIconSelect=require("@/assets/images/icon-2-42-select.png");
 // const quickItemIShareIcon=require("@/assets/images/分享.png");
 
-const logo=require("@/assets/images/logo.png"); 
+const logo = require("@/assets/images/logo.png");
 // const tipsWords=[
 //       {"id":'1001',"title":'大头兵1',"counts":'11.2w',"content":'1依赖发送到水电费时代峰峻欧舒丹1依赖发送到水电费时代峰峻欧舒丹'},
 //       {"id":'1002',"title":'大头兵2',"counts":'13.2w',"content":'2依赖发送到水电费时代峰峻欧舒丹'},
@@ -433,7 +430,7 @@ const onOverlayClick = (context) => {
   console.log('点击了蒙层 onOverlayClick', context);
   visible.value = true;
 };
-const headerImageClick1=()=>{
+const headerImageClick1 = () => {
   visible.value = false;
   visible2.value = true;
 }
@@ -460,43 +457,79 @@ const onOverlayClick2 = (context) => {
   console.log('点击了蒙层 onOverlayClick', context);
   visible2.value = true;
 };
-const headerImageClick2=()=>{
+const headerImageClick2 = () => {
   visible2.value = false;
   visible.value = true;
 }
 
-
+//出题记录
+const recordList = ref([{
+  type: '知识点出题',
+  data: [{
+    title: '111111111',
+    type: 1
+  },{
+    title: '2222222',
+    type: 0
+  }]
+}, {
+  type: '文件出题',
+  data: []
+}, {
+  type: '错题出题',
+  data: []
+},{
+  type: '错题出题',
+  data: []
+},{
+  type: '错题出题',
+  data: []
+},{
+  type: '错题出题',
+  data: []
+},{
+  type: '错题出题',
+  data: []
+}])
+const activeRecord = ref(0)
+const recordShow = ref(false)
 // 对话框3
-const interestList=[
-  {name:'小学',code:'10001',children:[
-    {name:'语文',code:'1000101'},
-    {name:'数学',code:'1000102'},
-    {name:'英语',code:'1000103'},
-    {name:'美术',code:'1000104'},
-    {name:'科学',code:'1000105'}
-  ]},
-  {name:'中学',code:'10002',children:[
-    {name:'语文',code:'1000201'},
-    {name:'数学',code:'1000202'},
-    {name:'英语',code:'1000203'},
-    {name:'物理',code:'1000204'},
-    {name:'化学',code:'1000205'},
-    {name:'政治',code:'1000206'},
-    {name:'生物',code:'1000207'},
-    {name:'地理',code:'1000208'},
-    {name:'历史',code:'1000209'},
-  ]},
-  {name:'大学',code:'10003',children:[
-    {name:'哲学',code:'1000301'},
-    {name:'经济学',code:'1000302'},
-    {name:'财政学',code:'1000303'},
-    {name:'金融学',code:'1000304'},
-    {name:'经济与贸易',code:'1000305'},
-    {name:'法学',code:'1000306'},
-    {name:'政治学',code:'1000307'},
-    {name:'社会学',code:'1000308'},
-    {name:'民族学',code:'1000309'},
-  ]}
+const interestList = [
+  {
+    name: '小学', code: '10001', children: [
+      { name: '语文', code: '1000101' },
+      { name: '数学', code: '1000102' },
+      { name: '英语', code: '1000103' },
+      { name: '美术', code: '1000104' },
+      { name: '科学', code: '1000105' }
+    ]
+  },
+  {
+    name: '中学', code: '10002', children: [
+      { name: '语文', code: '1000201' },
+      { name: '数学', code: '1000202' },
+      { name: '英语', code: '1000203' },
+      { name: '物理', code: '1000204' },
+      { name: '化学', code: '1000205' },
+      { name: '政治', code: '1000206' },
+      { name: '生物', code: '1000207' },
+      { name: '地理', code: '1000208' },
+      { name: '历史', code: '1000209' },
+    ]
+  },
+  {
+    name: '大学', code: '10003', children: [
+      { name: '哲学', code: '1000301' },
+      { name: '经济学', code: '1000302' },
+      { name: '财政学', code: '1000303' },
+      { name: '金融学', code: '1000304' },
+      { name: '经济与贸易', code: '1000305' },
+      { name: '法学', code: '1000306' },
+      { name: '政治学', code: '1000307' },
+      { name: '社会学', code: '1000308' },
+      { name: '民族学', code: '1000309' },
+    ]
+  }
 ];
 const visible3 = ref(false);
 const onConfirmAnother3 = (context) => {
@@ -556,7 +589,7 @@ const onOverlayClick3 = (context) => {
 //   console.log('formatResponse', res);
 //   return res;
 //   // return { error: '上传失败，请重试' };
-  
+
 // };
 
 
@@ -727,38 +760,57 @@ onMounted(() => {
 })
 
 </script>
-
-<style scoped>
+<style lang="scss" scoped>
 @import './mytheme.css';
-.t-space{
+
+// 输入框样式自定义
+::v-deep .t-input__inner{
+  color: white !important;;
+}
+::v-deep .t-input__inner::placeholder{
+  color: rgba(166, 166, 166, 1) !important;
+}
+::v-deep .t-input .t-input__suffix > .t-icon{
+  color: rgba(166, 166, 166, 1) !important;
+}
+.t-space {
   width: 100%;
 }
-header{
+
+header {
   background-color: var(--td-success-color-5);
 }
+
 /* main,section{
   background-color: white; 
 } */
-aside{
+aside {
   /* background-color: var(--td-success-color-5); */
 }
-.fill-layout{
+
+.fill-layout {
   height: 100%;
 }
 
-#root,body,html,aside,content {
+#root,
+body,
+html,
+aside,
+content {
   height: 100%;
 }
 
 .t-skeleton-demo-paragraph {
   line-height: 25px;
 }
+
 .hiddenNav {
-  width:0;
+  width: 0;
   overflow: hidden;
   transition: .3s
 }
-.main-menu-aside section{
-  width:200px;
+
+.main-menu-aside section {
+  width: 200px;
 }
 </style>
