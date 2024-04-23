@@ -172,7 +172,7 @@ const checkAnswer = (item, answerIndex) => {
 }
 
 .active-answer {
-  background: #3b83cf;
+  background: #4566FC;
   @apply text-white
 }
 

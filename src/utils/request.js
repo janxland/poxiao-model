@@ -21,9 +21,17 @@ service.interceptors.request.use((config) => {
 })
 
 
-//响应拦截器
-// service.interceptors.response.use((response) => {
-
-// })
-
+// 添加响应拦截器
+service.interceptors.response.use( (response) => {
+    const responseData = response.data;
+    if (responseData.code === 401) {
+      localStorage.removeItem("token");
+    }
+    
+    return response;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
 export default service

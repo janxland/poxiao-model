@@ -64,7 +64,7 @@
 
       <div>
         <t-layout>
-          <t-aside class="main-menu-aside" :class="{ 'hiddenNav': route.meta.hiddenNav }">
+          <t-aside class="main-menu-aside select-none" :class="{ 'hiddenNav': route.meta.hiddenNav }">
             <t-layout class="fill-layout">
               <div class="fill-lf-bg-color lf-bg-layout">
                 <!-- TOP info -->
@@ -77,11 +77,11 @@
 
                 </div>
                 <!-- Middle info -->
-                <div class="m-lf-layout-content cursor-pointer ">
-                  <div class="m-lf-layout-row">
-                    <t-image :src="imgurl" fit="fill"
-                      :style="{ width: '30px', height: '30px', borderRadius: '100%' }"></t-image>
-                    <router-link :to="{ path: '/myexam' }">我的题库</router-link>
+                <div class="m-lf-layout-content cursor-pointer  transition">
+                  <div class="m-lf-layout-row" @click="router.push('/myexam')">
+                    <icon name="book" size="20px" class="w-[30px] h-[30px] mr-4" />
+                    <!-- <router-link :to="{path:'/incorrect'}">错题本</router-link> -->
+                    我的题库
                   </div>
                   <!-- <div class="m-lf-layout-row">
                     <t-image :src="imgurl" fit="fill" :style="{ width: '30px', height: '30px',borderRadius:'100%' }"></t-image>
@@ -272,14 +272,14 @@
                   <t-space direction="vertical">
                     <t-row>
 
-                      <t-input placeholder="请输入手机号码(+86)" maxlength="11">
+                      <t-input v-model="userLogin3Input.phone" placeholder="请输入手机号码(+86)" maxlength="11">
                         <template #suffixIcon>
-                          <t-button class="t-input-button">获取验证码</t-button>
+                          <t-button class="t-input-button" :disable="userLogin3Input.stayTime != 0" @click="getSmsCodeHandler">{{ userLogin3Input.stayTime!=0? `验证码已发送 ( ${userLogin3Input.stayTime} s)` : "获取验证码"}}</t-button>
                         </template>
                       </t-input>
                     </t-row>
                     <t-row>
-                      <t-input placeholder="请输入收到的短信验证码" clearable></t-input>
+                      <t-input v-model="userLogin3Input.smsCode" placeholder="请输入收到的短信验证码" clearable></t-input>
                     </t-row>
                   </t-space>
                 </div>
@@ -291,7 +291,7 @@
                 <div class="login-type-item">
                   <t-image :src="qq_icon" fit="fill" :style="{ width: '40px', height: '40px',borderRadius:'50%'}"></t-image>
                 </div> -->
-                <t-button type="submit" size="large" style="border-radius:12px;">登录</t-button>
+                <t-button @click="login3Handler" type="button" size="large" style="border-radius:12px;">登录</t-button>
               </div>
             </form>
 
@@ -373,12 +373,14 @@ import { Icon } from 'tdesign-icons-vue-next';
 
 // const loading = ref(false);
 import { useRoute, useRouter } from 'vue-router';
+import { login,getSmsCode } from '@/api/user';
 
 // 获取当前路由对象  
 const route = useRoute();
 const router = useRouter()
 const isLogin = ref(true);
-const isLogin2 = ref(true);
+const isLogin2 = ref(false);
+localStorage.getItem("token")? isLogin2.value = true : isLogin2.value = false;
 const isLogin3 = ref(true);
 const imgurl = require("@/assets/images/头像.png");
 const userIcon = require("@/assets/images/R-C.jpg");
@@ -750,6 +752,46 @@ const onOverlayClick3 = (context) => {
 // const quick_conf_click_cancel=()=>{
 //   quick_conf_input_index.value=-1;
 // }
+//登录逻辑
+const userLogin3Input = ref({
+  stayTime: 0,
+  phone:"",
+  smsCode:""
+});
+// 短信验证码登录
+const getSmsCodeHandler = ()=>{
+  const phoneNumberRegex = /^1[3-9]\d{9}$/;
+  if (phoneNumberRegex.test(userLogin3Input.value.phone)){
+    getSmsCode(userLogin3Input.value.phone).then(res=>{
+      const {data} = res;
+      if(data.code==200) {
+        userLogin3Input.value.stayTime = 60;
+        const interval = setInterval(() => {
+          userLogin3Input.value.stayTime--;
+          if (userLogin3Input.value.stayTime <= 0) {
+            userLogin3Input.value.stayTime = 0
+            clearInterval(interval);
+          }
+        }, 1000)
+      }
+    })
+  }
+}
+const login3Handler = ()=>{
+  if(userLogin3Input.value.phone && userLogin3Input.value.smsCode){
+    login({
+      mobile:userLogin3Input.value.phone,
+      smsCode:userLogin3Input.value.smsCode
+    }).then(res=>{
+      const {data} = res;
+      if(data.code==200) {
+        isLogin3.value = false;
+        localStorage.setItem("token",data.data.token);
+        isLogin2.value = true ;
+      }
+    })
+  }
+}
 
 // 生命周期钩子
 onMounted(() => {
@@ -763,7 +805,6 @@ onMounted(() => {
 <style lang="scss" scoped>
 @import './mytheme.css';
 
-// 输入框样式自定义
 ::v-deep .t-input__inner{
   color: white !important;;
 }

@@ -31,9 +31,9 @@
               </div>
               <t-dialog header="收信箱" :footer="false" :visible="visibles.mailBox" :onClose="()=> visibles.mailBox = false">
                 <div slot="body">
-                  <div class="text-left ">
+                  <div class="text-left select-none">
                     <span class="text-xl text-black">未读</span>
-                    <li class="flex justify-between p-2 my-2 border-2 border-blue-500 rounded-lg">
+                    <li class="flex cursor-pointer justify-between p-2 my-2 border-2 border-blue-500 rounded-lg transition hover:text-white hover:bg-gradient-to-r from-cyan-500 to-blue-500">
                       <span>请你给我出100道关于教师资格证考试...</span>
                       <span>24/04/19</span>
                     </li>

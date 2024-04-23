@@ -10,7 +10,7 @@
         </t-head-menu>
       </t-header>
       <t-layout>
-        <t-aside class="myexam-left-side" style="border-top: 1px solid var(--component-border)">
+        <t-aside class="myexam-left-side select-none" style="border-top: 1px solid var(--component-border)">
           <t-menu v-model="activeExamId" class="myexam-subjects-items" theme="light" value="dashboard" style="margin-right: 74px;width:100%;border-radius: 0px 32px 0px 0px;">
             <t-menu-item class="subjects-item" :class="{ active:activeExamId === ExamRecord.examId }" :key="index" v-for="ExamRecord,index in ExamRecords" :value="ExamRecord.examId">
               <icon class="icon" name="folder-1" color="#2F3CF4" style="margin:0 10px;font-size: 20px;" />
@@ -20,6 +20,11 @@
             <t-menu-item class="subjects-item"  value="创建新题库" @click="$router.push('/')">
               <icon class="icon" name="add-circle" color="#2F3CF4" style="margin: 0 10px;font-size: 20px;"/>
               <span>创建新题库</span></t-menu-item>
+              <div class="mt-8">
+                <span class="cursor-pointer hover:text-blue-300">删除</span>
+                |
+                <span class="cursor-pointer hover:text-blue-300">合并</span>
+            </div>
           </t-menu>
         </t-aside>
         <t-layout>
@@ -99,10 +104,10 @@ const questionList = ref([
             {
               "stem": "弗洛伊德的心理分析理论中，人格结构由哪三部分组成？",
               "content": [
-                {content:"自我（Ego）、超我（Superego）、本我（Id）"},
-                "潜意识、前意识、意识",
-                "认知、情感、行为",
-                "大脑皮层、边缘系统、脑干"
+                {content: "自我（Ego）、超我（Superego）、本我（Id）"},
+                {content: "潜意识、前意识、意识"},
+                {content: "认知、情感、行为"},
+                {content: "大脑皮层、边缘系统、脑干"}
               ],
               "ans":0,
               "correct": 0
@@ -110,10 +115,10 @@ const questionList = ref([
             {
               "stem": "Choose the correct relative pronoun to complete the sentence: I visited the museum _______ my friend works as a curator. ",
               "content": [
-                "which",
-                "whose",
-                "where",
-                "when"
+              {content: "which"},
+              {content: "whose"},
+              {content: "where"},
+              {content: "when"}
               ],
               "ans":0,
               "correct": 0
