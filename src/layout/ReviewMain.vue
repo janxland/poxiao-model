@@ -92,16 +92,15 @@
                     <!-- <router-link :to="{path:'/incorrect'}">错题本</router-link> -->
                     错题本
                   </div>
-                  <div class="m-lf-layout-row" @click="recordShow = !recordShow" :class="recordShow?'bg-record_bg':''">
+                  <div class="m-lf-layout-row" @click="recordShow = !recordShow" :class="recordShow ? 'bg-record_bg' : ''">
                     <icon name="time" size="20px" class="w-[30px] h-[30px] mr-4" />
                     历史记录
                   </div>
-                  <div class="absolute h-[500px] w-[350px] top-[20vh] left-[200px] z-[9999] rounded-2xl p-4" v-show="recordShow"
-                    style="background-color: rgba(26, 71, 126, 1);">
+                  <div class="absolute h-[500px] w-[350px] top-[20vh] left-[200px] z-[9999] rounded-2xl p-4"
+                    v-show="recordShow" id="record" style="background-color: rgba(26, 71, 126, 1);">
                     <div class="text-left ">历史记录</div>
                     <div class="flex items-center mt-2">
-                      <t-input placeholder="搜索历史出题记录"
-                        class="flex-1 *:bg-record_bg  *:border-0 ">
+                      <t-input placeholder="搜索历史出题记录" class="flex-1 *:bg-record_bg  *:border-0 ">
                         <template #suffixIcon>
                           <icon name="search" style="cursor: pointer;" color="white"></icon>
                         </template>
@@ -111,23 +110,25 @@
                       </div>
                     </div>
                     <div class="mt-4">
-                      <div class="flex flex-nowrap overflow-auto">
-                        <div v-for="i, index in recordList"
-                          class="min-w-24 text-gray-300 cursor-pointer transition-all duration-300 transform"
+                      <div class="flex flex-nowrap">
+                        <div v-for="i, index in ['知识点出题', '文件出题']"
+                          class="w-1/2 text-gray-300 cursor-pointer transition-all duration-300 transform"
                           :class="activeRecord == index ? 'text-green-400' : ''" :key="'recordList' + index"
                           @click="activeRecord = index">
-                          {{ i.type }}
-                          <div class="h-1 bg-slate-700 transition-all duration-300 transform"
-                            :class="activeRecord == index ? 'bg-green-400' : ''"></div>
+                          {{ i }}
+                          <div class="h-1  transition-all duration-300 transform"
+                            :class="activeRecord == index ? 'bg-green-400' : 'bg-slate-700'"></div>
                         </div>
                       </div>
                     </div>
                     <div class="h-[350px] mt-4 overflow-auto">
                       <div class="bg-record_bg rounded-2xl text-left px-4 py-2 flex items-center justify-between my-1 cursor-pointer"
+                        @click="router.push('/examPage')"
                         v-for="i, index in recordList[activeRecord].data" :key="'recordListData' + index">
                         <div class="w-5/6 text-ellipsis text-nowrap overflow-hidden">{{ i.title }}</div>
-                        <div class="h-[25px] w-[25px] rounded-full " :style="{background: i.type ? 'rgba(67, 207, 124, 1)' : 'rgba(255, 87, 51, 1)'}">
-                          <icon :name="i.type ? 'check' :'error'" color="white" size="25"></icon>
+                        <div class="h-[25px] w-[25px] rounded-full "
+                          :style="{ background: i.type ? 'rgba(67, 207, 124, 1)' : 'rgba(255, 87, 51, 1)' }">
+                          <icon :name="i.type ? 'check' : 'error'" color="white" size="25"></icon>
                         </div>
                       </div>
                     </div>
@@ -274,7 +275,9 @@
 
                       <t-input v-model="userLogin3Input.phone" placeholder="请输入手机号码(+86)" maxlength="11">
                         <template #suffixIcon>
-                          <t-button class="t-input-button" :disable="userLogin3Input.stayTime != 0" @click="getSmsCodeHandler">{{ userLogin3Input.stayTime!=0? `验证码已发送 ( ${userLogin3Input.stayTime} s)` : "获取验证码"}}</t-button>
+                          <t-button class="t-input-button" :disable="userLogin3Input.stayTime != 0"
+                            @click="getSmsCodeHandler">{{ userLogin3Input.stayTime != 0 ? `验证码已发送 (
+                            ${userLogin3Input.stayTime} s)` : "获取验证码" }}</t-button>
                         </template>
                       </t-input>
                     </t-row>
@@ -373,14 +376,14 @@ import { Icon } from 'tdesign-icons-vue-next';
 
 // const loading = ref(false);
 import { useRoute, useRouter } from 'vue-router';
-import { login,getSmsCode } from '@/api/user';
-
+import { login, getSmsCode } from '@/api/user';
+import { getQuestionList } from '@/api/question'
 // 获取当前路由对象  
 const route = useRoute();
 const router = useRouter()
 const isLogin = ref(true);
 const isLogin2 = ref(false);
-localStorage.getItem("token")? isLogin2.value = true : isLogin2.value = false;
+localStorage.getItem("token") ? isLogin2.value = true : isLogin2.value = false;
 const isLogin3 = ref(true);
 const imgurl = require("@/assets/images/头像.png");
 const userIcon = require("@/assets/images/R-C.jpg");
@@ -465,36 +468,28 @@ const headerImageClick2 = () => {
 }
 
 //出题记录
-const recordList = ref([{
-  type: '知识点出题',
-  data: [{
-    title: '111111111',
-    type: 1
-  },{
-    title: '2222222',
-    type: 0
-  }]
-}, {
-  type: '文件出题',
-  data: []
-}, {
-  type: '错题出题',
-  data: []
-},{
-  type: '错题出题',
-  data: []
-},{
-  type: '错题出题',
-  data: []
-},{
-  type: '错题出题',
-  data: []
-},{
-  type: '错题出题',
-  data: []
-}])
+const recordList = ref([
+  {
+    type: '知识点出题',
+    data: [{
+      title: '111111111',
+      type: 1
+    }, {
+      title: '2222222',
+      type: 0
+    }]
+  }, {
+    type: '文件出题',
+    data: []
+  }])
 const activeRecord = ref(0)
 const recordShow = ref(false)
+const getRecordList = () => {
+  getQuestionList({}).then(res=>{
+    console.log(res)
+  })
+}
+getRecordList()
 // 对话框3
 const interestList = [
   {
@@ -755,16 +750,16 @@ const onOverlayClick3 = (context) => {
 //登录逻辑
 const userLogin3Input = ref({
   stayTime: 0,
-  phone:"",
-  smsCode:""
+  phone: "",
+  smsCode: ""
 });
 // 短信验证码登录
-const getSmsCodeHandler = ()=>{
+const getSmsCodeHandler = () => {
   const phoneNumberRegex = /^1[3-9]\d{9}$/;
-  if (phoneNumberRegex.test(userLogin3Input.value.phone)){
-    getSmsCode(userLogin3Input.value.phone).then(res=>{
-      const {data} = res;
-      if(data.code==200) {
+  if (phoneNumberRegex.test(userLogin3Input.value.phone)) {
+    getSmsCode(userLogin3Input.value.phone).then(res => {
+      const { data } = res;
+      if (data.code == 200) {
         userLogin3Input.value.stayTime = 60;
         const interval = setInterval(() => {
           userLogin3Input.value.stayTime--;
@@ -777,17 +772,17 @@ const getSmsCodeHandler = ()=>{
     })
   }
 }
-const login3Handler = ()=>{
-  if(userLogin3Input.value.phone && userLogin3Input.value.smsCode){
+const login3Handler = () => {
+  if (userLogin3Input.value.phone && userLogin3Input.value.smsCode) {
     login({
-      mobile:userLogin3Input.value.phone,
-      smsCode:userLogin3Input.value.smsCode
-    }).then(res=>{
-      const {data} = res;
-      if(data.code==200) {
+      mobile: userLogin3Input.value.phone,
+      smsCode: userLogin3Input.value.smsCode
+    }).then(res => {
+      const { data } = res;
+      if (data.code == 200) {
         isLogin3.value = false;
-        localStorage.setItem("token",data.data.token);
-        isLogin2.value = true ;
+        localStorage.setItem("token", data.data.token);
+        isLogin2.value = true;
       }
     })
   }
@@ -805,15 +800,19 @@ onMounted(() => {
 <style lang="scss" scoped>
 @import './mytheme.css';
 
-::v-deep .t-input__inner{
-  color: white !important;;
+::v-deep #record .t-input__inner {
+  color: white !important;
+  ;
 }
-::v-deep .t-input__inner::placeholder{
+
+::v-deep #record .t-input__inner::placeholder {
   color: rgba(166, 166, 166, 1) !important;
 }
-::v-deep .t-input .t-input__suffix > .t-icon{
+
+::v-deep #record .t-input .t-input__suffix>.t-icon {
   color: rgba(166, 166, 166, 1) !important;
 }
+
 .t-space {
   width: 100%;
 }
