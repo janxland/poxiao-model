@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 /**
- * 获取用户题库列表
+ * 获取用户出题列表
  * @returns 
  */
 export function getQuestionList() {

@@ -28,7 +28,10 @@ const routes = [
     component: ()=>import('./layout/IncorrectIndex.vue'),
     meta: {  
         hiddenNav: true // 对应的菜单项应该被隐藏  
-      }
+    }
+  },{
+    path: '/examPage',
+    component: ()=>import('./layout/ExamPage.vue'),
   },{
     path: '/knowledge',
     component: KnowledgeIndex
