@@ -7,12 +7,10 @@ import MyIndex from './layout/MyIndex.vue'
 const routes = [
   {
     path: '/',
-    component: ReviewIndex,
-    // children: [{ path: 'home', component: Home }],
+    component: ReviewIndex
   },{
     path: '/index',
-    component: ReviewIndex,
-    // children: [{ path: 'home', component: Home }],
+    component: ReviewIndex
   },{
     path: '/myexam',
     component: MyExamIndex,
