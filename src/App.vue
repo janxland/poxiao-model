@@ -1,30 +1,33 @@
 <template>
-
     <ReviewMain></ReviewMain>
-      <!-- <t-layout>
-              <t-aside>
-                <div>hel</div>
-      <router-link :to="{path:'/knowledge'}">知识图谱</router-link>
-      <router-link to="/incorrect">错题本</router-link>
-                </t-aside>
-                </t-layout>
-      <div>
-      
-      <router-view>aaaa</router-view>
-    </div>-->
-
-  
+    <DepositStore :visible="visible.deposit"></DepositStore>
 </template>
 
-<script>
+<script setup>
 import ReviewMain from './layout/ReviewMain.vue'
+import DepositStore from './layout/DepositStore.vue'
+import {  ref,onMounted,watch  } from 'vue'
+import { useUserStore } from '@/store/user';
+import { getUserInfo } from '@/api/user';
+const userStore = useUserStore();
+onMounted(() => {
+  fetchUserInfo()
+})
 
-export default {
-  name: 'app',
-  components: {
-    ReviewMain
-  }
-}
+const visible = ref({
+  deposit: false,
+})
+const fetchUserInfo = async () => {
+  getUserInfo().then(res => {
+    const { data } = res
+    if(data.code === 200) {
+      console.log(userStore);
+      userStore.setUser(data.data)
+      console.log("这里",userStore.user);
+    } 
+  } );
+};
+
 </script>
 
 <style>
