@@ -12,7 +12,7 @@ export const useUserStore = defineStore('user', {
   }),
   actions: {
     setUser(user) {
-      this.user = Object.assign({}, this.user, user);;
+      this.user = Object.assign({}, this.user, user);
     },
   },
 });

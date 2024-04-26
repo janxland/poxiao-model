@@ -8,6 +8,8 @@ export function getProducts() {
   })
 }
 
+
+
 // 微信支付码
 export function getWechatPayCode(productId) {
   return request({
@@ -20,9 +22,12 @@ export function getWechatPayCode(productId) {
 }
 
 //回调接口
-export function getSmsCode() {
+export function getOrderStatus(orderId) {
   return request({
-    url: '/trade/pay/payNotify',
-    method: 'get',
+    url: '/trade/order/info',
+    method: 'post',
+    params:{
+      orderId:orderId
+    }
   })
 }
