@@ -124,7 +124,9 @@
 /* eslint-disable */
 import {  ref,onMounted,watch  } from 'vue'
 import { Icon } from 'tdesign-icons-vue-next';
-import { getUserInfo } from '@/api/user';
+import { useUserStore } from '@/store/user';
+const userStore = useUserStore();
+const user  = userStore.user;
 const iconUrl = {
   defaultAvatar: require("@/assets/images/头像.png"),
   staying:require("@/assets/images/敬请期待.svg"),
@@ -134,14 +136,7 @@ const iconUrl = {
 const visibles = ref({
   emailBox: false,
 });
-const user = ref({
-  name:"天女散花",
-  avatar:"",
-  background:"",
-  point: 458,
-  inviteCode:"TS13QUEEN"
-})
-const contentData = ref({});
+
 const dailyTask = ref([
   { 
     name: '每日签到',
@@ -212,21 +207,9 @@ const toggleLogin = () =>{
     })
   }
 }
-const fetchApiData = async () => {
-  getUserInfo().then(res => {
-    const { data } = res
-    if(data.code === 200) {
-      contentData.value = data.data;
-      user.value = Object.assign({}, user.value, contentData.value);
-    } 
-  } );
-};
-watch(contentData, (newValue) => {
-  console.log(newValue);
+watch(userStore.user, (newValue) => {
+  user.value = newValue;
 });
-onMounted(() => {
-  fetchApiData()
-})
 
 </script>
 

@@ -1,11 +1,14 @@
 <template>
-    <div class="fixed z-[999] select-none justify-center items-center flex w-full h-full bg-[#0000008c] left-0 top-0">   
+    <div :class="{'dialog-hide':!stateStore.visible.deposit}" class="fixed z-[999] select-none justify-center items-center flex w-full h-full bg-[#0000008c] left-0 top-0">   
         <div class="relative flex p-[0px_32px] pt-[12px] flex-col justify-around w-[960px] h-[680px] bg-[#666] rounded-[32px]" style="  background: linear-gradient(
             35deg,
                 rgba(59, 66, 90, 1) 0%,
                 rgba(58, 65, 89, 1) 52.29%,
                 rgba(230, 175, 80, 1) 100%
             );">
+            <div @click="close" class="absolute z-[99] p-[4px] top-[32px] right-[32px] bg-[#00000055] rounded-[50%]">
+                <icon class="icon" name="close" color="#fff" style="font-size: 24px;" />
+            </div>
             <div class="flex flex-row items-center"> 
               <div class="w-[64px] h-[64px] bg-[#fff] mr-2.5 p-2.5 rounded-[50%]">
                 <t-image :src="user.avatar"  shape="circle"></t-image>
@@ -40,7 +43,7 @@
                     <div class="text-[#fff]"><input type="checkbox" value="1">同意并接受 个人订阅服务协议</div>
                 </div>
             </div>
-        </div> 
+        </div>
     </div>
 </template>
 
@@ -48,6 +51,7 @@
 import { ref, defineProps } from 'vue'
 import { Icon } from 'tdesign-icons-vue-next';
 import { useUserStore } from '@/store/user';
+import { useStateStore } from '@/store/state';
 const iconUrl = {
     diamon:require('@/assets/images/diamon.svg'),
     DepositStoreInfo:require('@/assets/images/DepositStoreInfo.png')
@@ -59,11 +63,6 @@ const props = defineProps({
   },
 })
 const user = ref({
-  name:"天女散花",
-  avatar:"",
-  background:"",
-  point: 458,
-  inviteCode:"TS13QUEEN"
 })
 const vipList = ref([{
   name: '',
@@ -91,8 +90,15 @@ const vipList = ref([{
 }
 ])
 const userStore = useUserStore();
+const stateStore = useStateStore();
 user.value = userStore.user;
+const close = () => {
+    stateStore.toggleVisible("deposit");
+}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.dialog-hide {
+    display: none;
+}
 </style>

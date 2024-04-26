@@ -1,6 +1,6 @@
 <template>
     <ReviewMain></ReviewMain>
-    <DepositStore :visible="visible.deposit"></DepositStore>
+    <DepositStore :visible="stateStore.visible.deposit"></DepositStore>
 </template>
 
 <script setup>
@@ -8,22 +8,18 @@ import ReviewMain from './layout/ReviewMain.vue'
 import DepositStore from './layout/DepositStore.vue'
 import {  ref,onMounted,watch  } from 'vue'
 import { useUserStore } from '@/store/user';
+import { useStateStore } from '@/store/state';
 import { getUserInfo } from '@/api/user';
 const userStore = useUserStore();
+const stateStore = useStateStore();
 onMounted(() => {
   fetchUserInfo()
-})
-
-const visible = ref({
-  deposit: false,
 })
 const fetchUserInfo = async () => {
   getUserInfo().then(res => {
     const { data } = res
     if(data.code === 200) {
-      console.log(userStore);
       userStore.setUser(data.data)
-      console.log("这里",userStore.user);
     } 
   } );
 };
