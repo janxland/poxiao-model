@@ -33,16 +33,21 @@ const fetchUserInfo = async () => {
 ::-webkit-scrollbar {
   background-color: rgba(52, 85, 212, 0.16);
   width: 5px;
+  height: 2px;
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: rgba(52, 85, 212,0.8);
   border-radius: 10px;
 }
-body,html{
-  margin:0px 0px;
-  padding: 0px 0px;
-  /* --td-font-family: "MiSans VF", serif; */
+html,
+body,
+#app {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  overflow: auto;
 }
 #app {
   font-family: "MiSans VF", serif;
@@ -50,9 +55,6 @@ body,html{
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  width:100%;
-  height: 100%;
-  overflow: hidden;
   /* margin-top: 60px; */
 }
 

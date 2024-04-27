@@ -1,6 +1,6 @@
 <template>
   <div>
-    <t-space direction="vertical">
+    <div>
 
       <!-- <div>
         <t-layout>
@@ -62,9 +62,9 @@
 
       <!-- test -->
 
-      <div class="w-[100%] h-[100vh]">
-        <div class="w-[100%] h-[100%] flex flex-row">
-          <div class="select-none text-white w-[200px]" :class="{ 'hiddenNav': route.meta.hiddenNav }">
+      <div class="w-[100%]">
+        <div class="w-[100%] flex flex-row">
+          <div class="sticky z-[2] h-[100vh] top-[0] select-none text-white w-[200px]" :class="{ 'hiddenNav': route.meta.hiddenNav }">
             <div class="h-[100%] w-[200px]">
               <div class="h-[100%] flex flex-col justify-between items-center" style="background:linear-gradient(-210deg, rgb(57, 76, 200), rgb(61, 101, 191), rgb(43, 72, 146))">
                 <div class="mt-[20px]">
@@ -134,7 +134,7 @@
                 <!-- Foot info  -->
                 <div class="flex flex-col text-white">
                   <div>
-                    <div class="">
+                    <div>
                       <t-avatar :image="userIcon" :hide-on-load-failed="false" />
                       <router-link :to="{ path: '/myindex' }">天女散花</router-link>
                     </div>
@@ -157,7 +157,7 @@
         </div>
       </div>
 
-    </t-space>
+    </div>
 
 
     <!-- 弹出框---登录1 -->
@@ -227,7 +227,7 @@
     <!-- 弹出框 end---登录1 -->
 
     <!-- 弹出框---登录2 -->
-    <t-space v-if="!isLogin2">
+    <div v-if="!isLogin2">
       <!-- <t-button theme="primary" @click="onClick">基础确认对话框</t-button> -->
       <t-dialog v-model:visible="visible2" header="对话框标题" width="36%" placement="center" :closeOnOverlayClick="false"
         showOverlay mode="model" showInAttachedElement destroyOnClose :footer="false" :confirm-on-enter="true"
@@ -304,12 +304,12 @@
         </template>
 
       </t-dialog>
-    </t-space>
+    </div>
     <!-- 弹出框 end---登录2 -->
 
 
     <!-- 弹出框---兴趣选项 -->
-    <t-space v-if="!isLogin3" class="">
+    <div v-if="!isLogin3">
       <!-- <t-button theme="primary" @click="onClick">基础确认对话框</t-button> -->
       <t-dialog v-model:visible="visible3" header="对话框标题" width="36%" placement="center" :closeOnOverlayClick="false"
         showOverlay mode="model" showInAttachedElement destroyOnClose :footer="false" :confirm-on-enter="true"
@@ -357,10 +357,10 @@
         </template>
 
       </t-dialog>
-    </t-space>
+    </div>
     <!-- 弹出框 end---兴趣选项 -->
 
-    <t-space v-if="!isLogin4">
+    <div v-if="!isLogin4">
       <!-- <t-button theme="primary" @click="onClick">基础确认对话框</t-button> -->
       <t-dialog v-model:visible="visible4" header=" " width="36%" placement="center" :closeOnOverlayClick="false"
       showOverlay mode="model" showInAttachedElement destroyOnClose :footer="false" :confirm-on-enter="true">
@@ -422,7 +422,7 @@
           
         </template>
       </t-dialog>
-    </t-space>
+    </div>
 
   </div>
 </template>
