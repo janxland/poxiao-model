@@ -62,21 +62,18 @@
 
       <!-- test -->
 
-      <div>
-        <t-layout>
-          <t-aside class="main-menu-aside select-none" :class="{ 'hiddenNav': route.meta.hiddenNav }">
-            <t-layout class="fill-layout">
-              <div class="fill-lf-bg-color lf-bg-layout">
-                <!-- TOP info -->
-                <div class="m-lf-layout-top">
-                  <div class="m-lf-layout-row">
-                    <t-image :src="logo"
-                      :style="{ width: '30px', height: '30px', 'background-color': 'transparent' }"></t-image>
-                    <router-link :to="{ path: '/' }">复习大师</router-link>
+      <div class="w-[100%] h-[100vh]">
+        <div class="w-[100%] h-[100%] flex flex-row">
+          <div class="select-none text-white w-[200px]" :class="{ 'hiddenNav': route.meta.hiddenNav }">
+            <div class="h-[100%] w-[200px]">
+              <div class="h-[100%] flex flex-col justify-between items-center" style="background:linear-gradient(-210deg, rgb(57, 76, 200), rgb(61, 101, 191), rgb(43, 72, 146))">
+                <div class="mt-[20px]">
+                  <div class="flex flex-row justify-center items-center">
+                    <t-image class="bg-[transparent] w-[32px] h-[32px]" :src="logo"></t-image>
+                    <router-link class="text-[20px]" :to="{ path: '/' }">复习大师</router-link>
                   </div>
 
                 </div>
-                <!-- Middle info -->
                 <div class="m-lf-layout-content cursor-pointer  transition">
                   <div class="m-lf-layout-row" @click="router.push('/myexam')">
                     <icon name="book" size="20px" class="w-[30px] h-[30px] mr-4" />
@@ -135,29 +132,29 @@
                   </div>
                 </div>
                 <!-- Foot info  -->
-                <div class="m-lf-layout-foot">
+                <div class="flex flex-col text-white">
                   <div>
-                    <t-row class="t-row--center t-row--head--title">
+                    <div class="">
                       <t-avatar :image="userIcon" :hide-on-load-failed="false" />
                       <router-link :to="{ path: '/myindex' }">天女散花</router-link>
-                    </t-row>
-                    <t-row class="t-row--center font-small">在线客服</t-row>
-                    <t-row class="t-row--center font-small">版本：V1.29</t-row>
-                    <t-row class="t-row--center font-small">《复习大师用户协议》|《复习大师隐私策略》</t-row>
+                    </div>
+                    <div>在线客服</div>
+                    <div class="text-[12px]">版本：V1.29</div>
+                    <div class="text-[12px]">《复习大师用户协议》|《复习大师隐私策略》</div>
                   </div>
 
                 </div>
               </div>
 
-            </t-layout>
+            </div>
 
-          </t-aside>
-          <t-content>
+          </div>
+          <div class="flex-1">
             <!-- <t-layout class="fill-layout"> -->
             <router-view></router-view>
             <!-- </t-layout> -->
-          </t-content>
-        </t-layout>
+          </div>
+        </div>
       </div>
 
     </t-space>
