@@ -3,7 +3,7 @@
     <div class="text-left">
       <span class="text-xl font-bold">{{ questionTypeMap[Number(i.type)]?.label }}</span>
       <div v-for="item, index in i.questionVoList" :key="'exams' + index" class="mt-4">
-        <div>
+        <div class="leading-relaxed">
           {{ index + 1 + '.' + item.stem }}
         </div>
         <div v-if="i.type == 1">
@@ -15,20 +15,18 @@
           </t-radio-group>
         </div>
         <div v-else-if="[2, 3, 5, 6, 7].includes(Number(i.type))">
-          <div class="my-4">
+          <div class="my-4" v-if="disabled">
             答案：
-            <t-textarea placeholder="请输入你的答案" :autosize="{ minRows: 3 }" v-model="item.ans" :defaultValue="item.ans"
-              :disabled="disabled" />
+            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" v-model="item.correct" :defaultValue="item.correct" :disabled="disabled" />
           </div>
           <div class="my-4">
             你的答案：
-            <t-textarea placeholder="请输入你的答案" :autosize="{ minRows: 3 }" v-model="item.correct"
-              :defaultValue="item.correct" :disabled="disabled" />
+            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" v-model="item.ans" :defaultValue="item.ans" :disabled="disabled" />
           </div>
         </div>
         <div v-else-if="i.type == 4">
           <div>
-            <t-radio-group v-model="item.ans" allow-uncheck :default-value="item.ans" class="!block">
+            <t-radio-group v-model="item.ans" allow-uncheck :default-value="item.ans" class="!block" @change="change">
               <t-radio-button value="0" :disabled="disabled" class="!border-0 !h-10 !w-8 mr-4">
                 <div class="answer" :class="checkAnswer(item, 0)">
                   <icon name="check"></icon>
@@ -56,14 +54,10 @@
 </template>
 
 <script setup>
-import { ref, computed, defineModel, watch, triggerRef } from 'vue'
+import { ref, defineModel, } from 'vue'
 import { Icon } from 'tdesign-icons-vue-next';
 const props = defineProps({
-  // id: {
-  //   type: String,
-  //   required: true
-  // },
-  // 允许编辑题目
+  // 允许编辑题目,true为错题界面
   disabled: {
     type: Boolean,
     default: false
@@ -75,7 +69,7 @@ const props = defineProps({
 })
 
 const change = (n)=>{
-  triggerRef(questionList)
+  console.log(questionList,n)
 }
 const questionList = defineModel('questionList',{})
 const answerMap = ref(["A", "B", "C", "D", "E"]);

@@ -27,10 +27,10 @@ service.interceptors.response.use( (response) => {
     if (responseData.code === 401) {
       localStorage.removeItem("token");
     }
-    
     return response;
   },
-  function (error) {
+  (error) => {
+    console.log(error)
     return Promise.reject(error);
   }
 );

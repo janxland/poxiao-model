@@ -89,12 +89,13 @@
                     <!-- <router-link :to="{path:'/incorrect'}">错题本</router-link> -->
                     错题本
                   </div>
-                  <div class="m-lf-layout-row" @click="recordShow = !recordShow" :class="recordShow ? 'bg-record_bg' : ''">
+                  <div class="m-lf-layout-row" @click.stop="recordShow = !recordShow"
+                    :class="recordShow ? 'bg-record_bg' : ''">
                     <icon name="time" size="20px" class="w-[30px] h-[30px] mr-4" />
                     历史记录
                   </div>
-                  <div class="absolute h-[500px] w-[350px] top-[20vh] left-[200px] z-[9999] rounded-2xl p-4"
-                    v-show="recordShow" id="record" style="background-color: rgba(26, 71, 126, 1);">
+                  <div class="absolute h-[50vh] w-[20vw] top-[20vh] left-[200px] z-[9999] rounded-2xl p-4"
+                    v-show="recordShow" id="record" style="background-color: rgba(26, 71, 126, 1);" @click.stop="">
                     <div class="text-left ">历史记录</div>
                     <div class="flex items-center mt-2">
                       <t-input placeholder="搜索历史出题记录" class="flex-1 *:bg-record_bg  *:border-0 ">
@@ -108,9 +109,8 @@
                     </div>
                     <div class="mt-4">
                       <div class="flex flex-nowrap">
-                        <div v-for="i, index in ['知识点出题', '文件出题']"
-                          class="w-1/2 text-gray-300 cursor-pointer transition-all duration-300 transform"
-                          :class="activeRecord == index ? 'text-green-400' : ''" :key="'recordList' + index"
+                        <div v-for="i, index in recordTypeList"
+                          class="w-1/2 text-gray-300 cursor-pointer transition-all duration-300 transform" :class="activeRecord == index ? 'text-green-400' : ''" :key="'recordList' + index"
                           @click="activeRecord = index">
                           {{ i }}
                           <div class="h-1  transition-all duration-300 transform"
@@ -119,13 +119,14 @@
                       </div>
                     </div>
                     <div class="h-[350px] mt-4 overflow-auto">
-                      <div class="bg-record_bg rounded-2xl text-left px-4 py-2 flex items-center justify-between my-1 cursor-pointer"
-                        @click="router.push('/examPage')"
-                        v-for="i, index in recordList[activeRecord].data" :key="'recordListData' + index">
-                        <div class="w-5/6 text-ellipsis text-nowrap overflow-hidden">{{ i.title }}</div>
+                      <div
+                        class="bg-record_bg rounded-2xl text-left px-4 py-2 flex items-center justify-between my-1 cursor-pointer"
+                        @click="router.push('/examPage?id='+i.examId)" v-for="i, index in recordList.filter(i=>i.type == recordTypeList[activeRecord])"
+                        :key="'recordListData' + index">
+                        <div class="w-5/6 text-ellipsis text-nowrap overflow-hidden">{{ i.qustionsContent }}</div>
                         <div class="h-[25px] w-[25px] rounded-full "
-                          :style="{ background: i.type ? 'rgba(67, 207, 124, 1)' : 'rgba(255, 87, 51, 1)' }">
-                          <icon :name="i.type ? 'check' : 'error'" color="white" size="25"></icon>
+                          :style="{ background: +i.examStatus == 2 ? 'rgba(67, 207, 124, 1)' : 'rgba(255, 87, 51, 1)' }">
+                          <icon :name="+i.examStatus == 2 ? 'check' : 'error'" color="white" size="25"></icon>
                         </div>
                       </div>
                     </div>
@@ -146,7 +147,7 @@
             </div>
 
           </div>
-          <div class="flex-1">
+          <div class="flex-1" @click="recordShow = false">
             <!-- <t-layout class="fill-layout"> -->
             <router-view></router-view>
             <!-- </t-layout> -->
@@ -426,7 +427,7 @@
 
 <script setup>
 // import { computed, reactive, ref } from 'vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { Icon } from 'tdesign-icons-vue-next';
 // import { MessagePlugin } from 'tdesign-vue-next';
 // import { Delete1Icon } from 'tdesign-icons-vue-next';
@@ -531,26 +532,31 @@ const headerImageClick2 = () => {
 //出题记录
 const recordList = ref([
   {
-    type: '知识点出题',
-    data: [{
-      title: '111111111',
-      type: 1
-    }, {
-      title: '2222222',
-      type: 0
-    }]
+    examId: 8,
+    examStatus: "1",
+    qustions: "30,31,32,33,34,35,38,39,40",
+    qustionsContent: "小学数学选择题",
+    type: '文件出题'
   }, {
-    type: '文件出题',
-    data: []
+    type: '知识点出题',
+    examId: 9,
+    examStatus: "1",
+    qustions: "30,31,32,33,34,35,38,39,40",
+    qustionsContent: "英语考研题"
   }])
+const recordTypeList = ref(['知识点出题','文件出题'])
 const activeRecord = ref(0)
 const recordShow = ref(false)
 const getRecordList = () => {
-  getQuestionList({}).then(res=>{
-    console.log(res)
+  getQuestionList({}).then(res => {
+    // recordList.value = res.data.data
+    console.log(res.data.data)
   })
 }
-getRecordList()
+watch(() => route.fullPath, () => {
+  recordShow.value = false
+})
+// getRecordList()
 // 对话框3
 const interestList = [
   {

@@ -19,7 +19,22 @@ export function getExamQuestions(data) {
     url: '/reviewmaster/question/record/questions',
     method: 'get',
     params: {
-      examId : data
+      examId: data
     }
+  })
+}
+/**
+ * 提交答案
+ * @param {Object} examRMAnswerReq
+ * @param {Array} examRMAnswerReq.answerList
+ * @param {Number} examRMAnswerReq.examId
+ * @param {Number} examRMAnswerReq.flag -区分提交和定时保存 0是提交 1是定时保存
+ * @returns
+ */
+export function commitExam(data) {
+  return request({
+    url: '/api/reviewmaster/question/commitExam',
+    method: 'post',
+    data
   })
 }

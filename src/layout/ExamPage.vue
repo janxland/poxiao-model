@@ -6,14 +6,61 @@
         </div>
         题目已智能生成，请你开始作答：
     </div>
-    <Exam v-model:questionList="questionList" />
+    <div class="ml-6">
+      <Exam v-model:questionList="questionList" />
+    </div>
+    <div class="my-4">
+      <t-button shape="round" size="large" @click="visible = true">立即提交</t-button>
+    </div>
 </div>
+<t-dialog
+      v-model:visible="visible"
+      header="提交答卷"
+      width="40%"
+    >
+    <div>
+      <icon name="certificate-1" size="100" color="#4d4d4d"></icon>
+    </div>
+    <div>
+      已用时xxxx <br/>
+      您可以选择：
+    </div>
+    <template #footer>
+      <div class="flex justify-evenly items-center">
+        <t-button shape="round" class="w-2/5" variant="outline" @click="visible = false">我再想想</t-button>
+        <t-button shape="round" class="w-2/5" @click="submit">立即评卷</t-button>
+      </div>
+    </template>
+    </t-dialog>
 </template>
 
 <script setup>
 import Exam from '@/components/Exam.vue';
+import { Icon } from 'tdesign-icons-vue-next';
+import { getExamQuestions } from '@/api/question'
+import { useRoute,useRouter } from 'vue-router'
+import { ref,watch } from 'vue'
+const route = useRoute()
+const router = useRouter()
 const logo = require("@/assets/images/logo.png");
-const questionList = [
+const getExamData = ()=>{
+    getExamQuestions(route.query.id).then(res=>{
+    console.log(res.data.data)
+    questionList.value = res.data.data.map(res=>{
+      res.questionVoList = res.questionVoList.map(i=>{
+        i.content = JSON.parse(i?.content)
+        return i
+      })
+      
+      return res
+    })
+  })
+}
+// getExamData()
+watch(()=>route.query.id,()=>{
+    getExamData()
+})
+const questionList = ref([
       {
         name: '选择题',
         type: 1,
@@ -34,7 +81,7 @@ const questionList = [
                 content: "大脑皮层、边缘系统、脑干"
               }
             ],
-            "ans": '',
+            // "ans": null,
             "correct": 0
           },
           {
@@ -53,7 +100,7 @@ const questionList = [
                 content: "when"
               }
             ],
-            // "ans": 1,
+            // "ans": null,
             "correct": 0
           }
         ]
@@ -89,8 +136,12 @@ const questionList = [
           }
         ]
       },
-    ]
-
+])
+const visible = ref(false)
+const submit = ()=>{
+  console.log(questionList.value)
+  router.push('/')
+}
 </script>
 
 <style lang="scss" scoped>
