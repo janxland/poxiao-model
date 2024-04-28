@@ -1,7 +1,7 @@
 <template>
   <div class="LoginView">
       <!-- <t-button theme="primary" @click="onClick">基础确认对话框</t-button> -->
-      <t-dialog  width="560px" v-model:visible="stateStore.visible.loginByMobile" header="对话框标题" placement="center" :closeOnOverlayClick="false"
+      <t-dialog  width="500px" v-model:visible="stateStore.visible.loginByMobile" header="对话框标题" placement="center" :closeOnOverlayClick="false"
         showOverlay mode="model" showInAttachedElement destroyOnClose :footer="false" :confirm-on-enter="true"
         :on-cancel="onCancel2" :on-esc-keydown="onEscKeydown2" :on-close-btn-click="onCloseBtnClick2"
         :on-overlay-click="onOverlayClick2" :on-close="close2" :on-confirm="onConfirmAnother2">
@@ -37,15 +37,13 @@
             <form>
               <div class="login-barcode">
                 <div class="login-barcode-input">
-                  <!-- <t-image :src="barcode" fit="fill" :style="{ width: '200px', height: '200px',margin:'6px 6px'}"></t-image> -->
                   <t-space direction="vertical">
                     <t-row>
 
                       <t-input v-model="userLogin3Input.phone" placeholder="请输入手机号码(+86)" maxlength="11">
                         <template #suffixIcon>
                           <t-button class="t-input-button" :disable="userLogin3Input.stayTime != 0"
-                            @click="getSmsCodeHandler">{{ userLogin3Input.stayTime != 0 ? `验证码已发送 (
-                            ${userLogin3Input.stayTime} s)` : "获取验证码" }}</t-button>
+                            @click="getSmsCodeHandler">{{ userLogin3Input.stayTime != 0 ? `已发送(${userLogin3Input.stayTime}s)` : "获取验证码" }}</t-button>
                         </template>
                       </t-input>
                     </t-row>
@@ -112,7 +110,7 @@
               <t-input
               placeholder="支持英文字母、汉字、数字，长度不超过8个字符" 
               clearable 
-              v-model="userProfileInput.nickName"
+              v-model="userProfileInput.nickname"
               :style="{ width: '320px', borderRadius: '10px'}"
               ></t-input>
               <t-image
@@ -156,18 +154,18 @@ const iconUrl = ref({
 });
 const isAvailable = ref(true)
 const userProfileInput = ref({
-  nickName:"",
+  nickname:"",
   gender:0,
 })
 const handleSetProfile = () => {
   setUserProfile({
-    "nickName": userProfileInput.value.nickName,
+    "nickname": userProfileInput.value.nickname,
     "sex": userProfileInput.value.gender,
     "avatar": userProfileInput.value.gender==0?iconUrl.male : iconUrl.female
   }).then(res => {
     const { data } = res;
     if (data.code == 200) {
-      stateStore.toggleVisible("editProfile");
+      stateStore.setVisible("editProfile",false);
       userStore.setUser(data.data)
     }
   })
@@ -206,7 +204,7 @@ const login3Handler = () => {
       if (data.code == 200) {
         stateStore.toggleVisible("loginByMobile");
         localStorage.setItem("token", data.data.token);
-        if(!data.data.nickName) {
+        if(!(data.data.nickname || data.data.nickName)) {
           stateStore.setVisible("editProfile",true)
         }
       }
@@ -216,7 +214,7 @@ const login3Handler = () => {
 onMounted(() => {
   console.log(stateStore.visible.loginByMobile);
   localStorage.getItem("token") ? stateStore.setVisible("loginByMobile",false)  : stateStore.setVisible("loginByMobile", true);
-  userStore.user.nickname!="" ? stateStore.setVisible("editProfile",false)  : stateStore.setVisible("editProfile", true);
+  userStore.user.nickname =="" ? stateStore.setVisible("editProfile",true)  : stateStore.setVisible("editProfile", false);
 });
 
 </script>

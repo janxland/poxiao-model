@@ -131,7 +131,7 @@
     </t-layout>
   </div>
 </template>
-<script setup>
+<script setup >
 /* eslint-disable */
 import {  ref,onMounted,watch  } from 'vue'
 import { Icon } from 'tdesign-icons-vue-next';
@@ -150,6 +150,7 @@ const iconUrl = {
 const visibles = ref({
   mailBox1: false,
   mailBox2: false,
+  qiandao: false,
 });
 
 const dailyTask = ref([
@@ -159,7 +160,7 @@ const dailyTask = ref([
     subtext: '+5',
     status: false,
     handle: ()=>{
-      alert("你已经签到")
+      
     }
   },
   { 
@@ -237,10 +238,9 @@ const toggleLogin = () =>{
     })
   }
 }
-watch(userStore.user, (newValue) => {
-  user.value = newValue;
-});
-
+watch(userStore.user, (newVal) => {
+  console.log(newVal);
+})
 </script>
 
 <style lang="scss">

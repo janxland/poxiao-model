@@ -225,84 +225,7 @@
     <!-- 弹出框 end---登录1 -->
 
     <!-- 弹出框---登录2 -->
-    <div v-if="!isLogin2">
-      <!-- <t-button theme="primary" @click="onClick">基础确认对话框</t-button> -->
-      <t-dialog v-model:visible="visible2" header="对话框标题" width="36%" placement="center" :closeOnOverlayClick="false"
-        showOverlay mode="model" showInAttachedElement destroyOnClose :footer="false" :confirm-on-enter="true"
-        :on-cancel="onCancel2" :on-esc-keydown="onEscKeydown2" :on-close-btn-click="onCloseBtnClick2"
-        :on-overlay-click="onOverlayClick2" :on-close="close2" :on-confirm="onConfirmAnother2">
-        <template #header>
-          <t-row class="login-header-main">
-            <t-col class="login-header-bg">
-              <t-image @click="headerImageClick2" :src="barcode" fit="fill"
-                :style="{ width: '100px', height: '100px', borderTopLeftRadius: '30px' }"></t-image>
-            </t-col>
-            <!-- <t-col><t-image :src="imgurl" fit="fill" :style="{ width: '20px', height: '20px',borderRadius:'100%' }"></t-image></t-col> -->
-            <t-col>
-              <t-row>
-                <t-col>
 
-                </t-col>
-                <t-col class="login-header-info">
-                  <icon name="arrow-left" color="blue" size="17px" />
-                  <span class="login-header-info-phone">手机扫码登录</span>
-                </t-col>
-              </t-row>
-            </t-col>
-          </t-row>
-        </template>
-        <template #body>
-          <div class="login-zone">
-            <!-- <t-space direction="vertical" style="width: 100%"> -->
-            <div class="login-title">
-              短信验证码登录
-            </div>
-            <div class="login-subtitle">
-              未注册的微信号将自动注册账号
-            </div>
-
-            <form>
-              <div class="login-barcode">
-                <div class="login-barcode-input">
-                  <!-- <t-image :src="barcode" fit="fill" :style="{ width: '200px', height: '200px',margin:'6px 6px'}"></t-image> -->
-                  <t-space direction="vertical">
-                    <t-row>
-
-                      <t-input v-model="userLogin3Input.phone" placeholder="请输入手机号码(+86)" maxlength="11">
-                        <template #suffixIcon>
-                          <t-button class="t-input-button" :disable="userLogin3Input.stayTime != 0"
-                            @click="getSmsCodeHandler">{{ userLogin3Input.stayTime != 0 ? `验证码已发送 (
-                            ${userLogin3Input.stayTime} s)` : "获取验证码" }}</t-button>
-                        </template>
-                      </t-input>
-                    </t-row>
-                    <t-row>
-                      <t-input v-model="userLogin3Input.smsCode" placeholder="请输入收到的短信验证码" clearable></t-input>
-                    </t-row>
-                  </t-space>
-                </div>
-              </div>
-              <div class="login-type">
-                <!-- <div class="login-type-item"> 
-                  <t-image :src="xl_icon" fit="fill" :style="{ width: '40px', height: '40px',borderRadius:'50%'}"></t-image>
-                </div>
-                <div class="login-type-item">
-                  <t-image :src="qq_icon" fit="fill" :style="{ width: '40px', height: '40px',borderRadius:'50%'}"></t-image>
-                </div> -->
-                <t-button @click="login3Handler" type="button" size="large" style="border-radius:12px;">登录</t-button>
-              </div>
-            </form>
-
-            <div class="login-info">
-              <p>登录即代表同意用户服务协议</p>
-            </div>
-            <!-- <t-pagination v-model="current" v-model:pageSize="pageSize" :total="30" /> -->
-            <!-- </t-space> -->
-          </div>
-        </template>
-
-      </t-dialog>
-    </div>
     <!-- 弹出框 end---登录2 -->
 
 
@@ -357,71 +280,6 @@
       </t-dialog>
     </div>
     <!-- 弹出框 end---兴趣选项 -->
-
-    <div v-if="!isLogin4">
-      <!-- <t-button theme="primary" @click="onClick">基础确认对话框</t-button> -->
-      <t-dialog v-model:visible="visible4" header=" " width="36%" placement="center" :closeOnOverlayClick="false"
-      showOverlay mode="model" showInAttachedElement destroyOnClose :footer="false" :confirm-on-enter="true">
-        
-        <template #body>
-          <t-row justify="center">
-            <div class="title-text">
-              完善您的个人信息
-            </div>
-          </t-row>
-          <div class="gender-selection">
-            <label class="gender-option" for="male">
-              <input type="radio" id="male" value="male" v-model="selectedGender" name="gender">
-              <t-image
-                :src="avatar.male"
-                :style="{ width: '100px', height: '100px' }"
-                shape="circle"
-                fit="cover"
-              />
-              <span :class="{ 'selected': selectedGender === 'male' }">男</span>
-            </label>
-            <label class="gender-option" for="female">
-              <input type="radio" id="female" value="female" v-model="selectedGender" name="gender">
-              <t-image
-                :src="avatar.female"
-                :style="{ width: '100px', height: '100px'}"
-                shape="circle"
-                fit="cover"
-              />
-              <span :class="{ 'selected': selectedGender === 'female' }">女</span>
-            </label>
-          </div>
-          <t-row justify="center">
-            <div class="nickname-input">
-              <span>创建昵称:</span>
-              <t-input
-              placeholder="支持英文字母、汉字、数字，长度不超过8个字符" 
-              clearable 
-              :style="{ width: '320px', borderRadius: '10px'}"
-              ></t-input>
-              <t-image
-                :src="availableIcon"
-                shape="circle"
-                fit="cover"
-                :style="{ marginLeft: '10px', marginRight: '5px'}"
-              />
-              <span :style="{ color: isAvailable ? 'green' : 'red' }">
-                {{ isAvailable ? '该昵称可用' : '该昵称不可用' }}
-              </span>
-            </div>
-          </t-row>
-          <t-row justify="center">
-            <t-button 
-            :style="{ width: '389px', borderRadius: '15px', height: '37px'}">
-              下一步
-            </t-button>
-          </t-row>
-          
-          
-        </template>
-      </t-dialog>
-    </div>
-
   </div>
 </template>
 
@@ -866,14 +724,7 @@ const login3Handler = () => {
   }
 }
 
-// 生命周期钩子
-onMounted(() => {
-  // console.log(`The initial count is ${visible2.value}.`)
-  visible.value = false;
-  visible2.value = false;
-  visible3.value = false;
-  visible4.value = false;
-})
+
 
 </script>
 <style lang="scss" scoped>
@@ -933,59 +784,4 @@ content {
   width: 200px;
 }
 
-
-// 弹出层4
-
-
-
-.title-text{
-  font-size: 24px;
-  font-weight: 900;
-  font-family: Arial, Helvetica, sans-serif;
-  letter-spacing: 1px;
-  margin-bottom: 20px
-}
-.gender-selection {
-  display: inline-flex; /* 使用内联弹性盒子来居中选项并保持其行内特性 */
-  justify-content: center; /* 水平居中选项 */
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.gender-option {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0 20px; /* 在两个选项之间添加间距 */
-  cursor: pointer;
-}
-
-.gender-selection input[type="radio"] {
-  display: none;
-}
-
-//弹出层4
-.gender-selection label {
-  cursor: pointer;
-  margin-right: 10px;
-}
-
-/* 动态绑定的class，当span被选中时变为蓝色 */
-.selected {
-  color: #3B59C3;
-  font-weight: 600
-}
-
-.nickname-input {
-  display: flex; /* 使用Flexbox布局 */
-  align-items: center; /* 垂直居中 */
-  margin-top: 10px; /* 根据需要调整间距 */
-  margin-bottom: 20px;
-  
-}
-
-.nickname-input span {
-  margin-right: 10px; /* 根据需要调整间距 */
-  white-space: nowrap; /* 防止换行 */
-}
 </style>

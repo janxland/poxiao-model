@@ -1,10 +1,9 @@
-import { defineStore } from 'pinia';
-
+import { defineStore,toRefs } from 'pinia';
 export const useUserStore = defineStore('user', {
   state: () => ({
-    user:{
+    user: {
         name:"天女散花",
-        nickName:'',
+        nickname:'有小名' ,//防止触发创建小名
         avatar:"",
         background:"",
         point: 458,
@@ -21,4 +20,10 @@ export const useUserStore = defineStore('user', {
       }
     },
   },
+  getters: {
+    // 使用toRefs函数将user对象的属性转为响应式
+    getUser() {
+      return toRefs(this.user);
+    }
+  }
 });

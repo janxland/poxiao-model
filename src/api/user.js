@@ -66,7 +66,7 @@ export function setUserProfile(data) {
     data:{
         "avatar": data.avatar,
         "birthday": data.birthday,
-        "nickname": data.nickName,
+        "nickname": data.nickname,
         "sex": data.sex
     }
   })
