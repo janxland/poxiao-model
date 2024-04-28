@@ -23,14 +23,26 @@
                     :color="activeIcon" />
                 <span class="flex-1 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">创建新题库</span>
             </div>
-            <div class="mt-4">
+            <!-- <div class="mt-4">
                 <span class="cursor-pointer hover:text-blue-300">删除</span>
                 |
                 <span class="cursor-pointer hover:text-blue-300">合并</span>
-            </div>
+            </div> -->
         </div>
-        <div class="bg-white w-[75vw] mr-10 rounded-xl">
+        <div class="bg-white w-[70vw] mr-[10vw] rounded-xl p-6">
             <Exam v-model:questionList="questionList" disabled></Exam>
+        </div>
+        <div class="fixed bottom-20 right-0 mr-2">
+            <div class="flex items-start flex-col">
+                <div class="flex items-center my-2 hover:bg-slate-300 p-1 cursor-pointer" @click="reExam">
+                    <div class="w-10 h-10 rounded-full bg-white text-center leading-10 mr-2"><icon name="rollback" size="20"></icon></div>
+                    重做错题
+                </div>
+                <div class="flex items-center my-2 hover:bg-slate-300 p-1 cursor-pointer" @click="reExam">
+                    <div class="w-10 h-10 rounded-full bg-white text-center leading-10 mr-2"><icon name="task" size="20"></icon></div>
+                    根据错题出题
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -123,16 +135,18 @@ const questionList = ref([
 ])
 const activeIcon = (index)=>activeArea == index ? '#ffffff' : '#2F3CF4'
 const activeArea = ref(0)
+
+const reExam = () => {
+    
+}
 </script>
 
 <style lang="scss">
 .t-menu {
     font-size: var(--td-size-7);
 }
-
 .menu-item {
     @apply h-[52px] px-3 my-4 flex items-center justify-between border border-menu_border rounded-xl cursor-pointer hover:text-white relative transition duration-300;
-
     &:hover {
         background: linear-gradient(110.93deg, rgba(58, 71, 252, 0.9) 0%, rgba(43, 141, 252, 1) 100%);
     }
