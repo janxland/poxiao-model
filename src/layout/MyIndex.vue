@@ -20,20 +20,31 @@
                 <div class="user-desc">绑定手机号: {{ user.mobile }}</div>
               </div>
               <div class="absolute top-5 right-5 select-none" style="text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
-                <span class="cursor-pointer">修改密码</span> <span class="mx-2">|</span> <span class="cursor-pointer">退出登录</span>
+                <span class="cursor-pointer">修改密码</span> <span class="mx-2">|</span> <span class="cursor-pointer" @click="toggleLogin">{{user.mobile? "退出登录" : "立即登录"}}</span>
               </div>
               <div class="filter drop-shadow selcet-none flex absolute bottom-5 right-5 text-xl justify-around" style="width:150px">
                 <t-badge  count="new">
-                  <icon class="icon text-3xl" @click="visibles.mailBox = true" name="mail" color="#fff"  />
+                  <icon class="icon text-3xl" @click="visibles.mailBox1 = true" name="mail" color="#fff"  />
                 </t-badge>
                 <icon class="icon text-3xl" name="image" color="#fff" />
                 <icon class="icon text-3xl" name="edit-2" color="#fff"/>
               </div>
-              <t-dialog header="收信箱" :footer="false" :visible="visibles.mailBox" :onClose="()=> visibles.mailBox = false">
+              <t-dialog :footer="false" :visible="visibles.mailBox2" :closeBtn="false">
+                <div class="absolute select-none flex flex-row justify-between px-[20px] items-center w-[100%] text-center top-[24px] left-[0] text-[18px] text-[#000] leading-[24px]">
+                  
+                  <icon class="icon" @click="()=> {visibles.mailBox2 = false;visibles.mailBox1 = true}"  name="chevron-left" color="#000" style="font-size: 30px;" />
+                  <p>详情</p>
+                  <icon class="icon" @click="()=> { visibles.mailBox2 = false;}"  name="close" color="#000" style="font-size: 30px;" />
+                </div>
+                <div class="text-left py-[20px] leading-[20px]">
+                  {{ mailObject?.content || "复习大师是一款通过使用大模型，能够为老师学生出题的学习小助手"}}
+                </div>
+              </t-dialog>
+              <t-dialog header="收信箱" :footer="false" :visible="visibles.mailBox1" :onClose="()=> visibles.mailBox1 = false">
                 <div slot="body">
                   <div class="text-left select-none">
                     <span class="text-xl text-black">未读</span>
-                    <li class="flex cursor-pointer justify-between p-2 my-2 border-2 border-blue-500 rounded-lg transition hover:text-white hover:bg-gradient-to-r from-cyan-500 to-blue-500">
+                    <li @click="checkMail(0)" class="flex cursor-pointer justify-between p-2 my-2 border-2 border-blue-500 rounded-lg transition hover:text-white hover:bg-gradient-to-r from-cyan-500 to-blue-500">
                       <span>请你给我出100道关于教师资格证考试...</span>
                       <span>24/04/19</span>
                     </li>
@@ -51,22 +62,23 @@
           </t-content>
           <t-layout class="content-layout">
             <t-aside class="content-layout-left">
-              <div style="display: flex;
-                justify-content: space-between;
-                padding: 20px 40px;
-                font-size: var(--td-size-7);">
+              <div class="flex justify-between text-[length:var(--td-size-7)] px-10 py-5">
                 <span>积分充值</span>
                 <span>当前积分剩余:<span style="color:#4566FC">{{ user.point }}</span></span>
               </div>
-              <div class="chonzhi-content">
+              <div class="chonzhi-content" @click="()=>{stateStore.toggleVisible('deposit')}">
                 <div  style="width:100%;position: relative;">
                   <t-image  :src="iconUrl.jifenImage" style="width:100%;z-index:0"></t-image>
-
-                  <div class="vip-list">
-                    <div class="vip-list-item" :key="index" v-for="item,index in vipList">
-                      <div class="vip-list-item-name"><span style="font-size: var(--td-size-12);letter-spacing: 1.68px;">{{item.num}}</span>积分</div>
-                      <div class="vip-list-item-price">¥ {{item.price}}</div>
-                      <div class="vip-list-item-value">立减{{item.value - item.price}}</div>
+                  <div class="vip-list no-scrollbar">
+                    <div class="vip-list-box flex overflow-auto no-scrollbar">
+                      <li class="vip-list-item" :key="index" v-for="item,index in vipList">
+                        <div class="vip-list-item-name"><span style="font-size: var(--td-size-12);letter-spacing: 1.68px;">{{item.num}}</span>积分</div>
+                        <div class="vip-list-item-price">¥ {{item.price}}</div>
+                        <div class="vip-list-item-value">立减{{item.value - item.price}}</div>
+                      </li>
+                    </div>
+                    <div class="w-20 h-100 flex justify-center">
+                      <icon class="icon mt-14" name="chevron-right" color="#F2D7A0" style="font-size: 60px;" />
                     </div>
                   </div>
                   <img :src="iconUrl.vipTips" 
@@ -74,32 +86,43 @@
                 </div>
               </div>
             </t-aside>
-            <t-aside class="content-layout-right">
+            <t-aside class="content-layout-right h-fit w-[400px] p-[20px] rounded-[32px] p-[10px]">
               <div class="content-item huodong-center">
-                <span>活动中心</span>
-                <div style="display: flex;justify-content: center;">
-                  <img style="width:100px;height:100px;margin:auto" :src="iconUrl.staying" alt="">
+                <span  class="text-[16px] leading-[28px]">活动中心</span>
+                <div class="flex justify-center my-2.5 p-2.5 bg-[#F1F7FA] rounded-[10px]">
+                  <img class="w-[100px] h-[100px]" :src="iconUrl.staying" alt="">
                 </div>
               </div>
               <div class="content-item daily-task">
-                <span>每日任务</span>
-                <div style="display: flex;justify-content: center;">
-                  <img style="width:100px;height:100px;margin:auto" :src="iconUrl.staying" alt="">
+                <span class="text-[16px] leading-[28px]">每日任务</span>
+                <div class="flex items-center py-[5px] justify-around rounded-[10px] text-center">
+                  <div class="flex flex-col cursor-pointer items-center" @click="i.handle" v-for="i,index in dailyTask">
+                    
+                    <icon class="p-[18px]  rounded-[10px] shadow-[1px_1px_3px_#aaa] text-[72px] hover:bg-[#4566FC] hover:text-[#fff]" color="#4566FC" :name="i.icon"/>
+ 
+                    <span class="leading-[28px]">{{i.name}}</span>
+                    <span class="text-[#a6a6a6]">{{i.subtext}}</span>
+                  </div>
                 </div>
               </div>
               <div class="content-item invite-friends">
-                <span>邀请好友赚积分</span>
+                <span class="text-[16px] leading-[28px]">邀请好友赚积分</span>
                 <div>
-                  <t-list :split="true">
-                    <t-list-item>
-                      <icon class="icon" name="link-1" color="#fff" style="margin-right: 10px;font-size: 28px; padding: 10px; border-radius: 50%; background-color: #0062E3;" />
-                      <t-list-item-meta :image="imageUrl" title="链接邀请" description="好友通过此链接注册成功，双方均可获得积分"></t-list-item-meta>
-                    </t-list-item>
-                    <t-list-item>
-                      <icon class="icon" name="code" color="#fff" style="margin-right: 10px;font-size: 28px; padding: 10px; border-radius: 50%; background-color: #00BAAD;" />
-                      <t-list-item-meta :image="imageUrl" :title="`邀请码邀请：${user.inviteCode}`" description="好友注册时填入该邀请码，双方均可获得积分"></t-list-item-meta>
-                    </t-list-item>
-                  </t-list>
+                  <li class="flex flex-row items-center  py-[5px]">
+                    <icon class="icon text-[40px] bg-[#0062E3] mr-2.5 p-2.5 rounded-[50%]" name="link-1" color="#fff" />
+                    <div class="flex flex-col">
+                      <span class="text-[14px] leading-[24px]">链接邀请</span>
+                      <span class="text-[14px] leading-[24px]">好友通过此链接注册成功，双方均可获得积分</span>
+                    </div>
+                  </li>
+                  <hr />
+                  <li class="flex flex-row items-center py-[5px]">
+                    <icon class="icon text-[40px] bg-[#00BAAD] mr-2.5 p-2.5 rounded-[50%]" name="code" color="#fff" />
+                    <div class="flex flex-col">
+                      <span class="text-[14px] leading-[24px]">邀请码邀请：{{user.inviteCode}}</span>
+                      <span class="text-[14px] leading-[24px]">好友注册时填入该邀请码，双方均可获得积分</span>
+                    </div>
+                  </li>
                 </div>
               </div>
             </t-aside>
@@ -112,7 +135,12 @@
 /* eslint-disable */
 import {  ref,onMounted,watch  } from 'vue'
 import { Icon } from 'tdesign-icons-vue-next';
-import { getUserInfo } from '@/api/user';
+import { useUserStore } from '@/store/user';
+import { useStateStore } from '@/store/state';
+import { getMessages,getMessageContent } from '@/api/user';
+const userStore = useUserStore();
+const stateStore = useStateStore();
+const user  = userStore.user;
 const iconUrl = {
   defaultAvatar: require("@/assets/images/头像.png"),
   staying:require("@/assets/images/敬请期待.svg"),
@@ -120,17 +148,39 @@ const iconUrl = {
   vipTips:require("@/assets/images/过年不停学，充值享优惠.png"),
 };
 const visibles = ref({
-  emailBox: false,
+  mailBox1: false,
+  mailBox2: false,
 });
-const user = ref({
-  name:"天女散花",
-  mobile:"13036853707",
-  avatar:"",
-  background:"",
-  point: 458,
-  inviteCode:"TS13QUEEN"
-})
-const contentData = ref({});
+
+const dailyTask = ref([
+  { 
+    name: '每日签到',
+    icon: 'user-1',
+    subtext: '+5',
+    status: false,
+    handle: ()=>{
+      alert("你已经签到")
+    }
+  },
+  { 
+    name: '完成出题',
+    icon: 'file-1',
+    subtext: '待开发',
+    status: false
+  },
+  { 
+    name: '使用错题本',
+    icon: 'file-1',
+    subtext: '待开发',
+    status: false
+  },
+  { 
+    name: '获得S评级',
+    icon: 'star',
+    subtext: '待开发',
+    status: false
+  },
+])
 const vipList = ref([{
   name: '',
   num: 300,
@@ -155,28 +205,52 @@ const vipList = ref([{
   price: 28.8,
   value: 60
 },
+{
+  name: '',
+  num: 2000,
+  price: 38.8,
+  value: 80
+},
 ])
-const fetchApiData = async () => {
-  getUserInfo().then(res => {
-    const { data } = res
-    if(data.code === 200) {
-      contentData.value = data.data;
-      user.value = Object.assign({}, user.value, contentData.value);
-    } 
-  } );
-};
-watch(contentData, (newValue) => {
-  console.log(newValue);
-});
-onMounted(() => {
-  fetchApiData()
+const mailObject = ref({
+  "content": "",
+	"messageId": 0,
+	"sendTime": "",
+	"sendUserName": "",
+	"status": ""
 })
+const checkMail = (messageId) => {
+  visibles.value.mailBox1 = false;
+  visibles.value.mailBox2 = true;
+  getMessageContent(messageId).then(res => {
+    const { data } = res;
+    mailObject.value = data.data;
+  })
+}
+const toggleLogin = () =>{
+  if(user.value.mobile) {
+    localStorage.removeItem("token");
+    user.value = {};
+  } else {
+    router.push({
+      path: '/'
+    })
+  }
+}
+watch(userStore.user, (newValue) => {
+  user.value = newValue;
+});
 
 </script>
 
 <style lang="scss">
 .t-icon {
   cursor: pointer;
+}
+#MyIndex .header-layout{
+  max-width: 1600px;
+  min-width: 1400px;
+  margin: auto;
 }
 #MyIndex .menu-header{
   height: 82px;
@@ -262,7 +336,6 @@ onMounted(() => {
 }
 #MyIndex .content-layout {
   width: 85%;
-  min-height: 600px;
   margin: 32px auto ;
 }
 #MyIndex .content-layout-left{
@@ -272,30 +345,34 @@ onMounted(() => {
   height: 600px;
   width: unset;
 }
+.no-scrollbar::-webkit-scrollbar {
+    width: 0 !important; /* 隐藏滚动条 */
+    height: 0 !important;
+}
 .content-layout-left .vip-list{
   position: absolute;
-  top:50%;
+  top: 48%;
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width:100%;
-  height:160px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+  height: 200px;
   .vip-list-item{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex: 1;
-    width: 16.8%;
+    width: 168px;
     height: 168px;
-    margin:10px;
+    margin:0 10px;
     opacity: 1;
     cursor: pointer;
     position: relative;
     border-radius: 20px;
     background: linear-gradient(213.8deg, rgba(255, 227, 199, 1) 0%, rgba(255, 235, 189, 1) 49.86%, rgba(255, 254, 250, 1) 100%);
     .vip-list-item-name,.vip-list-item-price{
+      width:168px;
       color: rgba(164, 94, 2, 1);
       text-align: center;
       vertical-align: top;
@@ -322,13 +399,8 @@ onMounted(() => {
   user-select: none;
   padding: 10px 20px;
 }
-#MyIndex .content-layout-right{
-  border-radius: 32px;
-  width: 360px;
-}
 #MyIndex .content-layout-right .content-item {
   text-align: left;
-  padding: 20px 20px;
   flex: 1;
   .t-list-item__meta-title,.t-list-item__meta-description{
     margin:0

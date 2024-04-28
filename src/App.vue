@@ -1,30 +1,29 @@
 <template>
-
     <ReviewMain></ReviewMain>
-      <!-- <t-layout>
-              <t-aside>
-                <div>hel</div>
-      <router-link :to="{path:'/knowledge'}">知识图谱</router-link>
-      <router-link to="/incorrect">错题本</router-link>
-                </t-aside>
-                </t-layout>
-      <div>
-      
-      <router-view>aaaa</router-view>
-    </div>-->
-
-  
+    <DepositStore :visible="stateStore.visible.deposit"></DepositStore>
 </template>
 
-<script>
+<script setup>
 import ReviewMain from './layout/ReviewMain.vue'
+import DepositStore from './layout/DepositStore.vue'
+import {  ref,onMounted,watch  } from 'vue'
+import { useUserStore } from '@/store/user';
+import { useStateStore } from '@/store/state';
+import { getUserInfo } from '@/api/user';
+const userStore = useUserStore();
+const stateStore = useStateStore();
+onMounted(() => {
+  // fetchUserInfo()
+})
+const fetchUserInfo = async () => {
+  getUserInfo().then(res => {
+    const { data } = res
+    if(data.code === 200) {
+      userStore.setUser(data.data)
+    } 
+  } );
+};
 
-export default {
-  name: 'app',
-  components: {
-    ReviewMain
-  }
-}
 </script>
 
 <style>
@@ -34,16 +33,21 @@ export default {
 ::-webkit-scrollbar {
   background-color: rgba(52, 85, 212, 0.16);
   width: 5px;
+  height: 2px;
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: rgba(52, 85, 212,0.8);
   border-radius: 10px;
 }
-body,html{
-  margin:0px 0px;
-  padding: 0px 0px;
-  /* --td-font-family: "MiSans VF", serif; */
+html,
+body,
+#app {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  overflow: auto;
 }
 #app {
   font-family: "MiSans VF", serif;
@@ -51,9 +55,6 @@ body,html{
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  width:100%;
-  height: 100%;
-  overflow: hidden;
   /* margin-top: 60px; */
 }
 

@@ -8,9 +8,9 @@
                         <div class="main-content"> 
                           <div class="main-content-head">
                             <div class="main-content-icon">
-                              <t-image :src="userIcon" fit="fill" :style="{ width: '40px', height: '60px'}"></t-image>
+                              <t-image :src="userIcon" fit="fill" :style="{ width: '60px', height: '60px'}"></t-image>
                             </div>
-                            <div class="main-content-title main-content-font-large main-content-font-bold">初次见面，我是复习大师</div>
+                            <div class="main-content-title main-content-font-large main-content-font-bold">欢迎来到复习大师</div>
                             <div class="main-content-desc">我能理解人类语言、针对你的学习计划和学习状况为你生成个性化题目，帮助你更好地学习。</div>
                           </div>
 
@@ -24,29 +24,32 @@
                             
                             <div class="main-content-itemlist">
                                 <div class="main-content-itemlist-title  main-content-font-middle main-content-font-bold">
-                                  快速出题 
+                                  知识点出题 
                                 </div>
                                 <div class="main-content-itemary">
                                     <div class="main-content-item">
-                                      <t-link theme="primary"> 给我生成十道关于定语从句的语法题 </t-link>
+                                      <t-link theme="primary"> 请给我出关于教资<弗洛伊德的心理分析理论>这一章节的题目 </t-link>
                                     </div>
                                     <div class="main-content-item">
-                                      <t-link theme="primary"> 为我提炼《围城》这本书的中心思想和现实意义 </t-link>
+                                      <t-link theme="primary"> 请围绕教资<教育观法律观基本知识>这一知识点给我出题 </t-link>
                                       </div>
                                     <div class="main-content-item">
-                                      <t-link theme="primary"> 请依据教师资格证考试科目一第一章的内容给我出二十道题 </t-link>
+                                      <t-link theme="primary"> 我需要关于教资<学生的权利与保护>这一知识点的题目 </t-link>
                                       </div>
                                 </div>
                             </div>
 
                             <div class="main-content-itemlist">
                                 <div class="main-content-itemlist-title  main-content-font-middle main-content-font-bold">
-                                  文档出题
+                                  文件出题
                                 </div>
                                 <div class="main-content-itemary">
                                     <div class="main-content-item">
-                                      <t-link theme="primary"> 请概括我上传的文档内容，并依据其中心内容出题 </t-link>
+                                      <t-link theme="primary"> 请根据文档内容给我出关于教资<教育促进社会生产力发展>的题目 </t-link>
                                       </div>
+                                    <div class="main-content-item">
+                                      <t-link theme="primary"> 结合我上传的文档内容给我出教资的写作题 </t-link>
+                                    </div>
                                 </div>
                             </div>
                           </div>
@@ -276,14 +279,11 @@
                 <t-aside width="320px">
                 <t-row class="t-row--head--title1">
                   <t-avatar :image="userIcon" :hide-on-load-failed="false" />
-                  <router-link :to="{path:'/'}">个性化推荐</router-link>
-                  <t-avatar :image="userIcon" :hide-on-load-failed="false" />
+                  <router-link :to="{path:'/'}">个性化使用指南</router-link>
                 </t-row>
-                <t-row class="t-row--head--subtitle">
-                  现在开始复习吧
-                </t-row>
+                
                 <t-row class="t-row--head--content">
-                  以下是基于AI算法为你生成的个性化内容
+                  让复习大师更快、更好助你学习
                 </t-row>
 
                 <t-row>
@@ -292,63 +292,17 @@
 
                     <t-skeleton :loading="loading" theme="tab">
                       <div class="t-skeleton-demo-paragraph">
-                        <!-- <p>
-                          骨架屏组件，是指当网络较慢时，在页面真实数据加载之前，给用户展示出页面的大致结构。
-                          一方面让用户对页面有一定的心理预期，另一方面可以改善长期停留在空白屏给用户带来的枯燥和不适感。它可以为用户提供更好视觉效果和使用体验。
-                        </p> -->
-
+                        <!-- <t-row class="swiperIcon">
+                          <t-image class="iconImage" :src="swiperIcon.knowledgeIcon" fit="fill" :style="{ width: '60px', height: '60px'}"></t-image>
+                          <t-image class="iconImage" :src="swiperIcon.fileIcon" fit="fill" :style="{ width: '60px', height: '60px'}"></t-image>
+                          <t-image class="iconImage" :src="swiperIcon.IncorrectIcon" fit="fill" :style="{ width: '60px', height: '60px'}"></t-image>
+                        </t-row> -->
+                        <!-- 轮播图 -->
                         <t-row>
-                          <div class="sg-content">
-                            <div class="sg-item-box">
-                              <div class="sg-item">
-                                <t-row class="sg-item-title">生成客观题</t-row>
-                                <t-row class="sg-item-viewer">
-                                  <!-- <icon name="circle" style="color: red" />
-                                  <icon name="bamboo-shoot" color="green" /> -->
-                                  <t-image :src="imgurl" fit="fill" :style="{ width: '20px', height: '20px',borderRadius:'100%' }"></t-image>
-                                  12.2w
-                                  <icon name="bamboo-shoot" color="green" />
-                                </t-row>
-                                <t-row class="sg-item-content">帮我生成会计学（国学）选择题</t-row>
-                              </div>
-
-                              <!-- <t-skeleton :loading="loading" theme="tab"> -->
-                                <div class="sg-item"  v-for="item in tipsWords_1" :key="item.id" :index=index>
-                                  <div>
-                                    <t-row class="sg-item-title">{{ item.title }}
-                                      <!-- <t-input type="input" :value="leftLength+item.content.length"></t-input> -->
-                                    </t-row>
-                                    <t-row class="sg-item-viewer">
-                                      <t-image :src="imgurl" fit="fill" :style="{ width: '20px', height: '20px',borderRadius:'100%' }"></t-image>
-                                      {{ item.counts }}
-                                      <!-- <icon name="bamboo-shoot" color="green" /> -->
-                                    </t-row>
-                                    <t-row class="sg-item-content">{{ computeContentLength(item.content) }}</t-row>
-                                  </div>
-                                </div>
-                              <!-- </t-skeleton> -->
-                            </div>
-                            
-                            <div class="sg-item-box" >
-                              <div class="sg-item" v-for="item in tipsWords_2" :key="item.id" :index=index>
-                                <div>
-                                  <t-row class="sg-item-title">{{ item.title }}
-                                    <!-- <t-input type="input" :value="leftLength+item.content.length"></t-input> -->
-                                  </t-row>
-                                  <t-row class="sg-item-viewer">
-                                    <t-image :src="imgurl" fit="fill" :style="{ width: '20px', height: '20px',borderRadius:'100%' }"></t-image>
-                                    {{ item.counts }}
-                                    <!-- <icon name="bamboo-shoot" color="green" /> -->
-                                  </t-row>
-                                  <t-row class="sg-item-content">{{ computeContentLength(item.content) }}</t-row>
-                                </div>
-
-                                
-                              </div>
-                          </div>
-
-                          </div>
+                          
                         </t-row>
+                        
+                        <!-- 轮播图 -->
                       </div>
                     </t-skeleton>
                   </t-space>
@@ -384,11 +338,18 @@
 import {  ref,onMounted  } from 'vue'
 import { Delete1Icon } from 'tdesign-icons-vue-next';
 import { MessagePlugin } from 'tdesign-vue-next';
+// import Carousel from '@/components/swiper.vue';
 
 const quickItemIShareIcon=require("@/assets/images/分享.png");
-const userIcon=require("@/assets/images/R-C.jpg");
+const userIcon=require("@/assets/images/book.jpg");
 const loading = ref(false);
 const imgurl=require("@/assets/images/头像.png");
+const swiperIcon = {
+  knowledgeIcon:require("@/assets/images/knowledgeIcon.png"),
+  fileIcon: require("@/assets/images/fileIcon.png"),
+  IncorrectIcon: require("@/assets/images/IncorrectIcon.png")
+}
+const size = 0
 function splitArray(array) {
   const middle = Math.ceil(array.length / 2);
   return [array.slice(0, middle), array.slice(middle)];
@@ -592,6 +553,31 @@ const quick_conf_click_cancel=()=>{
   quick_conf_input_index.value=-1;
 }
 
+//轮播图
+const imagePaths = [
+                    '@/assets/images/knowledgeImg.png', 
+                    '@/assets/images/fileImg.png', 
+                    '@/assets/images/IncorrectImg.png', 
+                  ];
+
+const indicatorPaths = {
+  normal: [
+            '@/assets/images/knowledgeIcon.png', 
+            '@/assets/images/fileIcon.png', 
+            '@/assets/images/IncorrectIcon.png', 
+  ],
+  selected: [
+              '@/assets/images/knowledgeIcon-selected.png', 
+              '@/assets/images/fileIcon-selected.png', 
+              '@/assets/images/IncorrectIcon-selected.png', 
+  ]
+};
+
+
+
+
+
+
 
 // 生命周期钩子
 onMounted(() => {
@@ -625,4 +611,16 @@ aside{
 .t-skeleton-demo-paragraph {
   line-height: 25px;
 }
+
+.swiperIcon {
+  display: flex;
+  margin-top: 20px;
+  justify-content: center;
+} 
+.iconImage{
+  margin-right: 40px;
+}
+
+/* 轮播图 */
+
 </style>

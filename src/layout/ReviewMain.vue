@@ -1,6 +1,6 @@
 <template>
   <div>
-    <t-space direction="vertical">
+    <div>
 
       <!-- <div>
         <t-layout>
@@ -62,21 +62,18 @@
 
       <!-- test -->
 
-      <div>
-        <t-layout>
-          <t-aside class="main-menu-aside select-none" :class="{ 'hiddenNav': route.meta.hiddenNav }" @click="recordShow = false">
-            <t-layout class="fill-layout">
-              <div class="fill-lf-bg-color lf-bg-layout">
-                <!-- TOP info -->
-                <div class="m-lf-layout-top">
-                  <div class="m-lf-layout-row">
-                    <t-image :src="logo"
-                      :style="{ width: '30px', height: '30px', 'background-color': 'transparent' }"></t-image>
-                    <router-link :to="{ path: '/' }">复习大师</router-link>
+      <div class="w-[100%]">
+        <div class="w-[100%] flex flex-row">
+          <div class="sticky z-[2] h-[100vh] top-[0] select-none text-white w-[200px]" :class="{ 'hiddenNav': route.meta.hiddenNav }">
+            <div class="h-[100%] w-[200px]">
+              <div class="h-[100%] flex flex-col justify-between items-center" style="background:linear-gradient(-210deg, rgb(57, 76, 200), rgb(61, 101, 191), rgb(43, 72, 146))">
+                <div class="mt-[20px]">
+                  <div class="flex flex-row justify-center items-center">
+                    <t-image class="bg-[transparent] w-[32px] h-[32px]" :src="logo"></t-image>
+                    <router-link class="text-[20px]" :to="{ path: '/' }">复习大师</router-link>
                   </div>
 
                 </div>
-                <!-- Middle info -->
                 <div class="m-lf-layout-content cursor-pointer  transition">
                   <div class="m-lf-layout-row" @click="router.push('/myexam')">
                     <icon name="book" size="20px" class="w-[30px] h-[30px] mr-4" />
@@ -136,32 +133,32 @@
                   </div>
                 </div>
                 <!-- Foot info  -->
-                <div class="m-lf-layout-foot">
+                <div class="flex flex-col text-white">
                   <div>
-                    <t-row class="t-row--center t-row--head--title">
+                    <div>
                       <t-avatar :image="userIcon" :hide-on-load-failed="false" />
                       <router-link :to="{ path: '/myindex' }">天女散花</router-link>
-                    </t-row>
-                    <t-row class="t-row--center font-small">在线客服</t-row>
-                    <t-row class="t-row--center font-small">版本：V1.29</t-row>
-                    <t-row class="t-row--center font-small">《复习大师用户协议》|《复习大师隐私策略》</t-row>
+                    </div>
+                    <div>在线客服</div>
+                    <div class="text-[12px]">版本：V1.29</div>
+                    <div class="text-[12px]">《复习大师用户协议》|《复习大师隐私策略》</div>
                   </div>
 
                 </div>
               </div>
 
-            </t-layout>
+            </div>
 
-          </t-aside>
-          <t-content @click="recordShow = false">
+          </div>
+          <div class="flex-1" @click="recordShow = false">
             <!-- <t-layout class="fill-layout"> -->
             <router-view></router-view>
             <!-- </t-layout> -->
-          </t-content>
-        </t-layout>
+          </div>
+        </div>
       </div>
 
-    </t-space>
+    </div>
 
 
     <!-- 弹出框---登录1 -->
@@ -231,7 +228,7 @@
     <!-- 弹出框 end---登录1 -->
 
     <!-- 弹出框---登录2 -->
-    <t-space v-if="!isLogin2">
+    <div v-if="!isLogin2">
       <!-- <t-button theme="primary" @click="onClick">基础确认对话框</t-button> -->
       <t-dialog v-model:visible="visible2" header="对话框标题" width="36%" placement="center" :closeOnOverlayClick="false"
         showOverlay mode="model" showInAttachedElement destroyOnClose :footer="false" :confirm-on-enter="true"
@@ -308,12 +305,12 @@
         </template>
 
       </t-dialog>
-    </t-space>
+    </div>
     <!-- 弹出框 end---登录2 -->
 
 
     <!-- 弹出框---兴趣选项 -->
-    <t-space v-if="!isLogin3" class="">
+    <div v-if="!isLogin3">
       <!-- <t-button theme="primary" @click="onClick">基础确认对话框</t-button> -->
       <t-dialog v-model:visible="visible3" header="对话框标题" width="36%" placement="center" :closeOnOverlayClick="false"
         showOverlay mode="model" showInAttachedElement destroyOnClose :footer="false" :confirm-on-enter="true"
@@ -361,8 +358,72 @@
         </template>
 
       </t-dialog>
-    </t-space>
+    </div>
     <!-- 弹出框 end---兴趣选项 -->
+
+    <div v-if="!isLogin4">
+      <!-- <t-button theme="primary" @click="onClick">基础确认对话框</t-button> -->
+      <t-dialog v-model:visible="visible4" header=" " width="36%" placement="center" :closeOnOverlayClick="false"
+      showOverlay mode="model" showInAttachedElement destroyOnClose :footer="false" :confirm-on-enter="true">
+        
+        <template #body>
+          <t-row justify="center">
+            <div class="title-text">
+              完善您的个人信息
+            </div>
+          </t-row>
+          <div class="gender-selection">
+            <label class="gender-option" for="male">
+              <input type="radio" id="male" value="male" v-model="selectedGender" name="gender">
+              <t-image
+                :src="avatar.male"
+                :style="{ width: '100px', height: '100px' }"
+                shape="circle"
+                fit="cover"
+              />
+              <span :class="{ 'selected': selectedGender === 'male' }">男</span>
+            </label>
+            <label class="gender-option" for="female">
+              <input type="radio" id="female" value="female" v-model="selectedGender" name="gender">
+              <t-image
+                :src="avatar.female"
+                :style="{ width: '100px', height: '100px'}"
+                shape="circle"
+                fit="cover"
+              />
+              <span :class="{ 'selected': selectedGender === 'female' }">女</span>
+            </label>
+          </div>
+          <t-row justify="center">
+            <div class="nickname-input">
+              <span>创建昵称:</span>
+              <t-input
+              placeholder="支持英文字母、汉字、数字，长度不超过8个字符" 
+              clearable 
+              :style="{ width: '320px', borderRadius: '10px'}"
+              ></t-input>
+              <t-image
+                :src="availableIcon"
+                shape="circle"
+                fit="cover"
+                :style="{ marginLeft: '10px', marginRight: '5px'}"
+              />
+              <span :style="{ color: isAvailable ? 'green' : 'red' }">
+                {{ isAvailable ? '该昵称可用' : '该昵称不可用' }}
+              </span>
+            </div>
+          </t-row>
+          <t-row justify="center">
+            <t-button 
+            :style="{ width: '389px', borderRadius: '15px', height: '37px'}">
+              下一步
+            </t-button>
+          </t-row>
+          
+          
+        </template>
+      </t-dialog>
+    </div>
 
   </div>
 </template>
@@ -386,6 +447,7 @@ const isLogin = ref(true);
 const isLogin2 = ref(false);
 localStorage.getItem("token") ? isLogin2.value = true : isLogin2.value = false;
 const isLogin3 = ref(true);
+const isLogin4 = ref(false);
 const imgurl = require("@/assets/images/头像.png");
 const userIcon = require("@/assets/images/R-C.jpg");
 // const quickItemIcon=require("@/assets/images/icon-2-42.png");
@@ -556,6 +618,17 @@ const onOverlayClick3 = (context) => {
   visible3.value = true;
 };
 
+
+//对话框4
+const visible4 = ref(true);
+const selectedGender = ref('');
+const availableIcon = require('@/assets/images/right.png')
+const isAvailable = ref(true);
+
+const avatar = {
+  male: require('@/assets/images/male.png'),
+  female: require('@/assets/images/female.png'),
+};
 
 // 文件上传
 // const files = ref([]);
@@ -798,8 +871,9 @@ const login3Handler = () => {
 onMounted(() => {
   // console.log(`The initial count is ${visible2.value}.`)
   visible.value = true;
-  visible2.value = true;
+  visible2.value = false;
   visible3.value = true;
+  visible4.value = true;
 })
 
 </script>
@@ -858,5 +932,61 @@ content {
 
 .main-menu-aside section {
   width: 200px;
+}
+
+
+// 弹出层4
+
+
+
+.title-text{
+  font-size: 24px;
+  font-weight: 900;
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 1px;
+  margin-bottom: 20px
+}
+.gender-selection {
+  display: inline-flex; /* 使用内联弹性盒子来居中选项并保持其行内特性 */
+  justify-content: center; /* 水平居中选项 */
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.gender-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 20px; /* 在两个选项之间添加间距 */
+  cursor: pointer;
+}
+
+.gender-selection input[type="radio"] {
+  display: none;
+}
+
+//弹出层4
+.gender-selection label {
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+/* 动态绑定的class，当span被选中时变为蓝色 */
+.selected {
+  color: #3B59C3;
+  font-weight: 600
+}
+
+.nickname-input {
+  display: flex; /* 使用Flexbox布局 */
+  align-items: center; /* 垂直居中 */
+  margin-top: 10px; /* 根据需要调整间距 */
+  margin-bottom: 20px;
+  
+}
+
+.nickname-input span {
+  margin-right: 10px; /* 根据需要调整间距 */
+  white-space: nowrap; /* 防止换行 */
 }
 </style>
