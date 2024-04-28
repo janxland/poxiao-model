@@ -9,7 +9,7 @@
           个人中心
         </t-head-menu>
       </t-header>
-      <t-layout class="header-layout">
+      <t-layout class="header-layout"  v-model="userStore.user">
           <t-content>
             <div class="user-header" :style="{'background-image': `url(${user.background||'https://mybox-1257251314.cos.ap-chengdu.myqcloud.com/www/image_2496.png'})`}"> 
               <div class="user-avatar">
