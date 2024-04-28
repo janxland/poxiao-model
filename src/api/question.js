@@ -1,15 +1,16 @@
 import request from '@/utils/request'
 /**
  * 获取用户出题列表
+ * @param {object} data
+ * @param {String} [data.title]
+ * @param {String} [data.qustionsMethod]
  * @returns 
  */
-export function getQuestionList(qustionsMethod = 0) {
+export function getQuestionList(data) {
   return request({
     url: '/reviewmaster/question/records',
     method: 'get',
-    params:{
-      qustionsMethod:qustionsMethod
-    }
+    params: data
   })
 }
 /**
@@ -41,16 +42,30 @@ export function getExamQuestions(data) {
 }
 /**
  * 提交答案
- * @param {Object} examRMAnswerReq
- * @param {Array} examRMAnswerReq.answerList
- * @param {Number} examRMAnswerReq.examId
- * @param {Number} examRMAnswerReq.flag -区分提交和定时保存 0是提交 1是定时保存
+ * @param {Object} data
+ * @param {Array} data.answerList
+ * @param {Number} data.examId
+ * @param {Number} data.flag -区分提交和定时保存 0是提交 1是定时保存
  * @returns
  */
 export function commitExam(data) {
   return request({
-    url: '/api/reviewmaster/question/commitExam',
+    url: '/reviewmaster/question/commitExam',
     method: 'post',
     data
+  })
+}
+/**
+ * 获取错题列表
+ * @param {Number} examId
+ * @returns
+ */
+export function getIncorrectList(examId) {
+  return request({
+    url: '/reviewmaster/question/errors',
+    method: 'get',
+    params: {
+      examId
+    }
   })
 }

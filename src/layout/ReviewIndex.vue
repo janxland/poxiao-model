@@ -78,54 +78,56 @@
                       </t-tab-panel>
                       <t-tab-panel :value="2" label="文件出题" id="id-main-content-footer-tab-panel">
 
-                        <!-- <t-space direction="vertical"> -->
-                          <div v-if="files && files.length" class="list-custom">
-                            <div class="file-list-group" v-for="(item, index) in files" :key="index" >
-                                <div class="file-list-item">
-                                    <div class="file-list-item-ns">
-                                      <div>{{ item.name }}</div>
-                                      <div>{{ item.size }}</div>
+                                  <!-- <t-space direction="vertical"> -->
+                                    <div v-if="files && files.length" class="list-custom">
+                                      <div class="file-list-group" v-for="(item, index) in files" :key="index" >
+                                          <div class="file-list-item">
+                                              <div class="file-list-item-ns">
+                                                <div>{{ item.name }}</div>
+                                                <div>{{ item.size }}</div>
+                                              </div>
+                                              <div class="file-list-item-del">
+                                              <icon name="delete-1"></icon>
+                                              </div>
+                                          </div> 
+                                      </div>
+                                      
+                                      
+                                      <!-- <ul style="padding: 0">
+                                        <li v-for="(item, index) in files" :key="index" style="list-style-type: none">{{ item.name }}</li>
+                                      </ul> -->
                                     </div>
-                                    <div class="file-list-item-del"><Delete1Icon /></div>
-                                </div> 
-                            </div>
-                            
-                            
-                            <!-- <ul style="padding: 0">
-                              <li v-for="(item, index) in files" :key="index" style="list-style-type: none">{{ item.name }}</li>
-                            </ul> -->
-                          </div>
-                          <div class="upload-layout-box">
-                            <t-text @click="none">{{ uploadTips }}</t-text> 
-                            <t-upload
-                              v-model="files"
-                              action="https://service-bv448zsw-1257786608.gz.apigw.tencentcs.com/api/upload-demo"
-                              
-                              theme="custom"
-                              :before-upload="beforeUpload"
-                              multiple
-                              @select-change="handleSelectChange"
-                              @fail="handleFail"
-                              @success="handleSuccess"
-                            > 
-                              <div class="upload-layout" >
-                                
-                                <t-button theme="primary">继续上传</t-button>
-                              </div>  
-                            </t-upload>  
-                          </div> 
-                          <div class="upload-layout-textarea">
-                            <t-textarea placeholder="从这里输入你的基于该文件的出题要求" ></t-textarea>
-                          </div> 
-                        <!-- </t-space> -->
-                        
+                                    <div class="upload-layout-box">
+                                      <!-- <t-text @click="none">{{ uploadTips }}</t-text>  -->
+                                      <t-upload
+                                        v-model="files"
+                                        action="https://service-bv448zsw-1257786608.gz.apigw.tencentcs.com/api/upload-demo"
+                                        
+                                        theme="custom"
+                                        :before-upload="beforeUpload"
+                                        multiple
+                                        @select-change="handleSelectChange"
+                                        @fail="handleFail"
+                                        @success="handleSuccess"
+                                      > 
+                                        <div class="upload-layout" >
+                                          
+                                          <t-button theme="primary">继续上传</t-button>
+                                        </div>  
+                                      </t-upload>  
+                                    </div> 
+                                    <div class="upload-layout-textarea">
+                                      <t-textarea placeholder="从这里输入你的基于该文件的出题要求" ></t-textarea>
+                                    </div> 
+                                  <!-- </t-space> -->
+                                  
 
                       </t-tab-panel>
                       <t-tab-panel :value="3" label="错题出题" id="id-main-content-footer-tab-panel-3">
                         <div class="tree-pane"> 
                           <div class="tree-pane-title">
-                            <t-text  class="tree-pane-title-1">您已选择 <span style="color:rgb(67,207,124);font-weight: 600">25</span> 道错题</t-text>
-                            <t-text  class="tree-pane-title-2">系统将根据您选择的错题智能生成相似题目</t-text>
+                            <!-- <t-text  class="tree-pane-title-1">您已选择 <span style="color:rgb(67,207,124);font-weight: 600">25</span> 道错题</t-text> -->
+                            <!-- <t-text  class="tree-pane-title-2">系统将根据您选择的错题智能生成相似题目</t-text> -->
                           </div>
                           <t-tree 
                             ref="tree"
@@ -173,8 +175,8 @@
                       <t-tab-panel :value="4" label="知识图谱出题" id="id-main-content-footer-tab-panel-4">
                         <div class="tree-pane">
                           <div class="tree-pane-title">
-                            <t-text  class="tree-pane-title-1">您已选择 <span style="color:rgb(67,207,124);font-weight: 600">5</span> 个知识点</t-text>
-                            <t-text  class="tree-pane-title-2">系统将根据您选择的知识点智能生成相关题目</t-text>
+                            <!-- <t-text  class="tree-pane-title-1">您已选择 <span style="color:rgb(67,207,124);font-weight: 600">5</span> 个知识点</t-text> -->
+                            <!-- <t-text  class="tree-pane-title-2">系统将根据您选择的知识点智能生成相关题目</t-text> -->
                           </div> 
                           <t-tree
                             ref="tree" 
@@ -334,10 +336,9 @@
 
 <script setup>
 import {  ref,onMounted  } from 'vue'
-import { Delete1Icon } from 'tdesign-icons-vue-next';
-import { MessagePlugin } from 'tdesign-vue-next';
+import { MessagePlugin } from 'tdesign-vue-next'; 
+import { Icon } from 'tdesign-icons-vue-next';
 // import Carousel from '@/components/swiper.vue';
-
 const quickItemIShareIcon=require("@/assets/images/分享.png");
 const userIcon=require("@/assets/images/book.jpg");
 const loading = ref(false);

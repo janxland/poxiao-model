@@ -7,39 +7,21 @@
             错题本
         </t-head-menu>
     </div>
-    <div class="h-full bg-primary flex pt-[32px] relative justify-between flex-nowrap overflow-auto">
-        <div class="w-[15vw] bg-white rounded-xl p-4">
-            <div v-for="i, index in atlasData" :key="i.id" class="menu-item group"
-                :class="activeArea == index ? 'active-menu-item' : ''" @click="activeArea = index">
-                <icon class="icon mx-3 text-xl group-hover:text-white" name="folder-1"
-                    :color="activeIcon" />
-                <span class="flex-1 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">{{ i.areasName
-                    }}</span>
-                <icon class="icon edit-icon mx-3 text-xl group-hover:text-white" name="edit-2"
-                    :color="activeIcon" v-show="activeArea == index" />
-            </div>
-            <div class="menu-item group">
-                <icon class="icon mx-3 text-xl group-hover:text-white" name="add-circle"
-                    :color="activeIcon" />
-                <span class="flex-1 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">创建新题库</span>
-            </div>
-            <!-- <div class="mt-4">
-                <span class="cursor-pointer hover:text-blue-300">删除</span>
-                |
-                <span class="cursor-pointer hover:text-blue-300">合并</span>
-            </div> -->
+    <div class="min-h-[calc(100vh-82px)] bg-primary flex pt-10 relative justify-between flex-nowrap overflow-auto">
+        <div class="w-[15vw] bg-white rounded-xl p-4" v-loading="loading.record">
+            <ExamRecord @change="recordChange" :records="records"></ExamRecord>
         </div>
-        <div class="bg-white w-[70vw] mr-[10vw] rounded-xl p-6">
+        <div class="bg-white w-[70vw] mr-[10vw] rounded-xl p-6" v-loading="loading.question">
             <Exam v-model:questionList="questionList" disabled></Exam>
         </div>
         <div class="fixed bottom-20 right-0 mr-2">
             <div class="flex items-start flex-col">
                 <div class="flex items-center my-2 hover:bg-slate-300 p-1 cursor-pointer" @click="reExam">
-                    <div class="w-10 h-10 rounded-full bg-white text-center leading-10 mr-2"><icon name="rollback" size="20"></icon></div>
+                    <div class="w-10 h-10 rounded-full bg-slate-100 text-center leading-10 mr-2"><icon name="rollback" size="20"></icon></div>
                     重做错题
                 </div>
                 <div class="flex items-center my-2 hover:bg-slate-300 p-1 cursor-pointer" @click="reExam">
-                    <div class="w-10 h-10 rounded-full bg-white text-center leading-10 mr-2"><icon name="task" size="20"></icon></div>
+                    <div class="w-10 h-10 rounded-full bg-slate-100 text-center leading-10 mr-2"><icon name="task" size="20"></icon></div>
                     根据错题出题
                 </div>
             </div>
@@ -50,12 +32,17 @@
 <script setup>
 import { Icon } from 'tdesign-icons-vue-next';
 import Exam from '@/components/Exam.vue';
-import { ref } from 'vue'
-const atlasData = ref([{
-    areasName: '英语错题本'
-}, {
-    areasName: '数学错题本'
-}])
+import ExamRecord from '@/components/ExamRecord'
+import { getIncorrectList,getQuestionList } from '@/api/question'
+import { ref,reactive } from 'vue'
+import { useRouter } from 'vue-router';
+const router = useRouter()
+
+const loading = reactive({
+    record:true,
+    question:true
+})
+const records = ref([])
 const questionList = ref([
     {
         name: '选择题',
@@ -133,11 +120,33 @@ const questionList = ref([
         ]
     },
 ])
-const activeIcon = (index)=>activeArea == index ? '#ffffff' : '#2F3CF4'
-const activeArea = ref(0)
+getQuestionList().then(res => {
+    loading.record = false
+    records.value = [{
+        examId:0,
+        qustionsContent:'全部错题'
+    },
+    ...res?.data?.data]
+    console.log(res.data.data)
+    getIncorrectData(records.value[0].examId)
+})
+
+const recordChange = (e) =>{
+    loading.question = true
+    getIncorrectData(e.examId)
+}
+const getIncorrectData = (id)=>{
+    getIncorrectList(id).then(res=>{
+        loading.question = false
+        questionList.value = res?.data?.data
+        console.log(res)
+    }).catch(err=>{
+        console.log(err)
+    })
+}
 
 const reExam = () => {
-    
+
 }
 </script>
 

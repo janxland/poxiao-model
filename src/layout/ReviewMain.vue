@@ -1,67 +1,6 @@
 <template>
   <div>
     <div>
-
-      <!-- <div>
-        <t-layout>
-          <t-header>Header</t-header>
-          <t-layout>
-            <t-aside>Aside</t-aside>
-            <t-content>Content</t-content>
-          </t-layout>
-          <t-footer>Footer</t-footer>
-        </t-layout>
-      </div> 
-
-
-      <div>
-        <t-layout>
-          <t-aside>
-            <t-layout class="fill-layout fill-lf-bg-color">
-              <t-header  >Header</t-header>
-              <t-content>
-                <t-space direction="vertical">
-
-                  <router-link :to="{path:'/myexam'}">我的题库</router-link>
-                  <router-link :to="{path:'/knowledge'}">知识图谱</router-link>
-                  <router-link :to="{path:'/incorrect'}">错题本</router-link>
-                </t-space>
-
-
-              </t-content>
-              <t-footer>Footer</t-footer>
-            </t-layout>
-
-          </t-aside>
-          <t-content>
-            <t-layout class="fill-layout">
-              <t-content>
-                <router-view></router-view>
-              </t-content>
-              <t-aside>
-                aside
-                <t-space direction="vertical">
-
-                  <t-button>aaas</t-button>
-                  <t-button>aaas</t-button>
-                  <t-button>aaas</t-button>
-                  <t-button>aaas</t-button>
-                  <t-button>aaas</t-button>
-                </t-space>
-                
-              </t-aside>
-            </t-layout>
-          </t-content>
-          
-        </t-layout>
-      </div>
--->
-
-
-
-
-      <!-- test -->
-
       <div class="w-[100%]">
         <div class="w-[100%] flex flex-row">
           <div class="sticky z-[2] h-[100vh] top-[0] select-none text-white w-[200px]" :class="{ 'hiddenNav': route.meta.hiddenNav }">
@@ -77,16 +16,10 @@
                 <div class="m-lf-layout-content cursor-pointer  transition">
                   <div class="m-lf-layout-row" @click="router.push('/myexam')">
                     <icon name="book" size="20px" class="w-[30px] h-[30px] mr-4" />
-                    <!-- <router-link :to="{path:'/incorrect'}">错题本</router-link> -->
                     我的题库
                   </div>
-                  <!-- <div class="m-lf-layout-row">
-                    <t-image :src="imgurl" fit="fill" :style="{ width: '30px', height: '30px',borderRadius:'100%' }"></t-image>
-                    <router-link :to="{path:'/knowledge'}">知识图谱</router-link>
-                  </div> -->
                   <div class="m-lf-layout-row" @click="router.push('/incorrect')">
                     <icon name="system-log" size="20px" class="w-[30px] h-[30px] mr-4" />
-                    <!-- <router-link :to="{path:'/incorrect'}">错题本</router-link> -->
                     错题本
                   </div>
                   <div class="m-lf-layout-row" @click.stop="recordShow = !recordShow"
@@ -98,17 +31,17 @@
                     v-show="recordShow" id="record" style="background-color: rgba(26, 71, 126, 1);" @click.stop="">
                     <div class="text-left ">历史记录</div>
                     <div class="flex items-center mt-2">
-                      <t-input placeholder="搜索历史出题记录" class="flex-1 *:bg-record_bg  *:border-0 ">
+                      <t-input placeholder="搜索历史出题记录" v-model="search" class="flex-1 *:bg-record_bg  *:border-0 " @blur="searchRecord" @enter="searchRecord">
                         <template #suffixIcon>
                           <icon name="search" style="cursor: pointer;" color="white"></icon>
                         </template>
                       </t-input>
-                      <div class="w-9 h-9 leading-9 bg-record_bg rounded-full ml-2">
+                      <div class="w-9 h-9 leading-9 bg-record_bg rounded-full ml-2" @click="clearSearch">
                         <icon name="delete" size="20" color="white"></icon>
                       </div>
                     </div>
                     <div class="mt-4">
-                      <div class="flex flex-nowrap">
+                      <div class="flex flex-nowrap" >
                         <div v-for="i, index in recordTypeList"
                           class="w-1/2 text-gray-300 cursor-pointer transition-all duration-300 transform" :class="activeRecord == index ? 'text-green-400' : ''" :key="'recordList' + index"
                           @click="activeRecord = index">
@@ -118,15 +51,15 @@
                         </div>
                       </div>
                     </div>
-                    <div class="h-[350px] mt-4 overflow-auto">
+                    <div class="h-[300px] mt-4 overflow-auto"  v-loading="recordLoading">
                       <div
                         class="bg-record_bg rounded-2xl text-left px-4 py-2 flex items-center justify-between my-1 cursor-pointer"
-                        @click="router.push('/examPage?id='+i.examId)" v-for="i, index in recordList.filter(i=>i.type == recordTypeList[activeRecord])"
+                        @click="router.push('/examPage?id='+i?.examId)" v-for="i, index in recordList.filter(i=>i?.qustionsStatus == activeRecord)"
                         :key="'recordListData' + index">
-                        <div class="w-5/6 text-ellipsis text-nowrap overflow-hidden">{{ i.qustionsContent }}</div>
+                        <div class="w-5/6 text-ellipsis text-nowrap overflow-hidden">{{ i?.qustionsContent }}</div>
                         <div class="h-[25px] w-[25px] rounded-full "
-                          :style="{ background: +i.examStatus == 2 ? 'rgba(67, 207, 124, 1)' : 'rgba(255, 87, 51, 1)' }">
-                          <icon :name="+i.examStatus == 2 ? 'check' : 'error'" color="white" size="25"></icon>
+                          :style="{ background: +i?.examStatus == 2 ? 'rgba(67, 207, 124, 1)' : 'rgba(255, 87, 51, 1)' }">
+                          <icon :name="+i?.examStatus == 2 ? 'check' : 'error'" color="white" size="25"></icon>
                         </div>
                       </div>
                     </div>
@@ -230,55 +163,7 @@
 
 
     <!-- 弹出框---兴趣选项 -->
-    <div v-if="!isLogin3">
-      <!-- <t-button theme="primary" @click="onClick">基础确认对话框</t-button> -->
-      <t-dialog v-model:visible="visible3" header="对话框标题" width="36%" placement="center" :closeOnOverlayClick="false"
-        showOverlay mode="model" showInAttachedElement destroyOnClose :footer="false" :confirm-on-enter="true"
-        :on-cancel="onCancel3" :on-esc-keydown="onEscKeydown3" :on-close-btn-click="onCloseBtnClick3"
-        :on-overlay-click="onOverlayClick3" :on-close="close3" :on-confirm="onConfirmAnother3">
-        <template #header>
-          <t-row class="login-header-main">
 
-
-          </t-row>
-        </template>
-        <template #body>
-          <div class="login-zone">
-            <!-- <t-space direction="vertical" style="width: 100%"> -->
-            <div class="login-title">
-              选择您感兴趣的复习领域
-            </div>
-
-            <form>
-              <div class="login-barcode">
-                <div class="interest-input">
-                  <t-space direction="vertical">
-
-                    <t-row v-for="item in interestList" :key="item.code" :index=index>
-                      <t-space direction="vertical">
-                        <div class="interest-list-title">{{ item.name }}</div>
-                        <div class="interest-list">
-                          <div class="interest-list-item" v-for="(child, index1) in item.children" :key="child.code"
-                            :index=index1>
-                            <t-check-tag @click="this.checked = true" :checked="index1 % 3 == 0 ? true : false"
-                              shape="round" size="medium">{{ child.name }} </t-check-tag>
-                          </div>
-                        </div>
-                        <!-- <t-divider /> -->
-                      </t-space>
-                    </t-row>
-                  </t-space>
-                </div>
-              </div>
-              <div class="login-type">
-                <t-button style="border-radius:999px;" type="submit" size="large">开始体验</t-button>
-              </div>
-            </form>
-          </div>
-        </template>
-
-      </t-dialog>
-    </div>
     <!-- 弹出框 end---兴趣选项 -->
   </div>
 </template>
@@ -388,29 +273,37 @@ const headerImageClick2 = () => {
 }
 
 //出题记录
-const recordList = ref([
-  {
-    examId: 8,
-    examStatus: "1",
-    qustions: "30,31,32,33,34,35,38,39,40",
-    qustionsContent: "小学数学选择题",
-    type: '文件出题'
-  }, {
-    type: '知识点出题',
-    examId: 9,
-    examStatus: "1",
-    qustions: "30,31,32,33,34,35,38,39,40",
-    qustionsContent: "英语考研题"
-  }])
+//出题记录
+const recordList = ref([])
 const recordTypeList = ref(['知识点出题','文件出题'])
 const activeRecord = ref(0)
 const recordShow = ref(false)
-const getRecordList = () => {
-  getQuestionList({}).then(res => {
-    // recordList.value = res.data.data
+const recordLoading = ref(true)
+const getRecordList = (str) => {
+  let params = {}
+  if(str){
+    params.title = str
+  }
+  getQuestionList(params).then(res => {
+    recordList.value = res.data.data
+    recordLoading.value = false
     console.log(res.data.data)
   })
 }
+getRecordList()
+const search = ref('')
+const searchRecord = (str) =>{
+  recordLoading.value = true
+  getRecordList(str)
+}
+const clearSearch = () =>{
+  if(search.value != ''){
+    search.value = ''
+    recordLoading.value = true
+    getRecordList()
+  } 
+}
+
 watch(() => route.fullPath, () => {
   recordShow.value = false
 })
@@ -724,7 +617,14 @@ const login3Handler = () => {
   }
 }
 
-
+// 生命周期钩子
+onMounted(() => {
+  // console.log(`The initial count is ${visible2.value}.`)
+  visible.value = false;
+  visible2.value = false;
+  visible3.value = false;
+  visible4.value = false;
+})
 
 </script>
 <style lang="scss" scoped>
@@ -784,4 +684,59 @@ content {
   width: 200px;
 }
 
+
+// 弹出层4
+
+
+
+.title-text{
+  font-size: 24px;
+  font-weight: 900;
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 1px;
+  margin-bottom: 20px
+}
+.gender-selection {
+  display: inline-flex; /* 使用内联弹性盒子来居中选项并保持其行内特性 */
+  justify-content: center; /* 水平居中选项 */
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.gender-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 20px; /* 在两个选项之间添加间距 */
+  cursor: pointer;
+}
+
+.gender-selection input[type="radio"] {
+  display: none;
+}
+
+//弹出层4
+.gender-selection label {
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+/* 动态绑定的class，当span被选中时变为蓝色 */
+.selected {
+  color: #3B59C3;
+  font-weight: 600
+}
+
+.nickname-input {
+  display: flex; /* 使用Flexbox布局 */
+  align-items: center; /* 垂直居中 */
+  margin-top: 10px; /* 根据需要调整间距 */
+  margin-bottom: 20px;
+  
+}
+
+.nickname-input span {
+  margin-right: 10px; /* 根据需要调整间距 */
+  white-space: nowrap; /* 防止换行 */
+}
 </style>
