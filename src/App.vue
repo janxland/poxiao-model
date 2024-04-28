@@ -13,7 +13,7 @@ import { getUserInfo } from '@/api/user';
 const userStore = useUserStore();
 const stateStore = useStateStore();
 onMounted(() => {
-  // fetchUserInfo()
+  fetchUserInfo()
 })
 const fetchUserInfo = async () => {
   getUserInfo().then(res => {

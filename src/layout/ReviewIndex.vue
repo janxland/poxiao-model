@@ -1,282 +1,280 @@
 <template>
-  <div class="common-layout">
+  <div class="common-layout h-[100%]">
     <t-layout class="fill-layout">
-    <t-content>
-      <t-layout>
-                    <t-content>
-                      <t-space direction="vertical">
-                        <div class="main-content"> 
-                          <div class="main-content-head">
-                            <div class="main-content-icon">
-                              <t-image :src="userIcon" fit="fill" :style="{ width: '60px', height: '60px'}"></t-image>
-                            </div>
-                            <div class="main-content-title main-content-font-large main-content-font-bold">欢迎来到复习大师</div>
-                            <div class="main-content-desc">我能理解人类语言、针对你的学习计划和学习状况为你生成个性化题目，帮助你更好地学习。</div>
+      <t-content>
+        <t-layout class="flex flex-col justify-between h-[100%]">
+          <t-content class="h-[100%]">
+              <div class="main-content"> 
+                <div class="main-content-head">
+                  <div class="main-content-icon">
+                    <t-image :src="userIcon" fit="fill" :style="{ width: '60px', height: '60px'}"></t-image>
+                  </div>
+                  <div class="main-content-title main-content-font-large main-content-font-bold">欢迎来到复习大师</div>
+                  <div class="main-content-desc">我能理解人类语言、针对你的学习计划和学习状况为你生成个性化题目，帮助你更好地学习。</div>
+                </div>
+
+                
+                <div class="main-content-itemlist-group">
+                  <div class="main-content-itemlist">
+                      <div class="main-content-itemlist-title  main-content-font-middle main-content-font-bold">
+                        你可以试试这样问我:
+                      </div>
+                  </div>
+                  
+                  <div class="main-content-itemlist">
+                      <div class="main-content-itemlist-title  main-content-font-middle main-content-font-bold">
+                        知识点出题 
+                      </div>
+                      <div class="main-content-itemary">
+                          <div class="main-content-item">
+                            <t-link theme="primary"> 请给我出关于教资<弗洛伊德的心理分析理论>这一章节的题目 </t-link>
                           </div>
+                          <div class="main-content-item">
+                            <t-link theme="primary"> 请围绕教资<教育观法律观基本知识>这一知识点给我出题 </t-link>
+                            </div>
+                          <div class="main-content-item">
+                            <t-link theme="primary"> 我需要关于教资<学生的权利与保护>这一知识点的题目 </t-link>
+                            </div>
+                      </div>
+                  </div>
 
-                          
-                          <div class="main-content-itemlist-group">
-                            <div class="main-content-itemlist">
-                                <div class="main-content-itemlist-title  main-content-font-middle main-content-font-bold">
-                                  你可以试试这样问我:
-                                </div>
+                  <div class="main-content-itemlist">
+                      <div class="main-content-itemlist-title  main-content-font-middle main-content-font-bold">
+                        文件出题
+                      </div>
+                      <div class="main-content-itemary">
+                          <div class="main-content-item">
+                            <t-link theme="primary"> 请根据文档内容给我出关于教资<教育促进社会生产力发展>的题目 </t-link>
                             </div>
-                            
-                            <div class="main-content-itemlist">
-                                <div class="main-content-itemlist-title  main-content-font-middle main-content-font-bold">
-                                  知识点出题 
-                                </div>
-                                <div class="main-content-itemary">
-                                    <div class="main-content-item">
-                                      <t-link theme="primary"> 请给我出关于教资<弗洛伊德的心理分析理论>这一章节的题目 </t-link>
-                                    </div>
-                                    <div class="main-content-item">
-                                      <t-link theme="primary"> 请围绕教资<教育观法律观基本知识>这一知识点给我出题 </t-link>
-                                      </div>
-                                    <div class="main-content-item">
-                                      <t-link theme="primary"> 我需要关于教资<学生的权利与保护>这一知识点的题目 </t-link>
-                                      </div>
-                                </div>
-                            </div>
-
-                            <div class="main-content-itemlist">
-                                <div class="main-content-itemlist-title  main-content-font-middle main-content-font-bold">
-                                  文件出题
-                                </div>
-                                <div class="main-content-itemary">
-                                    <div class="main-content-item">
-                                      <t-link theme="primary"> 请根据文档内容给我出关于教资<教育促进社会生产力发展>的题目 </t-link>
-                                      </div>
-                                    <div class="main-content-item">
-                                      <t-link theme="primary"> 结合我上传的文档内容给我出教资的写作题 </t-link>
-                                    </div>
-                                </div>
-                            </div>
+                          <div class="main-content-item">
+                            <t-link theme="primary"> 结合我上传的文档内容给我出教资的写作题 </t-link>
                           </div>
                       </div>
-                      </t-space>
-                      
-                    </t-content>
-                    <t-footer id="id_main-content-footer">
-                        <div class="main-content-footer"> 
-                          <t-layout>
-                            <t-content width="60%" class="main-content-footer-content">
-                              <div class="search-input">
-                                <t-input placeholder="从此处检索你要提问的科目"></t-input>
-                              </div>
-                              <t-tabs :default-value="1"  class="main-content-footer-tabs">
-                                <t-tab-panel :value="1" label="知识点出题">
-                                  <div class="footer-tabs-first-input-p">
-                                    <div class="footer-tabs-first-input-c">
-                                      <t-textarea  
-                                        
-                                        placeholder="从这里输入你的问题 "
-                                        name="description" 
-                                        :style="{height:'100%'}" 
-                                      />
-                                    </div>
-                                  </div>
-                                   
-                                </t-tab-panel>
-                                <t-tab-panel :value="2" label="文件出题" id="id-main-content-footer-tab-panel">
-
-                                  <!-- <t-space direction="vertical"> -->
-                                    <div v-if="files && files.length" class="list-custom">
-                                      <div class="file-list-group" v-for="(item, index) in files" :key="index" >
-                                          <div class="file-list-item">
-                                              <div class="file-list-item-ns">
-                                                <div>{{ item.name }}</div>
-                                                <div>{{ item.size }}</div>
-                                              </div>
-                                              <div class="file-list-item-del"><Delete1Icon /></div>
-                                          </div> 
-                                      </div>
-                                      
-                                      
-                                      <!-- <ul style="padding: 0">
-                                        <li v-for="(item, index) in files" :key="index" style="list-style-type: none">{{ item.name }}</li>
-                                      </ul> -->
-                                    </div>
-                                    <div class="upload-layout-box">
-                                      <t-text @click="none">{{ uploadTips }}</t-text> 
-                                      <t-upload
-                                        v-model="files"
-                                        action="https://service-bv448zsw-1257786608.gz.apigw.tencentcs.com/api/upload-demo"
-                                        
-                                        theme="custom"
-                                        :before-upload="beforeUpload"
-                                        multiple
-                                        @select-change="handleSelectChange"
-                                        @fail="handleFail"
-                                        @success="handleSuccess"
-                                      > 
-                                        <div class="upload-layout" >
-                                          
-                                          <t-button theme="primary">继续上传</t-button>
-                                        </div>  
-                                      </t-upload>  
-                                    </div> 
-                                    <div class="upload-layout-textarea">
-                                      <t-textarea placeholder="从这里输入你的基于该文件的出题要求" ></t-textarea>
-                                    </div> 
-                                  <!-- </t-space> -->
-                                  
-
-                                </t-tab-panel>
-                                <t-tab-panel :value="3" label="错题出题" id="id-main-content-footer-tab-panel-3">
-                                  <div class="tree-pane"> 
-                                    <div class="tree-pane-title">
-                                      <t-text  class="tree-pane-title-1">您已选择 <span style="color:rgb(67,207,124);font-weight: 600">25</span> 道错题</t-text>
-                                      <t-text  class="tree-pane-title-2">系统将根据您选择的错题智能生成相似题目</t-text>
-                                    </div>
-                                    <t-tree 
-                                      ref="tree"
-                                      :data="items" 
-                                      :checkable="isCheckable"
-                                      expand-all
-                                      :transition="transition"
-                                      :expand-on-click-node="true"
-                                      :line="showLine"
-                                      :icon="true"
-                                      :label="true"
-                                      :scroll="{
-                                        rowHeight: 34,
-                                        bufferSize: 10,
-                                        threshold: 10,
-                                        type: 'virtual',
-                                      }"
-                                    >
-                                      <!-- <template #operations="{ node }">
-                                        <div v-if="isOperateAble" class="tdesign-demo-block-row">
-                                          <t-button size="small" variant="base" @click="append(node)">添加子节点</t-button>
-                                          <t-button size="small" variant="base" theme="danger" @click="remove(node)">删除</t-button>
-                                        </div>
-                                      </template> -->
-                                      <template #icon="{ node }" >
-                                        <icon v-if="node.getChildren && node.getChildren(false)" name="folder" />
-                                        <!-- <icon v-else name="folder-open" /> -->
-                                      </template>
-                                      <!-- <template #icon="{ node }" >
-                                        <icon name="folder" />
-                                        <span v-html="showIcon(n,node)"></span>
-                                      </template> -->
-                                      <template #label="{ node }">
-                                        <span>{{ node.label }}</span>
-                                      </template> 
-                                      <!-- <template #operations="{ node }">
-                                        >{{ node.value }}
-                                      </template> -->  
-                                    </t-tree>
-                                    <div class="tree-pane-bottom">
-                                      <t-button  size="small" class="circle-border">重选</t-button>
-                                    </div> 
-                                  </div>
-                                </t-tab-panel>
-                                <t-tab-panel :value="4" label="知识图谱出题" id="id-main-content-footer-tab-panel-4">
-                                  <div class="tree-pane">
-                                    <div class="tree-pane-title">
-                                      <t-text  class="tree-pane-title-1">您已选择 <span style="color:rgb(67,207,124);font-weight: 600">5</span> 个知识点</t-text>
-                                      <t-text  class="tree-pane-title-2">系统将根据您选择的知识点智能生成相关题目</t-text>
-                                    </div> 
-                                    <t-tree
-                                      ref="tree" 
-                                      :data="items" 
-                                      :checkable="isCheckable"
-                                      expand-all
-                                      
-                                      :transition="transition"
-                                      :expand-on-click-node="true"
-                                      :line="showLine"
-                                      :icon="true"
-                                      :label="true"
-                                      :scroll="{
-                                        rowHeight: 34,
-                                        bufferSize: 10,
-                                        threshold: 10,
-                                        type: 'virtual',
-                                      }"
-                                    >
-                                      <!-- <template #operations="{ node }">
-                                        <div v-if="isOperateAble" class="tdesign-demo-block-row">
-                                          <t-button size="small" variant="base" @click="append(node)">添加子节点</t-button>
-                                          <t-button size="small" variant="base" theme="danger" @click="remove(node)">删除</t-button>
-                                        </div>
-                                      </template> -->
-                                      <template #icon="{ node }" >
-                                        <icon v-if="node.getChildren && node.getChildren(false)" name="folder" />
-                                        <!-- <icon v-else name="folder-open" /> -->
-                                      </template>
-                                      <!-- <template #icon="{ node }" >
-                                        <icon name="folder" />
-                                        <span v-html="showIcon(n,node)"></span>
-                                      </template> -->
-                                      <template #label="{ node }">
-                                        <span>{{ node.label }}</span>
-                                      </template> 
-                                      <!-- <template #operations="{ node }">
-                                        >{{ node.value }}
-                                      </template> -->  
-                                    </t-tree>
-                                    <div class="tree-pane-bottom">
-                                      <t-button size="small" class="circle-border">重选</t-button>
-                                    </div> 
-                                  </div>
-                                </t-tab-panel>
-                              </t-tabs>
-                            </t-content>
-                            <t-aside   width="40%">  
-                                <t-layout id="id-t-layout-quick-conf" >
-                                  <t-content width="70%" id="id-t-content-quick-conf"  > 
-                                    <div class="quick-conf-item-list"  >  
-                                      <div class="quick-conf-item-list-box"  :class="id ==quick_conf_input_index?'quick-conf-item-list-box-active':''" v-for="(iconItem,id) in quick_conf_icon_data" :key="id" :index="id">
-                                        <div class="quick-conf-item-list-title" v-if="quick_conf_input_ary[id]==0 &&id !=quick_conf_input_index">
-                                          <t-image :src="iconItem.icon_path" @click="quick_conf_click_enter(id,$event)" fit="fill" :style="{ width: '30px', height: '30px'}"></t-image>
-                                        </div> 
-                                        <div @click="quick_conf_click_enter(id,$event)" class="quick-conf-item-list-title-active" v-else-if="id !=quick_conf_input_index">
-                                          <span>{{ quick_conf_input_ary[id] }}</span>
-                                        </div>  
-                                        <div v-if="id !=quick_conf_input_index" :class="quick_conf_input_ary[id]==0?'quick-conf-item-list-desc':'quick-conf-item-list-desc-active'">
-                                          {{iconItem.q_name}}
-                                          <!-- <t-button variant="text" shape="square">
-                                            判断0 
-                                          </t-button> -->
-                                          <!-- <t-popconfirm theme="default" content="确认删除订单吗">
-                                            <t-button>删除订单</t-button>
-                                          </t-popconfirm> -->
-                                        </div>
-                                        <!-- 1、点击图标，隐藏本身。显示编辑框
-                                              2、输入数值，点击确定或取消。更新数值，隐藏本身，显示图标 
-                                            3、数组保存选项值，显示进行遍历-->
-                                        <div v-if="id ==quick_conf_input_index " class="quick-conf-item-list-upd"> 
-                                          <t-row>
-                                            <t-input v-model="quick_conf_input_0" ></t-input>
-                                          </t-row> 
-                                          <t-row>  
-                                            <t-button class="quick-conf-item-list-upd-cancel"  @click="quick_conf_click_cancel">取消</t-button>
-                                            <t-button class="quick-conf-item-list-upd-sure"  @click="quick_conf_click_sure(id,$event)">确定</t-button>
-                                          </t-row>
-                                        </div>
-                                      </div>
-                                      
-                                     
-                                    </div>
-                                     
-                                  </t-content>
-                                  <t-aside  width="30%" id="id-t-aside-footer-operation">
-                                    <div class="footer-operation">
-                                      <t-image :src="quickItemIShareIcon" fit="fill" :style="{ width: '40px', height: '40px',borderRadius: '50%'}"></t-image>
-                                    </div> 
-                                     
-                                  </t-aside>
-                                </t-layout>
-                            </t-aside>
-                          </t-layout>
-                          
+                  </div>
+                </div>
+            </div>
+            
+          </t-content>
+          <t-footer id="id_main-content-footer" class="mx-[20px]">
+              <div class="main-content-footer"> 
+                <t-layout>
+                  <t-content class="main-content-footer-content">
+                    <div class="search-input">
+                      <t-input class="opacity-5" disabled placeholder="从此处检索你要提问的科目"></t-input>
+                    </div>
+                    <t-tabs :default-value="1"  class="main-content-footer-tabs flex-1">
+                      <t-tab-panel :value="1" label="知识点出题">
+                        <div class="footer-tabs-first-input-p">
+                          <div class="footer-tabs-first-input-c">
+                            <t-textarea  
+                              
+                              placeholder="从这里输入你的问题 "
+                              name="description" 
+                              :style="{height:'100%'}" 
+                            />
+                          </div>
                         </div>
-                    </t-footer>
-                  </t-layout>
-                </t-content>
-                <t-aside width="320px">
+                          
+                      </t-tab-panel>
+                      <t-tab-panel :value="2" label="文件出题" id="id-main-content-footer-tab-panel">
+
+                        <!-- <t-space direction="vertical"> -->
+                          <div v-if="files && files.length" class="list-custom">
+                            <div class="file-list-group" v-for="(item, index) in files" :key="index" >
+                                <div class="file-list-item">
+                                    <div class="file-list-item-ns">
+                                      <div>{{ item.name }}</div>
+                                      <div>{{ item.size }}</div>
+                                    </div>
+                                    <div class="file-list-item-del"><Delete1Icon /></div>
+                                </div> 
+                            </div>
+                            
+                            
+                            <!-- <ul style="padding: 0">
+                              <li v-for="(item, index) in files" :key="index" style="list-style-type: none">{{ item.name }}</li>
+                            </ul> -->
+                          </div>
+                          <div class="upload-layout-box">
+                            <t-text @click="none">{{ uploadTips }}</t-text> 
+                            <t-upload
+                              v-model="files"
+                              action="https://service-bv448zsw-1257786608.gz.apigw.tencentcs.com/api/upload-demo"
+                              
+                              theme="custom"
+                              :before-upload="beforeUpload"
+                              multiple
+                              @select-change="handleSelectChange"
+                              @fail="handleFail"
+                              @success="handleSuccess"
+                            > 
+                              <div class="upload-layout" >
+                                
+                                <t-button theme="primary">继续上传</t-button>
+                              </div>  
+                            </t-upload>  
+                          </div> 
+                          <div class="upload-layout-textarea">
+                            <t-textarea placeholder="从这里输入你的基于该文件的出题要求" ></t-textarea>
+                          </div> 
+                        <!-- </t-space> -->
+                        
+
+                      </t-tab-panel>
+                      <t-tab-panel :value="3" label="错题出题" id="id-main-content-footer-tab-panel-3">
+                        <div class="tree-pane"> 
+                          <div class="tree-pane-title">
+                            <t-text  class="tree-pane-title-1">您已选择 <span style="color:rgb(67,207,124);font-weight: 600">25</span> 道错题</t-text>
+                            <t-text  class="tree-pane-title-2">系统将根据您选择的错题智能生成相似题目</t-text>
+                          </div>
+                          <t-tree 
+                            ref="tree"
+                            :data="items" 
+                            :checkable="isCheckable"
+                            expand-all
+                            :transition="transition"
+                            :expand-on-click-node="true"
+                            :line="showLine"
+                            :icon="true"
+                            :label="true"
+                            :scroll="{
+                              rowHeight: 34,
+                              bufferSize: 10,
+                              threshold: 10,
+                              type: 'virtual',
+                            }"
+                          >
+                            <!-- <template #operations="{ node }">
+                              <div v-if="isOperateAble" class="tdesign-demo-block-row">
+                                <t-button size="small" variant="base" @click="append(node)">添加子节点</t-button>
+                                <t-button size="small" variant="base" theme="danger" @click="remove(node)">删除</t-button>
+                              </div>
+                            </template> -->
+                            <template #icon="{ node }" >
+                              <icon v-if="node.getChildren && node.getChildren(false)" name="folder" />
+                              <!-- <icon v-else name="folder-open" /> -->
+                            </template>
+                            <!-- <template #icon="{ node }" >
+                              <icon name="folder" />
+                              <span v-html="showIcon(n,node)"></span>
+                            </template> -->
+                            <template #label="{ node }">
+                              <span>{{ node.label }}</span>
+                            </template> 
+                            <!-- <template #operations="{ node }">
+                              >{{ node.value }}
+                            </template> -->  
+                          </t-tree>
+                          <div class="tree-pane-bottom">
+                            <t-button  size="small" class="circle-border">重选</t-button>
+                          </div> 
+                        </div>
+                      </t-tab-panel>
+                      <t-tab-panel :value="4" label="知识图谱出题" id="id-main-content-footer-tab-panel-4">
+                        <div class="tree-pane">
+                          <div class="tree-pane-title">
+                            <t-text  class="tree-pane-title-1">您已选择 <span style="color:rgb(67,207,124);font-weight: 600">5</span> 个知识点</t-text>
+                            <t-text  class="tree-pane-title-2">系统将根据您选择的知识点智能生成相关题目</t-text>
+                          </div> 
+                          <t-tree
+                            ref="tree" 
+                            :data="items" 
+                            :checkable="isCheckable"
+                            expand-all
+                            
+                            :transition="transition"
+                            :expand-on-click-node="true"
+                            :line="showLine"
+                            :icon="true"
+                            :label="true"
+                            :scroll="{
+                              rowHeight: 34,
+                              bufferSize: 10,
+                              threshold: 10,
+                              type: 'virtual',
+                            }"
+                          >
+                            <!-- <template #operations="{ node }">
+                              <div v-if="isOperateAble" class="tdesign-demo-block-row">
+                                <t-button size="small" variant="base" @click="append(node)">添加子节点</t-button>
+                                <t-button size="small" variant="base" theme="danger" @click="remove(node)">删除</t-button>
+                              </div>
+                            </template> -->
+                            <template #icon="{ node }" >
+                              <icon v-if="node.getChildren && node.getChildren(false)" name="folder" />
+                              <!-- <icon v-else name="folder-open" /> -->
+                            </template>
+                            <!-- <template #icon="{ node }" >
+                              <icon name="folder" />
+                              <span v-html="showIcon(n,node)"></span>
+                            </template> -->
+                            <template #label="{ node }">
+                              <span>{{ node.label }}</span>
+                            </template> 
+                            <!-- <template #operations="{ node }">
+                              >{{ node.value }}
+                            </template> -->  
+                          </t-tree>
+                          <div class="tree-pane-bottom">
+                            <t-button size="small" class="circle-border">重选</t-button>
+                          </div> 
+                        </div>
+                      </t-tab-panel>
+                    </t-tabs>
+                  </t-content>
+                  <t-aside class="w-[400px]">  
+                      <t-layout id="id-t-layout-quick-conf" class="w-[400px]">
+                        <t-content id="id-t-content-quick-conf"  > 
+                          <div class="quick-conf-item-list"  >  
+                            <div class="quick-conf-item-list-box"  :class="id ==quick_conf_input_index?'quick-conf-item-list-box-active':''" v-for="(iconItem,id) in quick_conf_icon_data" :key="id" :index="id">
+                              <div class="quick-conf-item-list-title" v-if="quick_conf_input_ary[id]==0 &&id !=quick_conf_input_index">
+                                <t-image :src="iconItem.icon_path" @click="quick_conf_click_enter(id,$event)" fit="fill" :style="{ width: '30px', height: '30px'}"></t-image>
+                              </div> 
+                              <div @click="quick_conf_click_enter(id,$event)" class="quick-conf-item-list-title-active" v-else-if="id !=quick_conf_input_index">
+                                <span>{{ quick_conf_input_ary[id] }}</span>
+                              </div>  
+                              <div v-if="id !=quick_conf_input_index" :class="quick_conf_input_ary[id]==0?'quick-conf-item-list-desc':'quick-conf-item-list-desc-active'">
+                                {{iconItem.q_name}}
+                                <!-- <t-button variant="text" shape="square">
+                                  判断0 
+                                </t-button> -->
+                                <!-- <t-popconfirm theme="default" content="确认删除订单吗">
+                                  <t-button>删除订单</t-button>
+                                </t-popconfirm> -->
+                              </div>
+                              <!-- 1、点击图标，隐藏本身。显示编辑框
+                                    2、输入数值，点击确定或取消。更新数值，隐藏本身，显示图标 
+                                  3、数组保存选项值，显示进行遍历-->
+                              <div v-if="id ==quick_conf_input_index " class="quick-conf-item-list-upd"> 
+                                <t-row>
+                                  <t-input v-model="quick_conf_input_0" ></t-input>
+                                </t-row> 
+                                <t-row>  
+                                  <t-button class="quick-conf-item-list-upd-cancel"  @click="quick_conf_click_cancel">取消</t-button>
+                                  <t-button class="quick-conf-item-list-upd-sure"  @click="quick_conf_click_sure(id,$event)">确定</t-button>
+                                </t-row>
+                              </div>
+                            </div>
+                            
+                            
+                          </div>
+                            
+                        </t-content>
+                        <t-aside  width="30%" id="id-t-aside-footer-operation">
+                          <div class="footer-operation">
+                            <t-image :src="quickItemIShareIcon" fit="fill" :style="{ width: '40px', height: '40px',borderRadius: '50%'}"></t-image>
+                          </div> 
+                            
+                        </t-aside>
+                      </t-layout>
+                  </t-aside>
+                </t-layout>
+                
+              </div>
+          </t-footer>
+        </t-layout>
+      </t-content>
+      <t-aside width="240px">
                 <t-row class="t-row--head--title1">
                   <t-avatar :image="userIcon" :hide-on-load-failed="false" />
                   <router-link :to="{path:'/'}">个性化使用指南</router-link>
@@ -328,8 +326,8 @@
                   </t-col>
                 </t-row> -->
                 
-        </t-aside>
-      </t-layout>
+      </t-aside>
+    </t-layout>
   </div>
   
 </template>

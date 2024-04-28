@@ -67,9 +67,9 @@
           <div class="sticky z-[2] h-[100vh] top-[0] select-none text-white w-[200px]" :class="{ 'hiddenNav': route.meta.hiddenNav }">
             <div class="h-[100%] w-[200px]">
               <div class="h-[100%] flex flex-col justify-between items-center" style="background:linear-gradient(-210deg, rgb(57, 76, 200), rgb(61, 101, 191), rgb(43, 72, 146))">
-                <div class="mt-[20px]">
+                <div class="mt-[32px]">
                   <div class="flex flex-row justify-center items-center">
-                    <t-image class="bg-[transparent] w-[32px] h-[32px]" :src="logo"></t-image>
+                    <t-image class="bg-[transparent] w-[32px] h-[32px] mr-[10px]" :src="logo"></t-image>
                     <router-link class="text-[20px]" :to="{ path: '/' }">复习大师</router-link>
                   </div>
 
@@ -132,17 +132,14 @@
                   </div>
                 </div>
                 <!-- Foot info  -->
-                <div class="flex flex-col text-white">
-                  <div>
-                    <div>
-                      <t-avatar :image="userIcon" :hide-on-load-failed="false" />
-                      <router-link :to="{ path: '/myindex' }">天女散花</router-link>
-                    </div>
-                    <div>在线客服</div>
-                    <div class="text-[12px]">版本：V1.29</div>
-                    <div class="text-[12px]">《复习大师用户协议》|《复习大师隐私策略》</div>
+                <div class="flex p-[10px] flex-col h-[200px] justify-around text-white">
+                  <div class="flex flex-row justify-center items-center">
+                    <t-avatar class="w-[32px] h-[32px] mr-[10px]" :image="userStore.user.avatar" :hide-on-load-failed="false" />
+                    <router-link :to="{ path: '/myindex' }">{{userStore.user.name}}</router-link>
                   </div>
-
+                  <div>在线客服</div>
+                  <div class="text-[12px]">版本：V1.29</div>
+                  <div class="text-[12px]">《复习大师用户协议》|《复习大师隐私策略》</div>
                 </div>
               </div>
 
@@ -439,6 +436,8 @@ import { Icon } from 'tdesign-icons-vue-next';
 import { useRoute, useRouter } from 'vue-router';
 import { login, getSmsCode } from '@/api/user';
 import { getQuestionList } from '@/api/question'
+import { useUserStore } from '@/store/user';
+const userStore = useUserStore();
 // 获取当前路由对象  
 const route = useRoute();
 const router = useRouter()
@@ -865,7 +864,7 @@ const login3Handler = () => {
 onMounted(() => {
   // console.log(`The initial count is ${visible2.value}.`)
   visible.value = true;
-  visible2.value = false;
+  visible2.value = true;
   visible3.value = true;
   visible4.value = true;
 })
