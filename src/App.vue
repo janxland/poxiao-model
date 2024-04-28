@@ -15,7 +15,7 @@ import { useStateStore } from '@/store/state';
 const userStore = useUserStore();
 const stateStore = useStateStore();
 onMounted(() => {
-  userStore.init()
+  if(localStorage.getItem("token")) userStore.init()
 })
 
 

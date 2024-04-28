@@ -54,7 +54,7 @@
                     <div class="h-[300px] mt-4 overflow-auto"  v-loading="recordLoading">
                       <div
                         class="bg-record_bg rounded-2xl text-left px-4 py-2 flex items-center justify-between my-1 cursor-pointer"
-                        @click="router.push('/examPage?id='+i?.examId)" v-for="i, index in recordList.filter(i=>i?.qustionsStatus == activeRecord)"
+                        @click="router.push('/examPage?id='+i?.examId)" v-for="i, index in recordList?.filter(i=>i?.qustionsStatus == activeRecord)"
                         :key="'recordListData' + index">
                         <div class="w-5/6 text-ellipsis text-nowrap overflow-hidden">{{ i?.qustionsContent }}</div>
                         <div class="h-[25px] w-[25px] rounded-full "
