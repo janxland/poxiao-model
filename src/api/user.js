@@ -51,7 +51,26 @@ export function getUserInfo() {
     method: 'get'
   })
 }
-
+/**
+ * {
+  "avatar": "",
+  "birthday": "",
+  "nickname": "",
+  "sex": 0
+}
+ */
+export function setUserProfile(data) {
+  return request({
+    url: '/sso/user/update',
+    method: 'put',
+    data:{
+        "avatar": data.avatar,
+        "birthday": data.birthday,
+        "nickname": data.nickName,
+        "sex": data.sex
+    }
+  })
+}
 //获取手机验证码
 export function getSmsCode(mobile) {
   return request({

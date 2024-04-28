@@ -1,5 +1,6 @@
 <template>
     <div class="h-[82px] flex items-center bg-white">
+    <div class="h-[82px] flex items-center bg-white">
         <t-head-menu value="item1" style="cursor:pointer;">
             <router-link to="index">
                 <icon name="chevron-left" color="#2F3CF4" class="mr-6 text-4xl icon" />

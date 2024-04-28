@@ -3,7 +3,9 @@ import { defineStore } from 'pinia';
 export const useStateStore = defineStore('state', {
   state: () => ({
     visible:{
-      deposit: false,
+      deposit: false, //充值中心
+      loginByMobile: false, // 验证码登录
+      editProfile: false, // 修改个人信息
     }
   }),
   actions: {
@@ -13,5 +15,8 @@ export const useStateStore = defineStore('state', {
         this.visible[name] = !this.visible[name];
       }
     },
+    setVisible(name,value) {
+      this.visible[name] = value;
+    }
   },
 });

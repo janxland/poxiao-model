@@ -17,14 +17,15 @@
               <span style="flex: 1;">{{ ExamRecord.qustionsContent }}</span>
               <icon class="icon edit-icon" :class="{ active:activeExamId === ExamRecord.examId }" name="edit-2" color="#2F3CF4" style="margin:0 10px;font-size: 20px;" />
             </t-menu-item>
-            <t-menu-item class="subjects-item"  value="创建新题库" @click="$router.push('/')">
+            <!-- <t-menu-item class="subjects-item"  value="创建新题库" @click="$router.push('/')">
               <icon class="icon" name="add-circle" color="#2F3CF4" style="margin: 0 10px;font-size: 20px;"/>
-              <span>创建新题库</span></t-menu-item>
+              <span>创建新题库</span>
+            </t-menu-item>
               <div class="mt-8">
                 <span class="cursor-pointer hover:text-blue-300">删除</span>
                 |
                 <span class="cursor-pointer hover:text-blue-300">合并</span>
-            </div>
+              </div> -->
           </t-menu>
         </t-aside>
         <t-layout>
@@ -157,7 +158,7 @@ const questionList = ref([
         },
       ]);  
   const fetchExamRecords = async () => {
-    getQuestionList().then(res => {
+    getQuestionList(0).then(res => {
       const { data } = res 
       if(data.code === 200) {
         ExamRecords.value = data.data;

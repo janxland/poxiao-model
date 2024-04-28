@@ -1,11 +1,13 @@
 <template>
     <ReviewMain></ReviewMain>
-    <DepositStore :visible="stateStore.visible.deposit"></DepositStore>
+    <DepositStore></DepositStore>
+    <Login></Login>
 </template>
 
 <script setup>
 import ReviewMain from './layout/ReviewMain.vue'
 import DepositStore from './layout/DepositStore.vue'
+import Login from './components/Login.vue'
 import {  ref,onMounted,watch  } from 'vue'
 import { useUserStore } from '@/store/user';
 import { useStateStore } from '@/store/state';

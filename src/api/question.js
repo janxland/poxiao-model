@@ -14,6 +14,19 @@ export function getQuestionList(data) {
   })
 }
 /**
+ * 获取我的题库列表
+ * @returns 
+ */
+export function getMyExamList(examId) {
+  return request({
+    url: '/reviewmaster/question/list',
+    method: 'get',
+    params:{
+      examId:examId
+    }
+  })
+}
+/**
  * 根据 examId 获取题库列表
  * @param {examId} data 
  * @returns 

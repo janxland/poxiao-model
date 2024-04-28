@@ -72,17 +72,14 @@
                   </div>
                 </div>
                 <!-- Foot info  -->
-                <div class="flex flex-col text-white">
-                  <div>
-                    <div>
-                      <t-avatar :image="userIcon" :hide-on-load-failed="false" />
-                      <router-link :to="{ path: '/myindex' }">天女散花</router-link>
-                    </div>
-                    <div>在线客服</div>
-                    <div class="text-[12px]">版本：V1.29</div>
-                    <div class="text-[12px]">《复习大师用户协议》|《复习大师隐私策略》</div>
+                <div class="flex p-[10px] flex-col h-[200px] justify-around text-white">
+                  <div class="flex flex-row justify-center items-center">
+                    <t-avatar class="w-[32px] h-[32px] mr-[10px]" :image="userStore.user.avatar" :hide-on-load-failed="false" />
+                    <router-link :to="{ path: '/myindex' }">{{userStore.user.nickname}}</router-link>
                   </div>
-
+                  <div>在线客服</div>
+                  <div class="text-[12px]">版本：V1.29</div>
+                  <div class="text-[12px]">《复习大师用户协议》|《复习大师隐私策略》</div>
                 </div>
               </div>
 
@@ -379,6 +376,8 @@ import { Icon } from 'tdesign-icons-vue-next';
 import { useRoute, useRouter } from 'vue-router';
 import { login, getSmsCode } from '@/api/user';
 import { getQuestionList } from '@/api/question'
+import { useUserStore } from '@/store/user';
+const userStore = useUserStore();
 // 获取当前路由对象  
 const route = useRoute();
 const router = useRouter()
@@ -815,10 +814,10 @@ const login3Handler = () => {
 // 生命周期钩子
 onMounted(() => {
   // console.log(`The initial count is ${visible2.value}.`)
-  visible.value = true;
+  visible.value = false;
   visible2.value = false;
-  visible3.value = true;
-  visible4.value = true;
+  visible3.value = false;
+  visible4.value = false;
 })
 
 </script>
