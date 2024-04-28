@@ -14,7 +14,7 @@
                 <t-image :src="user.avatar"  shape="circle"></t-image>
               </div>
               <div class="flex flex-col text-left text-[#fff]">
-                <div class="text-[20px] leading-[40px]">{{ user.name || "未设置用户名" }}</div>
+                <div class="text-[20px] leading-[40px]">{{ userStore.user.nickname || "未设置用户名" }}</div>
                 <div class="text-[16px] leading-[24px]">绑定手机号: {{ user.mobile }} <span class="text-[#F5C97C] pl-[100px]">剩余积分： {{ user.point }}</span> </div>
               </div>
             </div>

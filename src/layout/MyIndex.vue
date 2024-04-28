@@ -16,7 +16,7 @@
                 <t-image :src="user.avatar || iconUrl.defaultAvatar" shape="circle"></t-image>
               </div>
               <div class="user-info">
-                <div class="user-name">{{ user.name || "未设置用户名" }}</div>
+                <div class="user-name">{{ userStore.user.nickname || "未设置用户名" }}</div>
                 <div class="user-desc">绑定手机号: {{ user.mobile }}</div>
               </div>
               <div class="absolute top-5 right-5 select-none" style="text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
@@ -27,7 +27,7 @@
                   <icon class="icon text-3xl" @click="visibles.mailBox1 = true" name="mail" color="#fff"  />
                 </t-badge>
                 <icon class="icon text-3xl" name="image" color="#fff" />
-                <icon class="icon text-3xl" name="edit-2" color="#fff"/>
+                <icon @click="()=>{ stateStore.setVisible('editProfile',true)}" class="icon text-3xl" name="edit-2" color="#fff"/>
               </div>
               <t-dialog :footer="false" :visible="visibles.mailBox2" :closeBtn="false">
                 <div class="absolute select-none flex flex-row justify-between px-[20px] items-center w-[100%] text-center top-[24px] left-[0] text-[18px] text-[#000] leading-[24px]">

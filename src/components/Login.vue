@@ -86,24 +86,24 @@
           </t-row>
           <div class="gender-selection">
             <label class="gender-option" for="male">
-              <input type="radio" id="male" value="male" v-model="userProfileInput.gender" name="gender">
+              <input type="radio" id="male" value="0" v-model="userProfileInput.gender" name="gender">
               <t-image
                 :src="iconUrl.male"
                 :style="{ width: '100px', height: '100px' }"
                 shape="circle"
                 fit="cover"
               />
-              <span :class="{ 'selected': userProfileInput.gender === 'male' }">男</span>
+              <span :class="{ 'selected': userProfileInput.gender == 0 }">男</span>
             </label>
             <label class="gender-option" for="female">
-              <input type="radio" id="female" value="female" v-model="userProfileInput.gender" name="gender">
+              <input type="radio" id="female" value="1" v-model="userProfileInput.gender" name="gender">
               <t-image
                 :src="iconUrl.female"
                 :style="{ width: '100px', height: '100px'}"
                 shape="circle"
                 fit="cover"
               />
-              <span :class="{ 'selected': userProfileInput.gender === 'female' }">女</span>
+              <span :class="{ 'selected': userProfileInput.gender == 1 }">女</span>
             </label>
           </div>
           <t-row justify="center">
@@ -163,7 +163,7 @@ const handleSetProfile = () => {
   setUserProfile({
     "nickName": userProfileInput.value.nickName,
     "sex": userProfileInput.value.gender,
-    "avatar": userProfileInput.value.gender?iconUrl.male : iconUrl.female
+    "avatar": userProfileInput.value.gender==0?iconUrl.male : iconUrl.female
   }).then(res => {
     const { data } = res;
     if (data.code == 200) {
@@ -216,7 +216,7 @@ const login3Handler = () => {
 onMounted(() => {
   console.log(stateStore.visible.loginByMobile);
   localStorage.getItem("token") ? stateStore.setVisible("loginByMobile",false)  : stateStore.setVisible("loginByMobile", true);
-  userStore.user.nickName ? stateStore.setVisible("editProfile",false)  : stateStore.setVisible("editProfile", true);
+  userStore.user.nickname!="" ? stateStore.setVisible("editProfile",false)  : stateStore.setVisible("editProfile", true);
 });
 
 </script>

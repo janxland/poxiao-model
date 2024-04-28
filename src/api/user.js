@@ -63,7 +63,7 @@ export function setUserProfile(data) {
   return request({
     url: '/sso/user/update',
     method: 'put',
-    params:{
+    data:{
         "avatar": data.avatar,
         "birthday": data.birthday,
         "nickname": data.nickName,
