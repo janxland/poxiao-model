@@ -161,7 +161,7 @@ const questionList = ref([
       const { data } = res 
       if(data.code === 200) {
         ExamRecords.value = data.data;
-        activeExamId.value =  ExamRecords.value[0].examId
+        activeExamId.value =  ExamRecords?.value[0]?.examId
       }
     })
   };

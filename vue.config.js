@@ -1,4 +1,7 @@
 const { defineConfig } = require('@vue/cli-service')
+const AutoImport = require('unplugin-auto-import/webpack');
+const Components = require('unplugin-vue-components/webpack');
+const { TDesignResolver } = require('unplugin-vue-components/resolvers');
 module.exports = defineConfig({
   transpileDependencies: true,
   lintOnSave: false,
@@ -23,24 +26,21 @@ module.exports = defineConfig({
       })
       return definitions
     })
+  },
+  // 按需自动导入组件
+  configureWebpack:{
+    plugins: [
+      AutoImport.default({
+        resolvers: [TDesignResolver({
+          library: 'vue-next'
+        })],
+      }),
+      Components.default({
+        resolvers: [TDesignResolver({
+          library: 'vue-next'
+        })],
+      }),
+    ],
   }
+  
 })
-
-// 导入组件
-// const AutoImport = require('unplugin-auto-import/webpack');
-// const Components = require('unplugin-vue-components/webpack');
-// const { TDesignResolver } = require('unplugin-vue-components/resolvers');
-// module.exports = {
-//   plugins: [
-//     AutoImport.default({
-//       resolvers: [TDesignResolver({
-//         library: 'vue-next'
-//       })],
-//     }),
-//     Components.default({
-//       resolvers: [TDesignResolver({
-//         library: 'vue-next'
-//       })],
-//     }),
-//   ],
-// };

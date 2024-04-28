@@ -1,25 +1,23 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import ReviewIndex from '@/layout/ReviewIndex.vue'
-import MyExamIndex from '@/layout/MyExamIndex.vue'
-import KnowledgeIndex from '@/layout/KnowledgeIndex.vue'
-import MyIndex from './layout/MyIndex.vue'
-
 const routes = [
   {
     path: '/',
-    component: ReviewIndex
-  },{
+    redirect: '/index',
+    component: ()=>import('./layout/ReviewIndex.vue')
+  },
+  {
     path: '/index',
-    component: ReviewIndex
-  },{
+    component: ()=>import('./layout/ReviewIndex.vue')
+  },
+  {
     path: '/myexam',
-    component: MyExamIndex,
+    component: ()=>import('./layout/MyExamIndex.vue'),
     meta: {  
       hiddenNav: true // 对应的左侧菜单项应该被平滑隐藏  
     }  
   },{
     path: '/myindex',
-    component: MyIndex,
+    component: ()=>import('./layout/MyIndex.vue'),
     meta: {  
       hiddenNav: true // 对应的左侧菜单项应该被平滑隐藏
     }  
@@ -34,11 +32,11 @@ const routes = [
     component: ()=>import('./layout/ExamPage.vue'),
   },{
     path: '/knowledge',
-    component: KnowledgeIndex
+    component: ()=>import('./layout/KnowledgeIndex.vue')
   }
 ]
 
 export default createRouter({
-history: createWebHashHistory(),
-routes,
+  history: createWebHashHistory(),
+  routes,
 })

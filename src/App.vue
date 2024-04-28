@@ -9,20 +9,14 @@ import DepositStore from './layout/DepositStore.vue'
 import {  ref,onMounted,watch  } from 'vue'
 import { useUserStore } from '@/store/user';
 import { useStateStore } from '@/store/state';
-import { getUserInfo } from '@/api/user';
+
 const userStore = useUserStore();
 const stateStore = useStateStore();
 onMounted(() => {
-  // fetchUserInfo()
+  //初始化用户信息
+  // userStore.init()
 })
-const fetchUserInfo = async () => {
-  getUserInfo().then(res => {
-    const { data } = res
-    if(data.code === 200) {
-      userStore.setUser(data.data)
-    } 
-  } );
-};
+
 
 </script>
 

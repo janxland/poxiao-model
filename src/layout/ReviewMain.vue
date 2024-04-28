@@ -1,76 +1,15 @@
 <template>
   <div>
     <div>
-
-      <!-- <div>
-        <t-layout>
-          <t-header>Header</t-header>
-          <t-layout>
-            <t-aside>Aside</t-aside>
-            <t-content>Content</t-content>
-          </t-layout>
-          <t-footer>Footer</t-footer>
-        </t-layout>
-      </div> 
-
-
-      <div>
-        <t-layout>
-          <t-aside>
-            <t-layout class="fill-layout fill-lf-bg-color">
-              <t-header  >Header</t-header>
-              <t-content>
-                <t-space direction="vertical">
-
-                  <router-link :to="{path:'/myexam'}">我的题库</router-link>
-                  <router-link :to="{path:'/knowledge'}">知识图谱</router-link>
-                  <router-link :to="{path:'/incorrect'}">错题本</router-link>
-                </t-space>
-
-
-              </t-content>
-              <t-footer>Footer</t-footer>
-            </t-layout>
-
-          </t-aside>
-          <t-content>
-            <t-layout class="fill-layout">
-              <t-content>
-                <router-view></router-view>
-              </t-content>
-              <t-aside>
-                aside
-                <t-space direction="vertical">
-
-                  <t-button>aaas</t-button>
-                  <t-button>aaas</t-button>
-                  <t-button>aaas</t-button>
-                  <t-button>aaas</t-button>
-                  <t-button>aaas</t-button>
-                </t-space>
-                
-              </t-aside>
-            </t-layout>
-          </t-content>
-          
-        </t-layout>
-      </div>
--->
-
-
-
-
-      <!-- test -->
-
-      <div class="w-[100%]">
-        <div class="w-[100%] flex flex-row">
-          <div class="sticky z-[2] h-[100vh] top-[0] select-none text-white w-[200px]" :class="{ 'hiddenNav': route.meta.hiddenNav }">
-            <div class="h-[100%] w-[200px]">
-              <div class="h-[100%] flex flex-col justify-between items-center" style="background:linear-gradient(-210deg, rgb(57, 76, 200), rgb(61, 101, 191), rgb(43, 72, 146))">
-                <div class="mt-[20px]">
+      <div class="w-full">
+        <div class="w-full flex flex-row">
+          <div class="sticky z-[2] h-[100vh] top-0 select-none text-white w-[200px]" :class="{ 'hiddenNav': route.meta.hiddenNav }">
+            <div class="h-full w-[200px]">
+              <div class="h-full flex flex-col justify-between items-center" style="background:linear-gradient(-210deg, rgb(57, 76, 200), rgb(61, 101, 191), rgb(43, 72, 146))">
+                <div class="mt-5">
                   <div class="flex flex-row justify-center items-center">
-                    <t-image class="bg-[transparent] w-[32px] h-[32px]" :src="logo"></t-image>
-                    <router-link class="text-[20px]" :to="{ path: '/' }">复习大师</router-link>
+                    <t-image class="bg-transparent w-8 h-8" :src="logo"></t-image>
+                    <router-link class="text-xl" :to="{ path: '/' }">复习大师</router-link>
                   </div>
 
                 </div>
@@ -98,17 +37,17 @@
                     v-show="recordShow" id="record" style="background-color: rgba(26, 71, 126, 1);" @click.stop="">
                     <div class="text-left ">历史记录</div>
                     <div class="flex items-center mt-2">
-                      <t-input placeholder="搜索历史出题记录" class="flex-1 *:bg-record_bg  *:border-0 ">
+                      <t-input placeholder="搜索历史出题记录" v-model="search" class="flex-1 *:bg-record_bg  *:border-0 " @blur="searchRecord" @enter="searchRecord">
                         <template #suffixIcon>
                           <icon name="search" style="cursor: pointer;" color="white"></icon>
                         </template>
                       </t-input>
-                      <div class="w-9 h-9 leading-9 bg-record_bg rounded-full ml-2">
+                      <div class="w-9 h-9 leading-9 bg-record_bg rounded-full ml-2" @click="clearSearch">
                         <icon name="delete" size="20" color="white"></icon>
                       </div>
                     </div>
                     <div class="mt-4">
-                      <div class="flex flex-nowrap">
+                      <div class="flex flex-nowrap" >
                         <div v-for="i, index in recordTypeList"
                           class="w-1/2 text-gray-300 cursor-pointer transition-all duration-300 transform" :class="activeRecord == index ? 'text-green-400' : ''" :key="'recordList' + index"
                           @click="activeRecord = index">
@@ -118,15 +57,15 @@
                         </div>
                       </div>
                     </div>
-                    <div class="h-[350px] mt-4 overflow-auto">
+                    <div class="h-[300px] mt-4 overflow-auto"  v-loading="recordLoading">
                       <div
                         class="bg-record_bg rounded-2xl text-left px-4 py-2 flex items-center justify-between my-1 cursor-pointer"
-                        @click="router.push('/examPage?id='+i.examId)" v-for="i, index in recordList.filter(i=>i.type == recordTypeList[activeRecord])"
+                        @click="router.push('/examPage?id='+i?.examId)" v-for="i, index in recordList.filter(i=>i?.qustionsStatus == activeRecord)"
                         :key="'recordListData' + index">
-                        <div class="w-5/6 text-ellipsis text-nowrap overflow-hidden">{{ i.qustionsContent }}</div>
+                        <div class="w-5/6 text-ellipsis text-nowrap overflow-hidden">{{ i?.qustionsContent }}</div>
                         <div class="h-[25px] w-[25px] rounded-full "
-                          :style="{ background: +i.examStatus == 2 ? 'rgba(67, 207, 124, 1)' : 'rgba(255, 87, 51, 1)' }">
-                          <icon :name="+i.examStatus == 2 ? 'check' : 'error'" color="white" size="25"></icon>
+                          :style="{ background: +i?.examStatus == 2 ? 'rgba(67, 207, 124, 1)' : 'rgba(255, 87, 51, 1)' }">
+                          <icon :name="+i?.examStatus == 2 ? 'check' : 'error'" color="white" size="25"></icon>
                         </div>
                       </div>
                     </div>
@@ -531,33 +470,39 @@ const headerImageClick2 = () => {
 }
 
 //出题记录
-const recordList = ref([
-  {
-    examId: 8,
-    examStatus: "1",
-    qustions: "30,31,32,33,34,35,38,39,40",
-    qustionsContent: "小学数学选择题",
-    type: '文件出题'
-  }, {
-    type: '知识点出题',
-    examId: 9,
-    examStatus: "1",
-    qustions: "30,31,32,33,34,35,38,39,40",
-    qustionsContent: "英语考研题"
-  }])
+const recordList = ref([])
 const recordTypeList = ref(['知识点出题','文件出题'])
 const activeRecord = ref(0)
 const recordShow = ref(false)
-const getRecordList = () => {
-  getQuestionList({}).then(res => {
-    // recordList.value = res.data.data
+const recordLoading = ref(true)
+const getRecordList = (str) => {
+  let params = {}
+  if(str){
+    params.title = str
+  }
+  getQuestionList(params).then(res => {
+    recordList.value = res.data.data
+    recordLoading.value = false
     console.log(res.data.data)
   })
+}
+getRecordList()
+const search = ref('')
+const searchRecord = (str) =>{
+  recordLoading.value = true
+  getRecordList(str)
+}
+const clearSearch = () =>{
+  if(search.value != ''){
+    search.value = ''
+    recordLoading.value = true
+    getRecordList()
+  } 
 }
 watch(() => route.fullPath, () => {
   recordShow.value = false
 })
-// getRecordList()
+
 // 对话框3
 const interestList = [
   {
@@ -620,10 +565,10 @@ const onOverlayClick3 = (context) => {
 
 
 //对话框4
-const visible4 = ref(true);
+const visible4 = ref(false);
 const selectedGender = ref('');
 const availableIcon = require('@/assets/images/right.png')
-const isAvailable = ref(true);
+const isAvailable = ref(false);
 
 const avatar = {
   male: require('@/assets/images/male.png'),
@@ -781,7 +726,7 @@ const avatar = {
 // const quick_conf_icon_10=require("@/assets/images/10-简答.png");
 
 // const quick_conf_icon_data=[
-//   {id:0,q_name:'填空',icon_path:quick_conf_icon_1},
+// {id:0,q_name:'填空',icon_path:quick_conf_icon_1},
 // {id:1,q_name:'选择',icon_path:quick_conf_icon_2},
 // {id:2,q_name:'作文',icon_path:quick_conf_icon_3},
 // {id:3,q_name:'课程设计',icon_path:quick_conf_icon_4},

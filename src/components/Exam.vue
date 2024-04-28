@@ -7,7 +7,7 @@
           {{ index + 1 + '.' + item.stem }}
         </div>
         <div v-if="i.type == 1">
-          <t-radio-group v-model="item.ans" allow-uncheck :default-value="item.ans" class="!block" @change="change">
+          <t-radio-group v-model="item.ans" allow-uncheck :default-value="item.ans" class="!block">
             <t-radio-button :value="answerIndex" v-for="answer, answerIndex in item.content" :key="'answer' + answerIndex"
               :disabled="disabled" class="!border-0 !block !h-10">
               <div class="answer" :class="checkAnswer(item, answerIndex)">{{ answerMap[answerIndex] }}</div>{{ answer.content }}
@@ -26,7 +26,7 @@
         </div>
         <div v-else-if="i.type == 4">
           <div>
-            <t-radio-group v-model="item.ans" allow-uncheck :default-value="item.ans" class="!block" @change="change">
+            <t-radio-group v-model="item.ans" allow-uncheck :default-value="item.ans" class="!block">
               <t-radio-button value="0" :disabled="disabled" class="!border-0 !h-10 !w-8 mr-4">
                 <div class="answer" :class="checkAnswer(item, 0)">
                   <icon name="check"></icon>
@@ -62,15 +62,7 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  isExam: {
-    type: Boolean,
-    default: true
-  }
 })
-
-const change = (n)=>{
-  console.log(questionList,n)
-}
 const questionList = defineModel('questionList',{})
 const answerMap = ref(["A", "B", "C", "D", "E"]);
 const questionTypeMap = ref([
