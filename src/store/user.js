@@ -4,6 +4,7 @@ export const useUserStore = defineStore('user', {
   state: () => ({
     user:{
         name:"天女散花",
+        nickName:'',
         avatar:"",
         background:"",
         point: 458,

@@ -55,12 +55,12 @@
             </div>
             
           </t-content>
-          <t-footer id="id_main-content-footer" class="mx-[20px]">
+          <t-footer id="id_main-content-footer" class="mx-[20px] p-[8px_0]">
               <div class="main-content-footer"> 
                 <t-layout>
                   <t-content class="main-content-footer-content">
                     <div class="search-input">
-                      <t-input class="opacity-5" disabled placeholder="从此处检索你要提问的科目"></t-input>
+                      <t-input disabled placeholder="从此处检索你要提问的科目"></t-input>
                     </div>
                     <t-tabs :default-value="1"  class="main-content-footer-tabs flex-1">
                       <t-tab-panel :value="1" label="知识点出题">

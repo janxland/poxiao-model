@@ -62,12 +62,7 @@ const iconUrl = {
     diamon:require('@/assets/images/diamon.svg'),
     DepositStoreInfo:require('@/assets/images/DepositStoreInfo.png')
 }
-const props = defineProps({
-  visible: {
-    type: Boolean,
-    default: false
-  },
-})
+
 const user = ref({
 })
 const vipList = ref([{

@@ -869,10 +869,10 @@ const login3Handler = () => {
 // 生命周期钩子
 onMounted(() => {
   // console.log(`The initial count is ${visible2.value}.`)
-  visible.value = true;
-  visible2.value = true;
-  visible3.value = true;
-  visible4.value = true;
+  visible.value = false;
+  visible2.value = false;
+  visible3.value = false;
+  visible4.value = false;
 })
 
 </script>
