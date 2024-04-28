@@ -1,5 +1,5 @@
 <template>
-    <div class="h-[82px] flex mb-[32px] items-center bg-white">
+    <div class="h-[82px] flex items-center bg-white">
         <t-head-menu value="item1" style="cursor:pointer;">
             <router-link to="index">
                 <icon name="chevron-left" color="#2F3CF4" class="mr-6 text-4xl icon" />
@@ -7,7 +7,7 @@
             错题本
         </t-head-menu>
     </div>
-    <div class="h-full bg-primary flex mt-10 relative justify-between flex-nowrap overflow-auto">
+    <div class="h-full bg-primary flex pt-[32px] relative justify-between flex-nowrap overflow-auto">
         <div class="w-[15vw] bg-white rounded-xl p-4">
             <div v-for="i, index in atlasData" :key="i.id" class="menu-item group"
                 :class="activeArea == index ? 'active-menu-item' : ''" @click="activeArea = index">

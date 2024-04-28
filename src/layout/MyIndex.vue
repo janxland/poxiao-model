@@ -68,7 +68,7 @@
               </div>
               <div class="chonzhi-content" @click="()=>{stateStore.toggleVisible('deposit')}">
                 <div  style="width:100%;position: relative;">
-                  <t-image  :src="iconUrl.jifenImage" style="width:100%;z-index:0"></t-image>
+                  <t-image class="w-[100%] min-h-[400px]" lazy="true"  :src="iconUrl.jifenImage" style="width:100%;z-index:0"></t-image>
                   <div class="vip-list no-scrollbar">
                     <div class="vip-list-box flex overflow-auto no-scrollbar">
                       <li class="vip-list-item" :key="index" v-for="item,index in vipList">

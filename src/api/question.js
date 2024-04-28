@@ -3,10 +3,26 @@ import request from '@/utils/request'
  * 获取用户出题列表
  * @returns 
  */
-export function getQuestionList() {
+export function getQuestionList(qustionsMethod = 0) {
   return request({
     url: '/reviewmaster/question/records',
-    method: 'get'
+    method: 'get',
+    params:{
+      qustionsMethod:qustionsMethod
+    }
+  })
+}
+/**
+ * 获取我的题库列表
+ * @returns 
+ */
+export function getMyExamList(examId) {
+  return request({
+    url: '/reviewmaster/question/list',
+    method: 'get',
+    params:{
+      examId:examId
+    }
   })
 }
 /**
