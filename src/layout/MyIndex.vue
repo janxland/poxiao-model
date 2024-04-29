@@ -343,10 +343,6 @@ watch(userStore.user, (newVal) => {
   height: 600px;
   width: unset;
 }
-.no-scrollbar::-webkit-scrollbar {
-    width: 0 !important; /* 隐藏滚动条 */
-    height: 0 !important;
-}
 .content-layout-left .vip-list{
   position: absolute;
   top: 48%;

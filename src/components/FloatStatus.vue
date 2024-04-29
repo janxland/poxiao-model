@@ -3,7 +3,7 @@
     <div class="fixed select-none top-[32px] right-[32px] z-[999] w-[200px] h-[40px] bg-[#fff] rounded-[20px] shadow
     hover:h-[unset] overflow-hidden" ref="dragElement">
       <!-- <input type="text" placeholder="查找状态" class="w-full p-[5px] rounded-[10px] border-[1px] border-[#ccc]"> -->
-      <div v-for="i,index in ExamRecords" @click="clickHandle(i)" class="flex flex-row items-center h-[40px] px-[10px] justify-between cursor-pointer transition 
+      <div v-for="i,index in ExamRecords" @click="clickHandle(i)" :key="i?.qustionsContent" class="flex flex-row items-center h-[40px] px-[10px] justify-between cursor-pointer transition 
       hover:bg-[#f5f5f5] hover:text-[#0052d9]">
         <div class="w-5/6 text-left whitespace-nowrap overflow-hidden text-ellipsis max-w-[160px] overflow-hidden flex-1" :title="i?.qustionsContent">{{ i?.qustionsContent }}</div>
         <div class="h-[25px] w-[25px] rounded-full " :title="checkStatus(i).name">
@@ -31,9 +31,9 @@ const ExamRecords = ref([
   {
     "examId": 0,
     "qustions": "30,31,32,33,34,35,38,39,40",
-    "examStatus": "6",
-    "qustionsContent": "获取状态中...",
-    "qustionsStatus": "1"
+    "examStatus": "1",
+    "qustionsContent": "正在获取状态...",
+    "qustionsStatus": "0"
   }
 ])
 // 设置自动轮播的定时器
@@ -95,17 +95,22 @@ const checkStatus = (i) => {
 const startAutoplay = () => {
   clearInterval(autoplayInterval)
   autoplayInterval = setInterval(() => {
-    getQuestionList().then(res => {
-      const { data } = res 
-      if(data.code === 200) {
-        if(data.data.length > 0) {
-          ExamRecords.value = data.data;
-        } else {
-          ExamRecords.value.qustionsContent = "暂无出题及考试记录"
+    if(localStorage.getItem("token")){
+      getQuestionList().then(res => {
+        const { data } = res 
+        if(data.code === 200) {
+          if(data.data.length > 0) {
+            ExamRecords.value = data.data;
+          } else {
+            ExamRecords.value.qustionsContent = "暂无出题及考试记录"
+          }
+          console.log(ExamRecords.value);
         }
-        console.log(ExamRecords.value);
-      }
-    })
+      })
+    } else {
+      console.log("你还没有登录");
+      ExamRecords.value.qustionsContent = "你还没有登录..."
+    }
   }, 5000);
 };
 

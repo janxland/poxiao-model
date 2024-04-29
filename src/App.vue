@@ -32,7 +32,10 @@ onMounted(() => {
   width: 5px;
   height: 2px;
 }
-
+.no-scrollbar::-webkit-scrollbar {
+    width: 0 !important; /* 隐藏滚动条 */
+    height: 0 !important;
+}
 ::-webkit-scrollbar-thumb {
   background-color: rgba(52, 85, 212,0.8);
   border-radius: 10px;

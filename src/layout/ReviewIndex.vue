@@ -179,7 +179,7 @@
           </t-footer>
         </t-layout>
       </t-content>
-      <t-aside width="240px">
+      <t-aside width="240px" class="no-scrollbar overflow-y-scroll">
                 <t-row class="t-row--head--title1">
                   <t-avatar :image="promptIcon" :hide-on-load-failed="false" />
                   <router-link :to="{path:'/'}">个性化使用指南</router-link>
