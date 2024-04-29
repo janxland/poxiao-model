@@ -98,7 +98,11 @@ const startAutoplay = () => {
     getQuestionList().then(res => {
       const { data } = res 
       if(data.code === 200) {
-        ExamRecords.value = data.data;
+        if(data.data.length > 0) {
+          ExamRecords.value = data.data;
+        } else {
+          ExamRecords.value.qustionsContent = "暂无出题及考试记录"
+        }
         console.log(ExamRecords.value);
       }
     })
