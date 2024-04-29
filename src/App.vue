@@ -2,12 +2,14 @@
     <ReviewMain></ReviewMain>
     <DepositStore></DepositStore>
     <Login></Login>
+    <FloatStatus></FloatStatus>
 </template>
 
 <script setup>
 import ReviewMain from './layout/ReviewMain.vue'
 import DepositStore from './layout/DepositStore.vue'
 import Login from './components/Login.vue'
+import FloatStatus from './components/FloatStatus.vue'
 import {  ref,onMounted,watch  } from 'vue'
 import { useUserStore } from '@/store/user';
 import { useStateStore } from '@/store/state';

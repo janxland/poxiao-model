@@ -6,6 +6,7 @@ import { data } from 'autoprefixer'
  * @param {String} [data.title]
  * @param {String} [data.qustionsMethod]
  * @returns 
+ * 出题状态1=出题中,2=已出题,3=考试中,4=已交卷,5=判卷中,6=已判卷，-1=异常退出
  */
 export function getQuestionList(data) {
   return request({

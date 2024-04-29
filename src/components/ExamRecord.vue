@@ -1,4 +1,4 @@
-<<template>
+<template>
     <div v-for="i, index in records" :key="index" class="menu-item group"
         :class="activeArea == index ? 'active-menu-item' : ''" @click="activeArea = index">
         <icon class="icon mx-3 text-xl group-hover:text-white" name="folder-1" :color="activeIcon" />
