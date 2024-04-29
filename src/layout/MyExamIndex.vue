@@ -103,25 +103,25 @@ const questionList = ref([
           type: 1,
           questionVoList: [
             {
-              "stem": "弗洛伊德的心理分析理论中，人格结构由哪三部分组成？",
+              "stem": "你的账号还没有创建题库哦？你知道怎么创建题库么？以下是创建题库的步骤",
               "content": [
-                {content: "自我（Ego）、超我（Superego）、本我（Id）"},
-                {content: "潜意识、前意识、意识"},
-                {content: "认知、情感、行为"},
-                {content: "大脑皮层、边缘系统、脑干"}
+                {content: "进入首页"},
+                {content: "编辑题型及数量"},
+                {content: "输入出题提示词，越详细越好"},
+                {content: "提交出题！等待出题哦，完成了请到题库中查看"}
               ],
               "ans":0,
               "correct": 0
             },
-            {
-              "stem": "Choose the correct relative pronoun to complete the sentence: I visited the museum _______ my friend works as a curator. ",
+            { 
+              "stem": "Your account has not created a question bank yet? Do you know how to create a question bank? Here are the steps to create a question bank.",
               "content": [
-              {content: "which"},
-              {content: "whose"},
-              {content: "where"},
-              {content: "when"}
+                { "content": "Go to the homepage" },
+                { "content": "Edit the question types and quantities" },
+                { "content": "Provide detailed hints for the questions" },
+                { "content": "Submit the questions! Wait for the questions to be reviewed. Once completed, check them in the question bank." }
               ],
-              "ans":0,
+              "ans": 0,
               "correct": 0
             }
           ]
@@ -176,7 +176,8 @@ const questionList = ref([
             question.content = JSON.parse(question.content);
           });
         }
-        questionList.value = data.data;
+        if(data.data.length!=0) questionList.value = data.data;
+        
       }
     })
   };

@@ -69,7 +69,7 @@
                 <div class="flex p-[10px] flex-col h-[200px] justify-around text-white">
                   <div class="flex flex-row justify-center items-center">
                     <t-avatar class="w-[32px] h-[32px] mr-[10px]" :image="userStore.user.avatar" :hide-on-load-failed="false" />
-                    <router-link :to="{ path: '/myindex' }">{{userStore.user.nickname}}</router-link>
+                    <router-link :to="{ path: '/myindex' }"> {{ userStore.user.nickname || "学生" }} </router-link>
                   </div>
                   <div>在线客服</div>
                   <div class="text-[12px]">版本：V1.29</div>
