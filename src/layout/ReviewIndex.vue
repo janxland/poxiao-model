@@ -1,9 +1,9 @@
 <template>
-  <div class="common-layout h-[100%]">
+  <div class="common-layout h-[100vh]">
     <t-layout class="fill-layout">
       <t-content>
-        <t-layout class="flex flex-col justify-between h-[100%]">
-          <t-content class="h-[100%]">
+        <t-layout class="flex flex-col justify-between h-[100vh]">
+          <t-content class="flex-1">
               <div class="main-content"> 
                 <div class="main-content-head">
                   <div class="main-content-icon">
@@ -55,10 +55,10 @@
             </div>
             
           </t-content>
-          <t-footer id="id_main-content-footer" class="mx-[20px] p-[8px_0]">
+          <t-footer id="id_main-content-footer" class="mx-5 p-[8px_0]">
               <div class="main-content-footer"> 
                 <t-layout>
-                  <t-content class="main-content-footer-content">
+                  <t-content class="main-content-footer-content !flex-1">
                     <div class="search-input">
                       <t-input disabled placeholder="从此处检索你要提问的科目"></t-input>
                     </div>
@@ -224,8 +224,8 @@
                       </t-tab-panel>
                     </t-tabs>
                   </t-content>
-                  <t-aside class="w-[400px]">  
-                      <t-layout id="id-t-layout-quick-conf" class="w-[400px]">
+                  <t-aside class="!w-[500px]">  
+                      <t-layout id="id-t-layout-quick-conf">
                         <t-content id="id-t-content-quick-conf"  > 
                           <div class="quick-conf-item-list"  >  
                             <div class="quick-conf-item-list-box"  :class="id ==quick_conf_input_index?'quick-conf-item-list-box-active':''" v-for="(iconItem,id) in quick_conf_icon_data" :key="id" :index="id">
@@ -342,12 +342,12 @@ import { Icon } from 'tdesign-icons-vue-next';
 const quickItemIShareIcon=require("@/assets/images/分享.png");
 const userIcon=require("@/assets/images/book.jpg");
 const loading = ref(false);
-const imgurl=require("@/assets/images/头像.png");
-const swiperIcon = {
-  knowledgeIcon:require("@/assets/images/knowledgeIcon.png"),
-  fileIcon: require("@/assets/images/fileIcon.png"),
-  IncorrectIcon: require("@/assets/images/IncorrectIcon.png")
-}
+// const imgurl=require("@/assets/images/头像.png");
+// const swiperIcon = {
+//   knowledgeIcon:require("@/assets/images/knowledgeIcon.png"),
+//   fileIcon: require("@/assets/images/fileIcon.png"),
+//   IncorrectIcon: require("@/assets/images/IncorrectIcon.png")
+// }
 const size = 0
 function splitArray(array) {
   const middle = Math.ceil(array.length / 2);

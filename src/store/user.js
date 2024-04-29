@@ -16,7 +16,7 @@ export const useUserStore = defineStore('user', {
     setUser(user) {
       this.user = Object.assign({}, this.user, user);
       const avatar = [require('@/assets/images/male.png'),require('@/assets/images/female.png'),]
-      if(this.user.avatar){
+      if(true || this.user.avatar){
         this.user.avatar = avatar[this.user.sex]
       }
     },
@@ -26,11 +26,23 @@ export const useUserStore = defineStore('user', {
         if(data.code === 200) {
           this.user = Object.assign({},this.user,data.data)
           const avatar = [require('@/assets/images/male.png'),require('@/assets/images/female.png'),]
-          if(this.user.avatar){
+          if(true || this.user.avatar){
             this.user.avatar = avatar[this.user.sex]
           }
         } 
       })
+    },
+    logout() {
+      // 清除用户信息
+      this.user = {
+        name:"天女散花",
+        nickname:'天女散花',
+        avatar:"",
+        background:"",
+        point: 458,
+        sex:0,
+        inviteCode:"TS13QUEEN"
+      };
     }
   },
 });

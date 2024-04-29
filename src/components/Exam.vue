@@ -1,29 +1,42 @@
 <template>
-  <div v-for="i, examIndex in questionList" :key="'examList' + examIndex">
+  <div v-if="!questionList?.length" class="text-xl font-bold pt-10">
+    暂无数据
+  </div>
+  <div v-for="i, examIndex in questionList" :key="'examList' + examIndex" v-else >
     <div class="text-left">
-      <span class="text-xl font-bold">{{ questionTypeMap[Number(i.type)]?.label }}</span>
+      <span class="text-xl font-bold">{{ questionTypeMap.find(v=>i.type == v.value)?.label }}</span>
       <div v-for="item, index in i.questionVoList" :key="'exams' + index" class="mt-4">
         <div class="leading-relaxed">
           {{ index + 1 + '.' + item.stem }}
         </div>
+        <!-- 单选 -->
         <div v-if="i.type == 1">
-          <t-radio-group v-model="item.ans" allow-uncheck :default-value="item.ans" class="!block">
-            <t-radio-button :value="answerIndex" v-for="answer, answerIndex in item.content" :key="'answer' + answerIndex"
-              :disabled="disabled" class="!border-0 !block !h-10">
-              <div class="answer" :class="checkAnswer(item, answerIndex)">{{ answerMap[answerIndex] }}</div>{{ answer.content }}
+          <t-radio-group v-model="item.ans" allow-uncheck :default-value="item.ans " class="!block">
+            <t-radio-button :value="answer.id" v-for="answer, answerIndex in item.content"
+              :key="'answer' + answerIndex" :disabled="disabled" class="!border-0 !block !h-10">
+              <div class="answer" :class="checkAnswer(item, answer.id)">{{ answerMap[answerIndex] }}</div>{{ answer.content }}
             </t-radio-button>
           </t-radio-group>
         </div>
-        <div v-else-if="[2, 3, 5, 6, 7].includes(Number(i.type))">
+        <!-- 多选 -->
+        <div v-else-if="i.type == 11">
+          <t-checkbox-group v-model="item.ans" :default-value="item.ans ">
+            <t-checkbox :key="'answer' + answerIndex" :label="answer.content" :value="answer.id" v-for="answer, answerIndex in item.content" />
+          </t-checkbox-group>
+        </div>
+        <!-- 简答 -->
+        <div v-else-if="i.type?.startsWith('3') || i.type == 2">
           <div class="my-4" v-if="disabled">
             答案：
-            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" v-model="item.correct" :defaultValue="item.correct" :disabled="disabled" />
+            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :defaultValue="formatter(item,i)" :disabled="disabled" />
           </div>
           <div class="my-4">
             你的答案：
-            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" v-model="item.ans" :defaultValue="item.ans" :disabled="disabled" />
+            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :defaultValue="item.answerContent" disabled v-if="disabled"/>
+            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" v-model="item.ans" :defaultValue="item.ans" v-else/>
           </div>
         </div>
+        <!-- 判断 -->
         <div v-else-if="i.type == 4">
           <div>
             <t-radio-group v-model="item.ans" allow-uncheck :default-value="item.ans" class="!block">
@@ -41,12 +54,12 @@
           </div>
         </div>
         <div class="knowledge" v-if="disabled">
-          <div class="text-blue-600 text-md font-bold my-2">涉及知识点</div>
-          <div>{{ item.knowledge?.about || '暂无' }}</div>
           <div class="text-blue-600 text-md font-bold my-2">解题思路</div>
-          <div>{{ item.knowledge?.think || '暂无' }}</div>
+          <div>{{ item.questionAnalyze || '暂无' }}</div>
+          <!-- <div class="text-blue-600 text-md font-bold my-2">涉及知识点</div>
+          <div>{{ item.questionAnalyze || '暂无' }}</div>
           <div class="text-blue-600 text-md font-bold my-2">最佳答案</div>
-          <div>{{ item.knowledge?.answer || '暂无' }}</div>
+          <div>{{ item.questionAnalyze || '暂无' }}</div> -->
         </div>
       </div>
     </div>
@@ -63,22 +76,28 @@ const props = defineProps({
     default: false
   },
 })
-const questionList = defineModel('questionList',{})
+const questionList = defineModel('questionList', {})
 const answerMap = ref(["A", "B", "C", "D", "E"]);
 const questionTypeMap = ref([
   { label: "NAN", value: "0" },
-  { label: "选择题", value: "1" },
+  { label: "单选题", value: "1" },
   { label: "填空题", value: "2" },
   { label: "简答题", value: "3" },
   { label: "判断题", value: "4" },
-  { label: "作文", value: "5" },
-  { label: "论述", value: "6" },
-  { label: "课程设计", value: "7" }
+  { label: "多选题", value: "11" },
+  { label: "写作题", value: "32" },
+  { label: "论述题", value: "33" },
+  { label: "课程设计题", value: "34" },
+  { label: "材料分析题", value: "35" },
+  { label: "名词解释题", value: "36" }
 ]);
-const checkAnswer =((item, answerIndex) => {
-  if (!props.disabled) return item.ans == answerIndex ? 'active-answer' : '';
-  return item.correct == answerIndex ? 'correct-answer' : item.ans == answerIndex ? 'err-answer' : ''
+const checkAnswer = ((item, answer) => {
+  if (!props.disabled) return item.ans == answer ? 'active-answer' : '';
+  return item.correctAnswer.toLowerCase() == answer ? 'correct-answer' : item.answerContent == answer ? 'err-answer' : ''
 })
+const formatter = (item,i) =>{
+  return i.type == '2' ? JSON.parse(item.correctAnswer).map(i=> i.prefix + '：' + i.content).join(' ') : item.correctAnswer
+}
 </script>
 <style lang="scss" scoped>
 .answer {

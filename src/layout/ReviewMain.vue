@@ -53,9 +53,9 @@
                     </div>
                     <div class="h-[300px] mt-4 overflow-auto"  v-loading="recordLoading">
                       <div
-                        class="bg-record_bg rounded-2xl text-left px-4 py-2 flex items-center justify-between my-1 cursor-pointer"
                         @click="router.push('/examPage?id='+i?.examId)" v-for="i, index in recordList?.filter(i=>i?.qustionsStatus == activeRecord)"
-                        :key="'recordListData' + index">
+                        class="rounded-2xl text-left px-4 py-2 flex items-center justify-between my-1 cursor-pointer"
+                        :key="'recordListData' + index" :class="i.examId == route.query.id ? 'bg-blue-500/90 ':'bg-record_bg/75'">
                         <div class="w-5/6 text-ellipsis text-nowrap overflow-hidden">{{ i?.qustionsContent }}</div>
                         <div class="h-[25px] w-[25px] rounded-full "
                           :style="{ background: +i?.examStatus == 2 ? 'rgba(67, 207, 124, 1)' : 'rgba(255, 87, 51, 1)' }">
@@ -144,8 +144,10 @@ const getRecordList = (str) => {
 getRecordList()
 const search = ref('')
 const searchRecord = (str) =>{
-  recordLoading.value = true
-  getRecordList(str)
+  if(str != ''){
+    recordLoading.value = true
+    getRecordList(str)
+  }  
 }
 const clearSearch = () =>{
   if(search.value != ''){
@@ -158,7 +160,6 @@ const clearSearch = () =>{
 watch(() => route.fullPath, () => {
   recordShow.value = false
 })
-// getRecordList()
 // 对话框3
 const interestList = [
   {

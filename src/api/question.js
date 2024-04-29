@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import { data } from 'autoprefixer'
 /**
  * 获取用户出题列表
  * @param {object} data
@@ -15,31 +16,32 @@ export function getQuestionList(data) {
 }
 /**
  * 获取我的题库列表
+ * @param {Number} examId
  * @returns 
  */
 export function getMyExamList(examId) {
   return request({
     url: '/reviewmaster/question/list',
     method: 'get',
-    params:{
-      examId:examId
-    }
-  })
-}
-/**
- * 根据 examId 获取题库列表
- * @param {examId} data 
- * @returns 
- */
-export function getExamQuestions(data) {
-  return request({
-    url: '/reviewmaster/question/record/questions',
-    method: 'get',
     params: {
-      examId: data
+      examId
     }
   })
 }
+// /**
+//  * 根据 examId 获取题库列表
+//  * @param {} data 
+//  * @returns 
+//  */
+// export function getExamQuestions(data) {
+//   return request({
+//     url: '/reviewmaster/question/record/questions',
+//     method: 'get',
+//     params: {
+//       examId: data
+//     }
+//   })
+// }
 /**
  * 提交答案
  * @param {Object} data
@@ -57,15 +59,14 @@ export function commitExam(data) {
 }
 /**
  * 获取错题列表
- * @param {Number} examId
+ * @param {Object} data
+ * @param {Number} [data.examId]
  * @returns
  */
-export function getIncorrectList(examId) {
+export function getIncorrectList(data) {
   return request({
     url: '/reviewmaster/question/errors',
     method: 'get',
-    params: {
-      examId
-    }
+    params: data
   })
 }

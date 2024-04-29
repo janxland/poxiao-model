@@ -28,7 +28,7 @@
     <template #footer>
       <div class="flex justify-evenly items-center">
         <t-button shape="round" class="w-2/5" variant="outline" @click="visible = false">我再想想</t-button>
-        <t-button shape="round" class="w-2/5" @click="submit">立即评卷</t-button>
+        <t-button shape="round" class="w-2/5" @click="submit(0)">立即评卷</t-button>
       </div>
     </template>
     </t-dialog>
@@ -37,65 +37,41 @@
 <script setup>
 import Exam from '@/components/Exam.vue';
 import { Icon } from 'tdesign-icons-vue-next';
-import { getExamQuestions,commitExam } from '@/api/question'
-import { useRoute,useRouter } from 'vue-router'
+import { getMyExamList } from '@/api/question'
+import { useRoute } from 'vue-router'
 import { ref,watch } from 'vue'
+import useCommitExam from '@/hooks/useCommitExam'
 const route = useRoute()
-const router = useRouter()
 const logo = require("@/assets/images/logo.png");
 const examLoading = ref(true)
+const questionList = ref([])
+const activeRecord = ref()
+const { submit } = useCommitExam(questionList,activeRecord)
 const getExamData = ()=>{
-    getExamQuestions(route.query.id).then(res=>{
-    console.log(res.data.data)
+  getMyExamList(route.query.id).then(res=>{
+    console.log(res.data)
     examLoading.value = false
     questionList.value = res.data.data.map(res=>{
       res.questionVoList = res.questionVoList.map(i=>{
         i.content = JSON.parse(i?.content)
+        // 初始化多选题答案
+        if(res.type == '11')
+        i.ans = Array.isArray(i.ans) ? i.ans : []
         return i
       })
       return res
     })
+    console.log(questionList.value)
   })
 }
-//判断页面是否为刚进入或刚切换
-let flag = true
 watch(()=>route.query.id,()=>{
-    flag = false
     examLoading.value = true
+    activeRecord.value = route.query.id
     getExamData()
 },{immediate:true})
 
-const questionList = ref()
 const visible = ref(false)
-const answerValueMap = ["a", "b", "c", "d", "e"];
-watch(questionList,(newVal,oldVal)=>{
-  if(flag){
-    submit(1)
-  }
-  flag = true
-},{deep:true})
-const submit = (flag = 0)=>{
-  let params = {
-    examId:route.query.id,
-    flag
-  }
-  params.answerList = questionList.value.reduce((pre,cur)=>{
-    return [
-      ...pre,
-      ...cur.questionVoList.map(question=>
-        ({questionId: question.questionId ,
-        answerContent: cur.type === '1' ? answerValueMap[question.ans] : question.ans ,
-        answerType:cur.type}))
-      ]
-  },[])
-  commitExam(params).then(res=>{
-    console.log(res)
-    // router.push('/')
-  }).catch(err=>{
-    console.log(err)
-  })
-  
-}
+
 </script>
 
 <style lang="scss" scoped>

@@ -67,7 +67,7 @@
 import { ref,onMounted,watch } from 'vue';  
 import { Icon } from 'tdesign-icons-vue-next';  
 import { useRoute, useRouter } from 'vue-router';  
-import { getQuestionList,getExamQuestions } from '@/api/question';
+import { getQuestionList } from '@/api/question';
 import Exam from '@/components/Exam.vue';
 // 获取当前路由对象  
 const route = useRoute();  

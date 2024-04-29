@@ -1,7 +1,7 @@
 <template>
   <div class="LoginView">
       <!-- <t-button theme="primary" @click="onClick">基础确认对话框</t-button> -->
-      <t-dialog  width="500px" v-model:visible="stateStore.visible.loginByMobile" header="对话框标题" placement="center" :closeOnOverlayClick="false"
+      <t-dialog  width="500px" v-model:visible="stateStore.visible.loginByMobile" header="对话框标题" placement="center"
         showOverlay mode="model" showInAttachedElement destroyOnClose :footer="false" :confirm-on-enter="true"
         :on-cancel="onCancel2" :on-esc-keydown="onEscKeydown2" :on-close-btn-click="onCloseBtnClick2"
         :on-overlay-click="onOverlayClick2" :on-close="close2" :on-confirm="onConfirmAnother2">
@@ -73,8 +73,7 @@
         </template>
 
       </t-dialog>
-      <t-dialog class="select-none" width="560px" v-model:visible="stateStore.visible.editProfile" header=" "  placement="center" :closeOnOverlayClick="false"
-      showOverlay mode="model" showInAttachedElement destroyOnClose :footer="false" :confirm-on-enter="true">
+      <t-dialog class="select-none" width="560px" v-model:visible="stateStore.visible.editProfile" header=" " showOverlay placement="center" mode="model" :footer="false" :confirm-on-enter="true">
         
         <template #body>
           <t-row justify="center">
@@ -154,10 +153,14 @@ const iconUrl = ref({
 });
 const isAvailable = ref(true)
 const userProfileInput = ref({
-  nickname:"",
-  gender:0,
+  nickname:userStore.user.nickname,
+  gender:userStore.user.sex,
 })
 const handleSetProfile = () => {
+  const userObject = {
+    "nickname": userProfileInput.value.nickname,
+    "sex": userProfileInput.value.gender
+  }
   setUserProfile({
     "nickname": userProfileInput.value.nickname,
     "sex": userProfileInput.value.gender,
@@ -166,7 +169,8 @@ const handleSetProfile = () => {
     const { data } = res;
     if (data.code == 200) {
       stateStore.setVisible("editProfile",false);
-      userStore.setUser(data.data)
+      userStore.setUser(userObject);
+      userStore.init();
     }
   })
 }
@@ -176,6 +180,8 @@ const userLogin3Input = ref({
   smsCode: ""
 });
 // 短信验证码登录
+
+//获取验证码
 const getSmsCodeHandler = () => {
   const phoneNumberRegex = /^1[3-9]\d{9}$/;
   if (phoneNumberRegex.test(userLogin3Input.value.phone)) {
@@ -194,6 +200,8 @@ const getSmsCodeHandler = () => {
     })
   }
 }
+
+//登录控制
 const login3Handler = () => {
   if (userLogin3Input.value.phone && userLogin3Input.value.smsCode) {
     login({
@@ -205,6 +213,11 @@ const login3Handler = () => {
         stateStore.toggleVisible("loginByMobile");
         localStorage.setItem("token", data.data.token);
         if(!(data.data.nickname || data.data.nickName)) {
+          userStore.setUser({
+            mobile:userLogin3Input.value.phone,
+            nickname: userLogin3Input.value.phone,
+            sex: 0,
+          });
           stateStore.setVisible("editProfile",true)
         }
       }

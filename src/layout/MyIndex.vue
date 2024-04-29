@@ -9,18 +9,18 @@
           个人中心
         </t-head-menu>
       </t-header>
-      <t-layout class="header-layout"  v-model="userStore.user">
+      <t-layout class="header-layout">
           <t-content>
-            <div class="user-header" :style="{'background-image': `url(${user.background||'https://mybox-1257251314.cos.ap-chengdu.myqcloud.com/www/image_2496.png'})`}"> 
+            <div class="user-header" :style="{'background-image': `url( ${userStore.user.background || 'https://mybox-1257251314.cos.ap-chengdu.myqcloud.com/www/image_2496.png'})`}"> 
               <div class="user-avatar">
-                <t-image :src="user.avatar || iconUrl.defaultAvatar" shape="circle"></t-image>
+                <t-image :src="userStore.user.avatar || iconUrl.defaultAvatar" shape="circle"></t-image>
               </div>
               <div class="user-info">
                 <div class="user-name">{{ userStore.user.nickname || "未设置用户名" }}</div>
-                <div class="user-desc">绑定手机号: {{ user.mobile }}</div>
+                <div class="user-desc">绑定手机号: {{ userStore.user.mobile }}</div>
               </div>
               <div class="absolute top-5 right-5 select-none" style="text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
-                <span class="cursor-pointer">修改密码</span> <span class="mx-2">|</span> <span class="cursor-pointer" @click="toggleLogin">{{user.mobile? "退出登录" : "立即登录"}}</span>
+                <span class="cursor-pointer"></span> <span class="mx-2">|</span> <span class="cursor-pointer" @click="toggleLogin">{{userStore.user.mobile ? "退出登录" : "立即登录"}}</span>
               </div>
               <div class="filter drop-shadow selcet-none flex absolute bottom-5 right-5 text-xl justify-around" style="width:150px">
                 <t-badge  count="new">
@@ -66,12 +66,12 @@
                 <span>积分充值</span>
                 <span>当前积分剩余:<span style="color:#4566FC">{{ user.point }}</span></span>
               </div>
-              <div class="chonzhi-content" @click="()=>{stateStore.toggleVisible('deposit')}">
+              <div class="chonzhi-content">
                 <div  style="width:100%;position: relative;">
                   <t-image class="w-[100%] min-h-[400px]" lazy="true"  :src="iconUrl.jifenImage" style="width:100%;z-index:0"></t-image>
                   <div class="vip-list no-scrollbar">
                     <div class="vip-list-box flex overflow-auto no-scrollbar">
-                      <li class="vip-list-item" :key="index" v-for="item,index in vipList">
+                      <li class="vip-list-item" :key="index" v-for="item,index in vipList" @click="()=>{stateStore.toggleVisible('deposit')}">
                         <div class="vip-list-item-name"><span style="font-size: var(--td-size-12);letter-spacing: 1.68px;">{{item.num}}</span>积分</div>
                         <div class="vip-list-item-price">¥ {{item.price}}</div>
                         <div class="vip-list-item-value">立减{{item.value - item.price}}</div>
@@ -229,13 +229,11 @@ const checkMail = (messageId) => {
   })
 }
 const toggleLogin = () =>{
-  if(user.value.mobile) {
+  if(userStore.user.mobile) {
     localStorage.removeItem("token");
-    user.value = {};
+    userStore.logout();
   } else {
-    router.push({
-      path: '/'
-    })
+    stateStore.setVisible('loginByMobile',true)
   }
 }
 watch(userStore.user, (newVal) => {
