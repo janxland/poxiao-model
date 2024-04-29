@@ -195,34 +195,23 @@
 
                     <t-skeleton :loading="loading" theme="tab">
                       <div class="t-skeleton-demo-paragraph">
-                        <t-row>
-                          
-                        </t-row>
+                        <div class="step1" v-for="(item, index) in promptText" :key="index">
+                          <div class="left">
+                            <t-image :src="item.url" fit="fill" :style="{ width: '40px', height: '40px',borderRadius: '50%'}"></t-image>
+                          </div>
+                          <div class="right">
+                            <h2>{{item.methodName}}</h2>
+                            <span>{{item.methodText}}</span>
+                            <span>{{item.methodExample}}</span>
+                          </div>
+                        </div>
+                        <div class="step2">
+
+                        </div>
                       </div>
                     </t-skeleton>
                   </t-space>
-                </t-row>
-                
-                
-
-
-
-                <!-- <t-row>
-                  <t-col :span="6">
-                    <t-space direction="vertical">
-                      <t-text>adsfsdf</t-text>
-                    </t-space>
-                  </t-col>
-                  <t-col :span="6">
-                    <t-space direction="vertical">
-                      <t-text>adfsfdfsdfadfsfdfsdfsdfsadfsfdfsdfsdfssdfs</t-text>
-                    </t-space>
-                    <t-space direction="vertical">
-                      <t-text>adsfsdf</t-text>
-                    </t-space>
-                  </t-col>
-                </t-row> -->
-                
+                </t-row>  
       </t-aside>
     </t-layout>
   </div>
@@ -233,6 +222,7 @@
 import {  ref,onMounted  } from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next'; 
 import { Icon } from 'tdesign-icons-vue-next';
+import IncorrectIndex from './IncorrectIndex.vue';
 // import Carousel from '@/components/swiper.vue';
 const quickItemIShareIcon=require("@/assets/images/分享.png");
 const userIcon=require("@/assets/images/book.jpg");
@@ -447,25 +437,32 @@ const quick_conf_click_cancel=()=>{
   quick_conf_input_index.value=-1;
 }
 
-//轮播图
-const imagePaths = [
-                    '@/assets/images/knowledgeImg.png', 
-                    '@/assets/images/fileImg.png', 
-                    '@/assets/images/IncorrectImg.png', 
-                  ];
+//prompt
 
-const indicatorPaths = {
-  normal: [
-            '@/assets/images/knowledgeIcon.png', 
-            '@/assets/images/fileIcon.png', 
-            '@/assets/images/IncorrectIcon.png', 
-  ],
-  selected: [
-              '@/assets/images/knowledgeIcon-selected.png', 
-              '@/assets/images/fileIcon-selected.png', 
-              '@/assets/images/IncorrectIcon-selected.png', 
-  ]
+const iconImagePaths = {
+  knowledgeUrl: require('@/assets/images/knowledgeIcon.png'), 
+  fileUrl: require('@/assets/images/fileIcon.png'), 
+  IncorrectUrl:require('@/assets/images/IncorrectIcon.png'), 
 };
+
+const promptText = [{
+  url:require('@/assets/images/knowledgeIcon.png'), 
+  methodName:'方式1 知识点出题',
+  methodText:'用户输入想要出题的科目和知识点',
+  methodExample:'如：给我出教资<弗洛伊德的心理分析理论>这一知识点的题目'
+},{
+  url:require('@/assets/images/fileIcon.png'), 
+  methodName:'方式2 文件出题',
+  methodText:'用户上传出题所需要的文档等类型的文件，并针对文件提出个性化要求',
+  methodExample:'如：根据此文档内容给我出教资<弗洛伊德的心理分析理论>这一章节的题目'
+},
+{
+  url:require('@/assets/images/IncorrectIcon.png'),
+  methodName:'方式3 错题出题',
+  methodText:'用户选择错题出题，并输入需要的错题数量',
+  methodExample:'如：根据此文档内容给我出教资<弗洛伊德的心理分析理论>这一章节的题目'
+}
+]
 
 
 
@@ -515,6 +512,42 @@ aside{
   margin-right: 40px;
 }
 
-/* 轮播图 */
+/* prompt */
+.step1 {
+  display: flex;
+  align-items: flex-start; /* 使图标和文本的第一行对齐 */
+  margin-top: 20px
+}
+
+.left {
+    width: 25%; /* 左边宽度占1/4 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* 使图标占三行，且垂直居中 */
+  }
+
+.right{
+  width: 75%; /* 右边宽度占3/4 */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 使文本行与图标对齐 */
+  margin-right: 10px;
+  text-align: left;
+}
+
+.right h2 {
+  
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.right span {
+    line-height: 1.5;
+    font-size: 13px;
+}
+
+.right span:last-child {
+   color: #808080
+}
 
 </style>
