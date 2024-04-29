@@ -181,7 +181,7 @@
       </t-content>
       <t-aside width="240px">
                 <t-row class="t-row--head--title1">
-                  <t-avatar :image="userIcon" :hide-on-load-failed="false" />
+                  <t-avatar :image="promptIcon" :hide-on-load-failed="false" />
                   <router-link :to="{path:'/'}">个性化使用指南</router-link>
                 </t-row>
                 
@@ -195,6 +195,7 @@
 
                     <t-skeleton :loading="loading" theme="tab">
                       <div class="t-skeleton-demo-paragraph">
+                        <t-row id="step1-title">Step1 根据不同出题方式提问</t-row>
                         <div class="step1" v-for="(item, index) in promptText" :key="index">
                           <div class="left">
                             <t-image :src="item.url" fit="fill" :style="{ width: '40px', height: '40px',borderRadius: '50%'}"></t-image>
@@ -205,8 +206,14 @@
                             <span>{{item.methodExample}}</span>
                           </div>
                         </div>
+                        <t-row id="step1-title">Step2 选择题型数量并作答</t-row>
                         <div class="step2">
-
+                          <t-steps layout="vertical" theme="dot" :current="4" readonly>
+                            <t-step-item :style="{ textAlign: 'left' }" title="用户选择想要的题型和对应题目的数量"/>
+                            <t-step-item :style="{ textAlign: 'left' }" title="选择完毕后点击出题按钮"/>
+                            <t-step-item :style="{ textAlign: 'left' }" title="用户答题并提交答案"/>
+                            <t-step-item :style="{ textAlign: 'left' }" title="系统智能判卷并提供完整答案，用户可将错题记录至错题本"/>
+                          </t-steps>
                         </div>
                       </div>
                     </t-skeleton>
@@ -438,7 +445,7 @@ const quick_conf_click_cancel=()=>{
 }
 
 //prompt
-
+const promptIcon = require('@/assets/images/prompt.png')
 const iconImagePaths = {
   knowledgeUrl: require('@/assets/images/knowledgeIcon.png'), 
   fileUrl: require('@/assets/images/fileIcon.png'), 
@@ -463,6 +470,11 @@ const promptText = [{
   methodExample:'如：根据此文档内容给我出教资<弗洛伊德的心理分析理论>这一章节的题目'
 }
 ]
+
+const CommonStyle = {
+  fontSize: '12px',
+  color: 'rgba(0,0,0,.6)',
+};
 
 
 
@@ -513,10 +525,17 @@ aside{
 }
 
 /* prompt */
+
+#step1-title {
+  margin-top: 15px;
+  font-weight: 800;
+  font-size: 16px;
+  text-align: left;
+}
 .step1 {
   display: flex;
   align-items: flex-start; /* 使图标和文本的第一行对齐 */
-  margin-top: 20px
+  margin-top: 10px
 }
 
 .left {
@@ -543,11 +562,18 @@ aside{
 
 .right span {
     line-height: 1.5;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .right span:last-child {
    color: #808080
 }
+
+/* 步骤条 */
+.step2 {
+  display: flex;
+  margin-top: 10px;
+}
+
 
 </style>
