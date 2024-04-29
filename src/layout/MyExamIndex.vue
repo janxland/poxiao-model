@@ -67,7 +67,7 @@
 import { ref,onMounted,watch } from 'vue';  
 import { Icon } from 'tdesign-icons-vue-next';  
 import { useRoute, useRouter } from 'vue-router';  
-import { getQuestionList,getExamQuestions } from '@/api/question';
+import { getQuestionList } from '@/api/question';
 import Exam from '@/components/Exam.vue';
 // 获取当前路由对象  
 const route = useRoute();  
@@ -167,18 +167,18 @@ const questionList = ref([
     })
   };
   const fetchExamQuestions = async (examId) => {
-    getExamQuestions(examId).then(res => {
-      const { data } = res 
-      if(data.code === 200) {
-        const targetIndex = data.data.findIndex(obj => obj.type === "1");
-        if (targetIndex !== -1 && data.data[targetIndex].questionVoList) {
-          data.data[targetIndex].questionVoList.forEach(question => {
-            question.content = JSON.parse(question.content);
-          });
-        }
-        questionList.value = data.data;
-      }
-    })
+    // getExamQuestions(examId).then(res => {
+    //   const { data } = res 
+    //   if(data.code === 200) {
+    //     const targetIndex = data.data.findIndex(obj => obj.type === "1");
+    //     if (targetIndex !== -1 && data.data[targetIndex].questionVoList) {
+    //       data.data[targetIndex].questionVoList.forEach(question => {
+    //         question.content = JSON.parse(question.content);
+    //       });
+    //     }
+    //     questionList.value = data.data;
+    //   }
+    // })
   };
   watch(activeExamId, (newValue) => {
     fetchExamQuestions(newValue);
