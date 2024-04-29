@@ -20,12 +20,15 @@
         </div>
         <!-- 多选 -->
         <div v-else-if="i.type == 11">
-          <t-checkbox-group v-model="item.ans" :default-value="item.ans ">
+          <t-checkbox-group v-model="item.ans" :default-value="item.ans " v-if="disabled">
+            <t-checkbox :key="'answer' + answerIndex" :label="answer.content" :value="answer.id" v-for="answer, answerIndex in item.content" />
+          </t-checkbox-group>
+          <t-checkbox-group :default-value="item.answerContent " v-else>
             <t-checkbox :key="'answer' + answerIndex" :label="answer.content" :value="answer.id" v-for="answer, answerIndex in item.content" />
           </t-checkbox-group>
         </div>
         <!-- 简答 -->
-        <div v-else-if="i.type.toString().startsWith('3') || i.type == 2">
+        <div v-else-if="i.type?.toString().startsWith('3') || i.type == 2">
           <div class="my-4" v-if="disabled">
             答案：
             <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :defaultValue="formatter(item,i)" :disabled="disabled" />
@@ -75,6 +78,10 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
+  onlyread: {
+    type: Boolean,
+    default: false
+  },
 })
 const questionList = defineModel('questionList', {})
 const answerMap = ref(["A", "B", "C", "D", "E"]);
@@ -92,8 +99,9 @@ const questionTypeMap = ref([
   { label: "名词解释题", value: "36" }
 ]);
 const checkAnswer = ((item, answer) => {
+  if (props.onlyread)  return ''
   if (!props.disabled) return item.ans == answer ? 'active-answer' : '';
-  return item.correctAnswer.toLowerCase() == answer ? 'correct-answer' : item.answerContent == answer ? 'err-answer' : ''
+  return item.correctAnswer?.toLowerCase() == answer ? 'correct-answer' : item.answerContent == answer ? 'err-answer' : ''
 })
 const formatter = (item,i) =>{
   return i.type == '2' ? JSON.parse(item.correctAnswer).map(i=> i.prefix + '：' + i.content).join(' ') : item.correctAnswer

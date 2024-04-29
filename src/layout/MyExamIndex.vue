@@ -32,7 +32,7 @@
           <t-content>
             <div class="myexam-main-content">
               <t-space direction="vertical">
-                <Exam :questionList="questionList" :disabled="true"></Exam>
+                <Exam :questionList="questionList" :onlyread="true"></Exam>
               </t-space>
             </div>
           </t-content>
@@ -95,7 +95,7 @@ const questionList = ref([
                 {content: "提交出题！等待出题哦，完成了请到题库中查看"}
               ],
               "ans": "a",
-              "correct": "a"
+              "correctAnswer": "a"
             },
             { 
               "stem": "Your account has not created a question bank yet? Do you know how to create a question bank? Here are the steps to create a question bank.",
@@ -106,7 +106,7 @@ const questionList = ref([
                 { "content": "Submit the questions! Wait for the questions to be reviewed. Once completed, check them in the question bank." }
               ],
               "ans": "a",
-              "correct": "a"
+              "correctAnswer": "a"
             }
           ]
         },
@@ -116,7 +116,7 @@ const questionList = ref([
           questionVoList: [
             {
               "stem": "在心理学中，____ 是指个体对其所处环境的感知、认识和解释，这一过程是主观的，并且受个体先前的经验、信念和情绪状态的影响。",
-              "correct": "a"
+              "correctAnswer": "a"
             }
           ]
         },
@@ -126,7 +126,7 @@ const questionList = ref([
           questionVoList: [
             {
               "stem": "在心理学中，认知失调理论表明，当个体在两个相互冲突的信念或行为之间经历了内在的不一致或冲突时，他们会感到不适，并且会采取行动来减少这种不一致或冲突。",
-              "correct": "a"
+              "correctAnswer": "a"
             },
             {
               "stem": "Choose the correct relative pronoun to complete the sentence: I visited the museum _______ my friend works as a curator. ",
@@ -136,7 +136,7 @@ const questionList = ref([
                 "where",
                 "when"
               ],
-              "correct": "a"
+              "correctAnswer": "a"
             }
           ]
         },
