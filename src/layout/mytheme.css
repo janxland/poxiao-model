@@ -450,14 +450,14 @@ a {
   background-color: rgb(52, 85, 212);
 }
 .main-content-footer .footer-operation {
-  border-radius: 46%;
+  border-radius: 50%;
   background-color: rgb(36, 64, 173);
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 95px;
+  margin-top:65px;
 }
 .main-content-footer .footer-operation .t-image {
   border-radius: 50%;
@@ -485,7 +485,7 @@ a {
   width: 90%;
   border-radius: 10px;
   color: white;
-  margin-top: 95px;
+  margin-top: 65px;
 }
 #id-t-content-quick-conf .quick-conf-item-list .quick-conf-item-list-box {
   display: flex;
@@ -493,7 +493,7 @@ a {
   justify-content: center;
   align-items: center;
   height: 72px;
-  width: 50px;
+  width: 72px;
 }
 #id-t-content-quick-conf .quick-conf-item-list .quick-conf-item-list-box .quick-conf-item-list-title {
   display: inline-block;

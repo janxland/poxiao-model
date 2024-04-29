@@ -60,7 +60,7 @@
                 <t-layout>
                   <t-content class="main-content-footer-content !flex-1">
                     <div class="search-input">
-                      <t-input disabled placeholder="从此处检索你要提问的科目"></t-input>
+                      <!-- <t-input disabled placeholder="从此处检索你要提问的科目"></t-input> -->
                     </div>
                     <t-tabs :default-value="1"  class="main-content-footer-tabs flex-1">
                       <t-tab-panel :value="1" label="知识点出题">
@@ -123,105 +123,8 @@
                                   
 
                       </t-tab-panel>
-                      <t-tab-panel :value="3" label="错题出题" id="id-main-content-footer-tab-panel-3">
-                        <div class="tree-pane"> 
-                          <div class="tree-pane-title">
-                            <!-- <t-text  class="tree-pane-title-1">您已选择 <span style="color:rgb(67,207,124);font-weight: 600">25</span> 道错题</t-text> -->
-                            <!-- <t-text  class="tree-pane-title-2">系统将根据您选择的错题智能生成相似题目</t-text> -->
-                          </div>
-                          <t-tree 
-                            ref="tree"
-                            :data="items" 
-                            :checkable="isCheckable"
-                            expand-all
-                            :transition="transition"
-                            :expand-on-click-node="true"
-                            :line="showLine"
-                            :icon="true"
-                            :label="true"
-                            :scroll="{
-                              rowHeight: 34,
-                              bufferSize: 10,
-                              threshold: 10,
-                              type: 'virtual',
-                            }"
-                          >
-                            <!-- <template #operations="{ node }">
-                              <div v-if="isOperateAble" class="tdesign-demo-block-row">
-                                <t-button size="small" variant="base" @click="append(node)">添加子节点</t-button>
-                                <t-button size="small" variant="base" theme="danger" @click="remove(node)">删除</t-button>
-                              </div>
-                            </template> -->
-                            <template #icon="{ node }" >
-                              <icon v-if="node.getChildren && node.getChildren(false)" name="folder" />
-                              <!-- <icon v-else name="folder-open" /> -->
-                            </template>
-                            <!-- <template #icon="{ node }" >
-                              <icon name="folder" />
-                              <span v-html="showIcon(n,node)"></span>
-                            </template> -->
-                            <template #label="{ node }">
-                              <span>{{ node.label }}</span>
-                            </template> 
-                            <!-- <template #operations="{ node }">
-                              >{{ node.value }}
-                            </template> -->  
-                          </t-tree>
-                          <div class="tree-pane-bottom">
-                            <t-button  size="small" class="circle-border">重选</t-button>
-                          </div> 
-                        </div>
-                      </t-tab-panel>
-                      <t-tab-panel :value="4" label="知识图谱出题" id="id-main-content-footer-tab-panel-4">
-                        <div class="tree-pane">
-                          <div class="tree-pane-title">
-                            <!-- <t-text  class="tree-pane-title-1">您已选择 <span style="color:rgb(67,207,124);font-weight: 600">5</span> 个知识点</t-text> -->
-                            <!-- <t-text  class="tree-pane-title-2">系统将根据您选择的知识点智能生成相关题目</t-text> -->
-                          </div> 
-                          <t-tree
-                            ref="tree" 
-                            :data="items" 
-                            :checkable="isCheckable"
-                            expand-all
-                            
-                            :transition="transition"
-                            :expand-on-click-node="true"
-                            :line="showLine"
-                            :icon="true"
-                            :label="true"
-                            :scroll="{
-                              rowHeight: 34,
-                              bufferSize: 10,
-                              threshold: 10,
-                              type: 'virtual',
-                            }"
-                          >
-                            <!-- <template #operations="{ node }">
-                              <div v-if="isOperateAble" class="tdesign-demo-block-row">
-                                <t-button size="small" variant="base" @click="append(node)">添加子节点</t-button>
-                                <t-button size="small" variant="base" theme="danger" @click="remove(node)">删除</t-button>
-                              </div>
-                            </template> -->
-                            <template #icon="{ node }" >
-                              <icon v-if="node.getChildren && node.getChildren(false)" name="folder" />
-                              <!-- <icon v-else name="folder-open" /> -->
-                            </template>
-                            <!-- <template #icon="{ node }" >
-                              <icon name="folder" />
-                              <span v-html="showIcon(n,node)"></span>
-                            </template> -->
-                            <template #label="{ node }">
-                              <span>{{ node.label }}</span>
-                            </template> 
-                            <!-- <template #operations="{ node }">
-                              >{{ node.value }}
-                            </template> -->  
-                          </t-tree>
-                          <div class="tree-pane-bottom">
-                            <t-button size="small" class="circle-border">重选</t-button>
-                          </div> 
-                        </div>
-                      </t-tab-panel>
+                      
+                      
                     </t-tabs>
                   </t-content>
                   <t-aside class="!w-[500px]">  
@@ -292,17 +195,9 @@
 
                     <t-skeleton :loading="loading" theme="tab">
                       <div class="t-skeleton-demo-paragraph">
-                        <!-- <t-row class="swiperIcon">
-                          <t-image class="iconImage" :src="swiperIcon.knowledgeIcon" fit="fill" :style="{ width: '60px', height: '60px'}"></t-image>
-                          <t-image class="iconImage" :src="swiperIcon.fileIcon" fit="fill" :style="{ width: '60px', height: '60px'}"></t-image>
-                          <t-image class="iconImage" :src="swiperIcon.IncorrectIcon" fit="fill" :style="{ width: '60px', height: '60px'}"></t-image>
-                        </t-row> -->
-                        <!-- 轮播图 -->
                         <t-row>
                           
                         </t-row>
-                        
-                        <!-- 轮播图 -->
                       </div>
                     </t-skeleton>
                   </t-space>
