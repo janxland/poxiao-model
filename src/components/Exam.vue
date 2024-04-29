@@ -25,7 +25,7 @@
           </t-checkbox-group>
         </div>
         <!-- 简答 -->
-        <div v-else-if="i.type?.startsWith('3') || i.type == 2">
+        <div v-else-if="i.type.toString().startsWith('3') || i.type == 2">
           <div class="my-4" v-if="disabled">
             答案：
             <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :defaultValue="formatter(item,i)" :disabled="disabled" />

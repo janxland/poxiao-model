@@ -32,7 +32,7 @@
           <t-content>
             <div class="myexam-main-content">
               <t-space direction="vertical">
-                <Exam :questionList="questionList" ></Exam>
+                <Exam :questionList="questionList" :disabled="true"></Exam>
               </t-space>
             </div>
           </t-content>
@@ -69,23 +69,7 @@ import { Icon } from 'tdesign-icons-vue-next';
 import { useRoute, useRouter } from 'vue-router';  
 import { getQuestionList } from '@/api/question';
 import Exam from '@/components/Exam.vue';
-// 获取当前路由对象  
-const route = useRoute();  
   
-// 获取路由实例  
-const router = useRouter();  
-// 定义响应式数据  
-const answerMap = ref(["A", "B", "C", "D", "E"]);
-const questionTypeMap = ref([
-  { label: "NAN", value: "0" },
-  { label: "选择题", value: "1" },
-  { label: "填空题", value: "2" },
-  { label: "简答题", value: "3" },
-  { label: "判断题", value: "4" },
-  { label: "作文", value: "5" },
-  { label: "论述", value: "6" },
-  { label: "课程设计", value: "7" }
-]);
 
 const activeExamId = ref(0);
 const visibleMenu = ref({
@@ -110,8 +94,8 @@ const questionList = ref([
                 {content: "输入出题提示词，越详细越好"},
                 {content: "提交出题！等待出题哦，完成了请到题库中查看"}
               ],
-              "ans":0,
-              "correct": 0
+              "ans": "a",
+              "correct": "a"
             },
             { 
               "stem": "Your account has not created a question bank yet? Do you know how to create a question bank? Here are the steps to create a question bank.",
@@ -121,8 +105,8 @@ const questionList = ref([
                 { "content": "Provide detailed hints for the questions" },
                 { "content": "Submit the questions! Wait for the questions to be reviewed. Once completed, check them in the question bank." }
               ],
-              "ans": 0,
-              "correct": 0
+              "ans": "a",
+              "correct": "a"
             }
           ]
         },
@@ -132,7 +116,7 @@ const questionList = ref([
           questionVoList: [
             {
               "stem": "在心理学中，____ 是指个体对其所处环境的感知、认识和解释，这一过程是主观的，并且受个体先前的经验、信念和情绪状态的影响。",
-              "correct": ""
+              "correct": "a"
             }
           ]
         },
@@ -142,7 +126,7 @@ const questionList = ref([
           questionVoList: [
             {
               "stem": "在心理学中，认知失调理论表明，当个体在两个相互冲突的信念或行为之间经历了内在的不一致或冲突时，他们会感到不适，并且会采取行动来减少这种不一致或冲突。",
-              "correct": 0
+              "correct": "a"
             },
             {
               "stem": "Choose the correct relative pronoun to complete the sentence: I visited the museum _______ my friend works as a curator. ",
@@ -152,7 +136,7 @@ const questionList = ref([
                 "where",
                 "when"
               ],
-              "correct": 0
+              "correct": "a"
             }
           ]
         },
@@ -167,19 +151,19 @@ const questionList = ref([
     })
   };
   const fetchExamQuestions = async (examId) => {
-    getExamQuestions(examId).then(res => {
-      const { data } = res 
-      if(data.code === 200) {
-        const targetIndex = data.data.findIndex(obj => obj.type === "1");
-        if (targetIndex !== -1 && data.data[targetIndex].questionVoList) {
-          data.data[targetIndex].questionVoList.forEach(question => {
-            question.content = JSON.parse(question.content);
-          });
-        }
-        if(data.data.length!=0) questionList.value = data.data;
+    // getExamQuestions(examId).then(res => {
+    //   const { data } = res 
+    //   if(data.code === 200) {
+    //     const targetIndex = data.data.findIndex(obj => obj.type === "1");
+    //     if (targetIndex !== -1 && data.data[targetIndex].questionVoList) {
+    //       data.data[targetIndex].questionVoList.forEach(question => {
+    //         question.content = JSON.parse(question.content);
+    //       });
+    //     }
+    //     if(data.data.length!=0) questionList.value = data.data;
         
-      }
-    })
+    //   }
+    // })
   };
   watch(activeExamId, (newValue) => {
     fetchExamQuestions(newValue);
