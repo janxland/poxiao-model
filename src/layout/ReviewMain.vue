@@ -53,13 +53,13 @@
                     </div>
                     <div class="h-[300px] mt-4 overflow-auto"  v-loading="recordLoading">
                       <div
-                        @click="router.push('/examPage?id='+i?.examId)" v-for="i, index in recordList?.filter(i=>i?.qustionsStatus == activeRecord)"
+                        @click="recordClick(i)" v-for="i, index in recordList?.filter(i=>i?.qustionsStatus == activeRecord)"
                         class="rounded-2xl text-left px-4 py-2 flex items-center justify-between my-1 cursor-pointer"
                         :key="'recordListData' + index" :class="i.examId == route.query.id ? 'bg-blue-500/90 ':'bg-record_bg/75'">
                         <div class="w-5/6 text-ellipsis text-nowrap overflow-hidden">{{ i?.qustionsContent }}</div>
                         <div class="h-[25px] w-[25px] rounded-full "
-                          :style="{ background: +i?.examStatus == 2 ? 'rgba(67, 207, 124, 1)' : 'rgba(255, 87, 51, 1)' }">
-                          <icon :name="+i?.examStatus == 2 ? 'check' : 'error'" color="white" size="25"></icon>
+                          :style="{ background: +i?.qustionsStatus == 1 ? 'rgba(67, 207, 124, 1)' : 'rgba(255, 87, 51, 1)' }">
+                          <icon :name="+i?.qustionsStatus == 1 ? 'check' : 'error'" color="white" size="25"></icon>
                         </div>
                       </div>
                     </div>
@@ -112,6 +112,7 @@ import { Icon } from 'tdesign-icons-vue-next';
 import { useRoute, useRouter } from 'vue-router';
 import { getQuestionList } from '@/api/question'
 import { useUserStore } from '@/store/user';
+import { MessagePlugin } from 'tdesign-vue-next';
 const userStore = useUserStore();
 // 获取当前路由对象  
 const route = useRoute();
@@ -138,8 +139,25 @@ const getRecordList = (str) => {
   getQuestionList(params).then(res => {
     recordList.value = res.data.data
     recordLoading.value = false
-    console.log(res.data.data)
+    console.log(res.data.data,11)
   })
+}
+const recordClick = (i) =>{
+  if(i.examStatus == 1){
+    MessagePlugin.warning('正在出题中')
+  }
+  else if(i.examStatus == 2 || i.examStatus == 3){
+    router.push('/examPage?id='+i?.examId)
+  }
+  else if(i.examStatus == 4 || i.examStatus == 5){
+    MessagePlugin.warning('判卷中')
+  }
+  else if(i.examStatus == 6){
+    MessagePlugin.success('判卷完成')
+  }
+  else if(i.examStatus == -1 ){
+    MessagePlugin.warning('后台错题，请联系管理员')
+  }
 }
 getRecordList()
 const search = ref('')

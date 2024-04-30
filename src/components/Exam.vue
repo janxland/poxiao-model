@@ -11,7 +11,7 @@
         </div>
         <!-- 单选 -->
         <div v-if="i.type == 1">
-          <t-radio-group v-model="item.ans" allow-uncheck :default-value="item.ans " class="!block">
+          <t-radio-group v-model="item.ans" allow-uncheck :default-value="item.ans " class="!block" :readonly="onlyread">
             <t-radio-button :value="answer.id" v-for="answer, answerIndex in item.content"
               :key="'answer' + answerIndex" :disabled="disabled" class="!border-0 !block !h-10">
               <div class="answer" :class="checkAnswer(item, answer.id)">{{ answerMap[answerIndex] }}</div>{{ answer.content }}
@@ -23,26 +23,26 @@
           <t-checkbox-group v-model="item.ans" :default-value="item.ans " v-if="disabled">
             <t-checkbox :key="'answer' + answerIndex" :label="answer.content" :value="answer.id" v-for="answer, answerIndex in item.content" />
           </t-checkbox-group>
-          <t-checkbox-group :default-value="item.answerContent " v-else>
+          <t-checkbox-group :default-value="item.answerContent " v-else  :readonly="onlyread">
             <t-checkbox :key="'answer' + answerIndex" :label="answer.content" :value="answer.id" v-for="answer, answerIndex in item.content" />
           </t-checkbox-group>
         </div>
         <!-- 简答 -->
-        <div v-else-if="i.type?.toString().startsWith('3') || i.type == 2">
+        <div v-else-if="i.type?.toString().startsWith('3') || i.type == 2" >
           <div class="my-4" v-if="disabled">
             答案：
-            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :defaultValue="formatter(item,i)" :disabled="disabled" />
+            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :defaultValue="formatter(item,i)" disabled />
           </div>
           <div class="my-4">
             你的答案：
             <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :defaultValue="item.answerContent" disabled v-if="disabled"/>
-            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" v-model="item.ans" :defaultValue="item.ans" v-else/>
+            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :readonly="onlyread" v-model="item.ans" :defaultValue="item.ans"  v-else/>
           </div>
         </div>
         <!-- 判断 -->
         <div v-else-if="i.type == 4">
           <div>
-            <t-radio-group v-model="item.ans" allow-uncheck :default-value="item.ans" class="!block">
+            <t-radio-group v-model="item.ans" allow-uncheck :default-value="item.ans" class="!block" :readonly="onlyread">
               <t-radio-button value="0" :disabled="disabled" class="!border-0 !h-10 !w-8 mr-4">
                 <div class="answer" :class="checkAnswer(item, 0)">
                   <icon name="check"></icon>
