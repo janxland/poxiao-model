@@ -40,16 +40,13 @@
 }
 
 .m-lf-layout-row {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  /* margin-bottom: 10px; */
-  letter-spacing: 2px;
-  opacity: 0.82;
-  padding: 20px;
+  transition: .5s;
+  @apply flex justify-start items-center tracking-[2px] opacity-[0.82] p-5 text-[#efefef];
 }
 :hover.m-lf-layout-row{
-  background-color: rgba(22, 38, 88, 1);
+  @apply text-[#fff];
+  text-shadow: 1px 1px 5px #000;
+  dropshadow: 1px 1px 5px #000;
 }
 a {
   text-decoration: none;

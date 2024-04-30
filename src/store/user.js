@@ -3,13 +3,14 @@ import { getUserInfo } from '@/api/user';
 export const useUserStore = defineStore('user', {
   state: () => ({
     user: {
-        name:"天女散花",
-        nickname:'天女散花',
-        avatar:"",
-        background:"",
-        point: 458,
-        sex:0,
-        inviteCode:"TS13QUEEN"
+      isLogin: localStorage.getItem("token")?true:false,
+      name:"未登录",
+      nickname:'未登录',
+      avatar:"",
+      background:"",
+      point: 458,
+      sex:0,
+      inviteCode:"TS13QUEEN"
     }
   }),
   actions: {
@@ -28,15 +29,17 @@ export const useUserStore = defineStore('user', {
           const avatar = [require('@/assets/images/male.png'),require('@/assets/images/female.png'),]
           if(true || this.user.avatar){
             this.user.avatar = avatar[this.user.sex]
+            this.user.isLogin = true
           }
         } 
       })
     },
     logout() {
-      // 清除用户信息
+      localStorage.removeItem("token");
       this.user = {
-        name:"天女散花",
-        nickname:'天女散花',
+        isLogin: false,
+        name:"未登录",
+        nickname:'未登录',
         avatar:"",
         background:"",
         point: 458,

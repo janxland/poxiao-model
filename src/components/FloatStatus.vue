@@ -19,7 +19,6 @@ import { ref, defineProps, onMounted, onUnmounted } from 'vue';
 import { getQuestionList } from '@/api/question'
 import { Icon } from 'tdesign-icons-vue-next';
 import { useRoute, useRouter } from 'vue-router';
-const route = useRoute();
 const router = useRouter()
 const props = defineProps({
   
@@ -32,16 +31,12 @@ const ExamRecords = ref([
     "examId": 0,
     "qustions": "30,31,32,33,34,35,38,39,40",
     "examStatus": "1",
-    "qustionsContent": "正在获取状态...",
+    "qustionsContent": localStorage.getItem("token") ? "正在获取状态..." : "你还没有登录",
     "qustionsStatus": "0"
   }
 ])
 // 设置自动轮播的定时器
 let autoplayInterval;
-const switchTo = (index) => {
-  activeIndex.value = index;
-  resetAutoplay();
-};
 //出题状态1=出题中,2=已出题,3=考试中,4=已交卷,5=判卷中,6=已判卷，-1=异常退出
 const statusMap = ref([{
   id:1,
@@ -108,7 +103,6 @@ const startAutoplay = () => {
         }
       })
     } else {
-      console.log("你还没有登录");
       ExamRecords.value.qustionsContent = "你还没有登录..."
     }
   }, 5000);
