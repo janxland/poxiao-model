@@ -81,67 +81,8 @@ const ExamRecords = ref([
   { qustionsContent: '语文', id: '2' },  
   { qustionsContent: '数学', id: '3' }  
 ]);  
-const questionList = ref([
-        {
-          name: '选择题',
-          type: 1,
-          questionVoList: [
-            {
-              "stem": "你的账号还没有创建题库哦？你知道怎么创建题库么？以下是创建题库的步骤",
-              "content": [
-                {content: "进入首页"},
-                {content: "编辑题型及数量"},
-                {content: "输入出题提示词，越详细越好"},
-                {content: "提交出题！等待出题哦，完成了请到题库中查看"}
-              ],
-              "ans": "a",
-              "correctAnswer": "a"
-            },
-            { 
-              "stem": "Your account has not created a question bank yet? Do you know how to create a question bank? Here are the steps to create a question bank.",
-              "content": [
-                { "content": "Go to the homepage" },
-                { "content": "Edit the question types and quantities" },
-                { "content": "Provide detailed hints for the questions" },
-                { "content": "Submit the questions! Wait for the questions to be reviewed. Once completed, check them in the question bank." }
-              ],
-              "ans": "a",
-              "correctAnswer": "a"
-            }
-          ]
-        },
-        {
-          name: '填空题',
-          type: 3,
-          questionVoList: [
-            {
-              "stem": "在心理学中，____ 是指个体对其所处环境的感知、认识和解释，这一过程是主观的，并且受个体先前的经验、信念和情绪状态的影响。",
-              "correctAnswer": "a"
-            }
-          ]
-        },
-        {
-          name: '判断题',
-          type: 4,
-          questionVoList: [
-            {
-              "stem": "在心理学中，认知失调理论表明，当个体在两个相互冲突的信念或行为之间经历了内在的不一致或冲突时，他们会感到不适，并且会采取行动来减少这种不一致或冲突。",
-              "correctAnswer": "a"
-            },
-            {
-              "stem": "Choose the correct relative pronoun to complete the sentence: I visited the museum _______ my friend works as a curator. ",
-              "content": [
-                "which",
-                "whose",
-                "where",
-                "when"
-              ],
-              "correctAnswer": "a"
-            }
-          ]
-        },
-      ]);  
-  const fetchExamRecords = async () => {
+const questionList = ref([]);  
+  const fetchExamRecords = () => {
     getQuestionList(0).then(res => {
       const { data } = res 
       if(data.code === 200) {
@@ -150,7 +91,7 @@ const questionList = ref([
       }
     })
   };
-  const fetchExamQuestions = async (examId) => {
+  const fetchExamQuestions = (examId) => {
     getMyExamList(examId).then(res => {
       const { data } = res 
       if(data.code === 200) {

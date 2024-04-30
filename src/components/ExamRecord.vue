@@ -23,20 +23,7 @@ import { Icon } from 'tdesign-icons-vue-next';
 const props = defineProps({
     records: {
         type: Array,
-        default: () => [
-            {
-                examId: 8,
-                examStatus: "1",
-                qustions: "30,31,32,33,34,35,38,39,40",
-                qustionsContent: "小学数学选择题",
-                type: '文件出题'
-            }, {
-                type: '知识点出题',
-                examId: 9,
-                examStatus: "2",
-                qustions: "30,31,32,33,34,35,38,39,40",
-                qustionsContent: "英语考研题"
-            }]
+        default:()=>[]
     }
 })
 const emit = defineEmits(['change'])

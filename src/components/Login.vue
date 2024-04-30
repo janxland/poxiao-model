@@ -2,9 +2,7 @@
   <div class="LoginView">
       <!-- <t-button theme="primary" @click="onClick">基础确认对话框</t-button> -->
       <t-dialog  width="500px" v-model:visible="stateStore.visible.loginByMobile" header="对话框标题" placement="center"
-        showOverlay mode="model" showInAttachedElement destroyOnClose :footer="false" :confirm-on-enter="true"
-        :on-cancel="onCancel2" :on-esc-keydown="onEscKeydown2" :on-close-btn-click="onCloseBtnClick2"
-        :on-overlay-click="onOverlayClick2" :on-close="close2" :on-confirm="onConfirmAnother2">
+        showOverlay showInAttachedElement destroyOnClose :footer="false" :confirm-on-enter="true">
         <template #header>
           <t-row class="login-header-main">
             <t-col class="login-header-bg">
@@ -73,7 +71,7 @@
         </template>
 
       </t-dialog>
-      <t-dialog class="select-none" width="560px" v-model:visible="stateStore.visible.editProfile" header=" " showOverlay placement="center" mode="model" :footer="false" :confirm-on-enter="true">
+      <t-dialog class="select-none" width="560px" v-model:visible="stateStore.visible.editProfile" header=" " showOverlay placement="center" :footer="false" :confirm-on-enter="true">
         
         <template #body>
           <t-row justify="center">

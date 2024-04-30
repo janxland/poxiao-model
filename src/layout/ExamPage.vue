@@ -61,7 +61,6 @@ const getExamData = ()=>{
       })
       return res
     })
-    console.log(questionList.value)
   })
 }
 watch(()=>route.query.id,()=>{
