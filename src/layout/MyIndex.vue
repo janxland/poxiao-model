@@ -86,10 +86,10 @@
                 </div>
               </div>
             </t-aside>
-            <t-aside class="content-layout-right h-fit w-[400px] p-[20px] rounded-[32px] p-[10px]">
-              <div class="content-item huodong-center">
+            <t-aside class="content-layout-right flex flex-col justify-between w-[400px] p-[20px] rounded-[32px] p-[10px]">
+              <div class="content-item huodong-center flex-1">
                 <span  class="text-[16px] leading-[28px]">活动中心</span>
-                <div class="flex justify-center my-2.5 p-2.5 bg-[#F1F7FA] rounded-[10px]">
+                <div class="flex justify-center items-center h-[80%] my-2.5 p-2.5 bg-[#F1F7FA] rounded-[10px]">
                   <img class="w-[100px] h-[100px]" :src="iconUrl.staying" alt="">
                 </div>
               </div>
@@ -230,7 +230,6 @@ const checkMail = (messageId) => {
 }
 const toggleLogin = () =>{
   if(userStore.user.mobile) {
-    localStorage.removeItem("token");
     userStore.logout();
   } else {
     stateStore.setVisible('loginByMobile',true)
@@ -395,7 +394,6 @@ watch(userStore.user, (newVal) => {
 }
 #MyIndex .content-layout-right .content-item {
   text-align: left;
-  flex: 1;
   .t-list-item__meta-title,.t-list-item__meta-description{
     margin:0
   }
