@@ -12,10 +12,10 @@
       <t-layout>
         <t-aside class="myexam-left-side select-none" style="border-top: 1px solid var(--component-border)">
           <t-menu v-model="activeExamId" class="myexam-subjects-items" theme="light" value="dashboard" style="margin-right: 74px;width:100%;border-radius: 0px 32px 0px 0px;">
-            <t-menu-item class="subjects-item" :class="{ active:activeExamId === ExamRecord.examId }" :key="index" v-for="ExamRecord,index in ExamRecords" :value="ExamRecord.examId">
+            <t-menu-item class="subjects-item" :class="{ active:activeExamId === index }" :key="index" v-for="ExamRecord,index in ExamRecords" :value="index">
               <icon class="icon" name="folder-1" color="#2F3CF4" style="margin:0 10px;font-size: 20px;" />
               <span style="flex: 1;">{{ ExamRecord.qustionsContent }}</span>
-              <icon class="icon edit-icon" :class="{ active:activeExamId === ExamRecord.examId }" name="edit-2" color="#2F3CF4" style="margin:0 10px;font-size: 20px;" />
+              <icon class="icon edit-icon" :class="{ active:activeExamId === index }" name="edit-2" color="#2F3CF4" style="margin:0 10px;font-size: 20px;" />
             </t-menu-item>
             <!-- <t-menu-item class="subjects-item"  value="创建新题库" @click="$router.push('/')">
               <icon class="icon" name="add-circle" color="#2F3CF4" style="margin: 0 10px;font-size: 20px;"/>
@@ -77,17 +77,15 @@ const visibleMenu = ref({
   transformQuestion: false,
 })
 const ExamRecords = ref([  
-  { qustionsContent: '英语', id: '1' },  
-  { qustionsContent: '语文', id: '2' },  
-  { qustionsContent: '数学', id: '3' }  
+  { qustionsContent: '全部题库'}  
 ]);  
 const questionList = ref([]);  
   const fetchExamRecords = () => {
     getQuestionList(0).then(res => {
       const { data } = res 
       if(data.code === 200) {
-        ExamRecords.value = data.data;
-        activeExamId.value =  ExamRecords?.value[0]?.examId
+        ExamRecords.value.push(...data.data)
+        // activeExamId.value =  ExamRecords?.value[0]?.examId
       }
     })
   };
@@ -107,10 +105,12 @@ const questionList = ref([]);
     })
   };
   watch(activeExamId, (newValue) => {
-    fetchExamQuestions(newValue);
+    console.log(newValue,questionList)
+    fetchExamQuestions(ExamRecords.value[newValue].examId);
   });
   onMounted(() => {
     fetchExamRecords();
+    fetchExamQuestions()
   })
 </script>
 

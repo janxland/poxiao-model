@@ -33,6 +33,9 @@ const routes = [
   },{
     path: '/knowledge',
     component: ()=>import('./layout/KnowledgeIndex.vue')
+  },{
+    path: '/judgment',
+    component: ()=>import('./layout/Judgment')
   }
 ]
 

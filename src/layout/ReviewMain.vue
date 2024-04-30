@@ -147,13 +147,13 @@ const recordClick = (i) =>{
     MessagePlugin.warning('正在出题中')
   }
   else if(i.examStatus == 2 || i.examStatus == 3){
-    router.push('/examPage?id='+i?.examId)
+    router.push('/examPage?id='+ i?.examId)
   }
   else if(i.examStatus == 4 || i.examStatus == 5){
     MessagePlugin.warning('判卷中')
   }
   else if(i.examStatus == 6){
-    MessagePlugin.success('判卷完成')
+    router.push('/judgment?id='+ i?.examId)
   }
   else if(i.examStatus == -1 ){
     MessagePlugin.warning('后台错题，请联系管理员')

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!questionList?.length" class="text-xl font-bold pt-10">
+  <div v-if="!questionList?.length" class="text-2xl font-bold pt-10 text-gray-300">
     暂无数据
   </div>
   <div v-for="i, examIndex in questionList" :key="'examList' + examIndex" v-else >
@@ -31,7 +31,7 @@
         <div v-else-if="i.type?.toString().startsWith('3') || i.type == 2" >
           <div class="my-4" v-if="disabled">
             答案：
-            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :defaultValue="formatter(item,i)" disabled />
+            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :defaultValue="item.correctAnswer" disabled />
           </div>
           <div class="my-4">
             你的答案：

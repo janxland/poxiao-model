@@ -13,7 +13,7 @@
         </div>
         <div class="bg-white w-[70vw] mr-[10vw] rounded-xl p-6" v-loading="loading.question">
             <Exam v-model:questionList="questionList" :disabled="route.query?.type !== 're'"></Exam>
-            <t-button @click="submit(0)">立即提交</t-button>
+            <t-button @click="submit(0)" v-if="activeRecord && route.query?.type === 're'">立即提交</t-button>
         </div>
         <div class="fixed bottom-20 right-10 mr-2">
             <div class="flex items-start flex-col" v-if="activeRecord && route.query?.type !== 're'">
@@ -46,16 +46,15 @@ const loading = reactive({
     record:true,
     question:true
 })
-const records = ref([])
+const records = ref([{
+    qustionsContent:'全部错题'
+}])
 const questionList = ref([])
 const activeRecord = ref()
 const { submit } = useCommitExam(questionList,activeRecord)
 getQuestionList().then(res => {
     loading.record = false
-    records.value = [{
-        qustionsContent:'全部错题'
-    },
-    ...res?.data?.data]
+    records.value.push(...res?.data?.data)
     console.log(res.data.data)
     getIncorrectData()
 })
@@ -75,6 +74,8 @@ const getIncorrectData = (id)=>{
         questionList.value = res?.data?.data.map(res=>{
         res.questionVoList = res.questionVoList.map(i=>{
             i.content = JSON.parse(i?.content)
+            if(res.type == 2)
+            i.correctAnswer = JSON.parse(i.correctAnswer).map(i=> i.prefix + '：' + i.content).join(' ')
             return i
         })
       return res

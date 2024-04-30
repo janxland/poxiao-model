@@ -10,7 +10,7 @@
       <Exam v-model:questionList="questionList"/>
     </div>
     <div class="my-4">
-      <t-button shape="round" size="large" @click="visible = true">立即提交</t-button>
+      <t-button shape="round" size="large" @click="openDialog">立即提交</t-button>
     </div>
 </div>
 <t-dialog
@@ -22,7 +22,7 @@
       <icon name="certificate-1" size="100" color="#4d4d4d"></icon>
     </div>
     <div>
-      已用时xxxx <br/>
+      已用时{{ time + '分钟' }}<br/>
       您可以选择：
     </div>
     <template #footer>
@@ -62,6 +62,13 @@ const getExamData = ()=>{
       return res
     })
   })
+}
+const time = ref('')
+if(!localStorage.getItem(`exam${route.query.id}`))
+localStorage.setItem(`exam${route.query.id}`,Date.now())
+const openDialog = () =>{
+  time.value = ((Date.now() - localStorage.getItem(`exam${route.query.id}`))/1000/60).toFixed(2)
+  visible.value = true
 }
 watch(()=>route.query.id,()=>{
     examLoading.value = true

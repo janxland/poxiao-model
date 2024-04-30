@@ -38,6 +38,7 @@ export default function useCommitExam(source,examId){
         commitExam(params).then(res=>{
           if(res.code == 200){
             MessagePlugin.success('提交成功')
+            localStorage.removeItem(`exam${examId.value}`)
             router.push('/')
           }
         }).catch(err=>{
