@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="fixed select-none top-[32px] right-[32px] z-[999] w-[200px] h-[40px] bg-[#fff] rounded-[20px] shadow
+    <div class="fixed select-none top-[32px] right-[300px] z-[999] w-[200px] h-[40px] bg-[#fff] rounded-[20px] shadow
     hover:h-[unset] overflow-hidden" ref="dragElement">
       <!-- <input type="text" placeholder="查找状态" class="w-full p-[5px] rounded-[10px] border-[1px] border-[#ccc]"> -->
       <div v-for="i,index in ExamRecords" @click="clickHandle(i)" :key="i?.qustionsContent" class="flex flex-row items-center h-[40px] px-[10px] justify-between cursor-pointer transition 
