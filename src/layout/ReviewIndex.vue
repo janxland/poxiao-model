@@ -112,7 +112,7 @@
                                       > 
                                         <div class="upload-layout" >
                                           
-                                          <t-button theme="primary">继续上传</t-button>
+                                          <t-button theme="primary">上传文件</t-button>
                                         </div>  
                                       </t-upload>  
                                     </div> 
@@ -572,7 +572,7 @@ aside{
 /* 步骤条 */
 .step2 {
   display: flex;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 

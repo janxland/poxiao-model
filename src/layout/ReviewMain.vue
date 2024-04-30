@@ -72,7 +72,7 @@
                     <router-link :to="{ path: '/myindex' }"> {{ userStore.user.nickname || "学生" }} </router-link>
                   </div>
                   <div>在线客服</div>
-                  <div class="text-[12px]">版本：V1.29</div>
+                  <div class="text-[12px]">版本：V0.1</div>
                   <div class="text-[12px]">《复习大师用户协议》|《复习大师隐私策略》</div>
                 </div>
               </div>
