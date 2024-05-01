@@ -15,14 +15,14 @@
             <div slot="body">
                 <div class="text-left select-none">
                 <span class="text-xl text-black">未读</span>
-                <li @click="checkMail(i.messageId)" v-for="i,index in mailList.filter(obj => Number(obj.status) == 1)" :key="i.messageId" class="flex cursor-pointer justify-between p-2 my-2 border-2 border-blue-500 rounded-lg transition hover:text-white hover:bg-gradient-to-r from-cyan-500 to-blue-500">
+                <li @click="checkMail(i.messageId)" v-for="i,index in mailList?.filter(obj => Number(obj.status) == 1)" :key="i.messageId" class="flex cursor-pointer justify-between p-2 my-2 border-2 border-blue-500 rounded-lg transition hover:text-white hover:bg-gradient-to-r from-cyan-500 to-blue-500">
                     <span>{{ i.content }}</span>
                     <span>{{ formatDateTime(i.sendTime) }}</span>
                 </li>
                 </div>
                 <div class="text-left">
                 <span class="text-xl text-black">已读</span>
-                <li @click="checkMail(i.messageId)" v-for="i,index in mailList.filter(obj => Number(obj.status) == 2)" class="flex justify-between p-2 my-2 bg-gray-300 rounded-lg">
+                <li @click="checkMail(i.messageId)" v-for="i,index in mailList?.filter(obj => Number(obj.status) == 2)" class="flex justify-between p-2 my-2 bg-gray-300 rounded-lg">
                     <span>{{ i.content }}</span>
                     <span>{{ formatDateTime(i.sendTime) }}</span>
                 </li>
@@ -74,7 +74,9 @@ onMounted(() => {
 getMessages().then(res => {
     const { data } = res;
     console.log(data);
-    mailList.value = data.data;
+    if(data.code==200) {
+        mailList.value = data.data;
+    }
 })
 })
 </script>
