@@ -14,8 +14,8 @@
                 <t-image :src="userStore.user.avatar"  shape="circle"></t-image>
               </div>
               <div class="flex flex-col text-left text-[#fff]">
-                <div class="text-[20px] leading-[40px]">{{ userStore.user.nickname || "未设置用户名" }}</div>
-                <div class="text-[16px] leading-[24px]">绑定手机号: {{ userStore.user.mobile }} <span class="text-[#F5C97C] pl-[100px]">剩余积分： {{ user.point }}</span> </div>
+                <div class="text-[20px] leading-[40px]" @click="()=>{if(!userStore.user.isLogin)stateStore.toggleVisible('loginByMobile')}">{{ userStore.user.nickname || "未设置用户名" }}</div>
+                <div class="text-[16px] leading-[24px]">绑定手机号: {{ userStore.user.mobile }} <span class="text-[#F5C97C] pl-[100px]">剩余积分： {{ userStore.user.point }}</span> </div>
               </div>
             </div>
             <img class="absolute w-[154px] z-[1] height-[130px] top-[32px] right-[110px]" :src="iconUrl.diamon" ></img>

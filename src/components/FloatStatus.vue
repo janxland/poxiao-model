@@ -99,7 +99,6 @@ const startAutoplay = () => {
           } else {
             ExamRecords.value.qustionsContent = "暂无出题及考试记录"
           }
-          // console.log(ExamRecords.value);
         }
       })
     } else {

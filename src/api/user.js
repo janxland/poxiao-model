@@ -28,9 +28,9 @@ export function getMessages() {
   export function getMessageContent(messageId) {
     return request({
       url: '/sso/sms/view',
-      method: 'get',
+      method: 'POST',
       params:{
-        messageId
+        messageId:messageId,
       }
     })
   }

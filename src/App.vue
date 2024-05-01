@@ -3,6 +3,7 @@
     <DepositStore></DepositStore>
     <Login></Login>
     <FloatStatus></FloatStatus>
+    <MessageView></MessageView>
 </template>
 
 <script setup>
@@ -10,6 +11,7 @@ import ReviewMain from './layout/ReviewMain.vue'
 import DepositStore from './layout/DepositStore.vue'
 import Login from './components/Login.vue'
 import FloatStatus from './components/FloatStatus.vue'
+import MessageView from './components/MessageView.vue'
 import {  ref,onMounted,watch  } from 'vue'
 import { useUserStore } from '@/store/user';
 import { useStateStore } from '@/store/state';

@@ -24,40 +24,11 @@
               </div>
               <div class="filter drop-shadow selcet-none flex absolute bottom-5 right-5 text-xl justify-around" style="width:150px">
                 <t-badge  count="new">
-                  <icon class="icon text-3xl" @click="visibles.mailBox1 = true" name="mail" color="#fff"  />
+                  <icon class="icon text-3xl" @click="stateStore.setVisible('messageList',true)" name="mail" color="#fff"  />
                 </t-badge>
                 <icon class="icon text-3xl" name="image" color="#fff" />
                 <icon @click="()=>{ stateStore.setVisible('editProfile',true)}" class="icon text-3xl" name="edit-2" color="#fff"/>
               </div>
-              <t-dialog :footer="false" :visible="visibles.mailBox2" :closeBtn="false">
-                <div class="absolute select-none flex flex-row justify-between px-[20px] items-center w-[100%] text-center top-[24px] left-[0] text-[18px] text-[#000] leading-[24px]">
-                  
-                  <icon class="icon" @click="()=> {visibles.mailBox2 = false;visibles.mailBox1 = true}"  name="chevron-left" color="#000" style="font-size: 30px;" />
-                  <p>详情</p>
-                  <icon class="icon" @click="()=> { visibles.mailBox2 = false;}"  name="close" color="#000" style="font-size: 30px;" />
-                </div>
-                <div class="text-left py-[20px] leading-[20px]">
-                  {{ mailObject?.content || "复习大师是一款通过使用大模型，能够为老师学生出题的学习小助手"}}
-                </div>
-              </t-dialog>
-              <t-dialog header="收信箱" :footer="false" :visible="visibles.mailBox1" :onClose="()=> visibles.mailBox1 = false">
-                <div slot="body">
-                  <div class="text-left select-none">
-                    <span class="text-xl text-black">未读</span>
-                    <li @click="checkMail(0)" class="flex cursor-pointer justify-between p-2 my-2 border-2 border-blue-500 rounded-lg transition hover:text-white hover:bg-gradient-to-r from-cyan-500 to-blue-500">
-                      <span>请你给我出100道关于教师资格证考试...</span>
-                      <span>24/04/19</span>
-                    </li>
-                  </div>
-                  <div class="text-left ">
-                    <span class="text-xl text-black">已读</span>
-                    <li class="flex justify-between p-2 my-2 bg-gray-300 rounded-lg">
-                      <span>请你给我出100道关于教师资格证考试...</span>
-                      <span>24/04/19</span>
-                    </li>
-                  </div>
-                </div>
-              </t-dialog>
             </div>
           </t-content>
           <t-layout class="content-layout">
@@ -137,7 +108,6 @@ import {  ref,onMounted,watch  } from 'vue'
 import { Icon } from 'tdesign-icons-vue-next';
 import { useUserStore } from '@/store/user';
 import { useStateStore } from '@/store/state';
-import { getMessages,getMessageContent } from '@/api/user';
 const userStore = useUserStore();
 const stateStore = useStateStore();
 const user  = userStore.user;
@@ -213,21 +183,6 @@ const vipList = ref([{
   value: 80
 },
 ])
-const mailObject = ref({
-  "content": "",
-	"messageId": 0,
-	"sendTime": "",
-	"sendUserName": "",
-	"status": ""
-})
-const checkMail = (messageId) => {
-  visibles.value.mailBox1 = false;
-  visibles.value.mailBox2 = true;
-  getMessageContent(messageId).then(res => {
-    const { data } = res;
-    mailObject.value = data.data;
-  })
-}
 const toggleLogin = () =>{
   if(userStore.user.mobile) {
     userStore.logout();
