@@ -271,6 +271,9 @@ const beforeUpload = (file) => {
   if (file.size > 5 * 1024 * 1024) {
     MessagePlugin.warning('上传的文件不能大于5M');
     return false;
+  } if (!localStorage.getItem("token")) {
+    MessagePlugin.warning('请先登录账号');
+    return false
   }
 
   return true;
@@ -282,14 +285,18 @@ function handleSelectChange(files, context) {
 }
 
 const handleSuccess = (params) => {
-  console.log('success', params.response[0].data);
+  console.log('success', params);
+   
   const res =params.response[0].data[0]
   console.log('log', res);
   const fileId = res.id
   questionForm.value.fileIds.push(fileId)
   console.log('Form', questionForm.value);
-  // questionForm.value.fileIds = 
   MessagePlugin.success('上传成功');
+  
+  
+  // questionForm.value.fileIds = 
+  
 };
 
 
@@ -527,7 +534,9 @@ const handleQuestionStart = () => {
   if(questionForm.value.qustionsContent=='') {
     MessagePlugin.info(`请输入出题内容！`)
     return;
-  };
+  } if (!localStorage.getItem("token")){
+    MessagePlugin.warning('请先登录账号')
+  }
   questionstart(questionForm.value).then((res)=>{
     const { data } = res;
     if(data.code == 200) {
