@@ -11,20 +11,20 @@
         </div>
         <!-- 单选 -->
         <div v-if="i.type == 1">
-          <t-radio-group v-model="item.ans" allow-uncheck :default-value="item.ans " class="!block" :readonly="onlyread">
-            <t-radio-button :value="answer.id" v-for="answer, answerIndex in item.content"
+          <t-radio-group v-model="item.ans" allow-uncheck class="!block" :readonly="onlyread">
+            <t-radio-button :value="answer.prefix" v-for="answer, answerIndex in item.content"
               :key="'answer' + answerIndex" :disabled="disabled" class="!border-0 !block !h-10">
-              <div class="answer" :class="checkAnswer(item, answer.id)">{{ answerMap[answerIndex] }}</div>{{ answer.content }}
+              <div class="answer" :class="checkAnswer(item, answer.prefix)">{{ answerMap[answerIndex] }}</div>{{ answer.content }}
             </t-radio-button>
           </t-radio-group>
         </div>
         <!-- 多选 -->
         <div v-else-if="i.type == 11">
-          <t-checkbox-group v-model="item.ans" :default-value="item.ans " v-if="disabled">
-            <t-checkbox :key="'answer' + answerIndex" :label="answer.content" :value="answer.id" v-for="answer, answerIndex in item.content" />
+          <t-checkbox-group v-model="item.ans" v-if="!disabled">
+            <t-checkbox :key="'answer' + answerIndex" :label="answer.content" :value="answer.prefix" v-for="answer, answerIndex in item.content" />
           </t-checkbox-group>
-          <t-checkbox-group :default-value="item.answerContent " v-else  :readonly="onlyread">
-            <t-checkbox :key="'answer' + answerIndex" :label="answer.content" :value="answer.id" v-for="answer, answerIndex in item.content" />
+          <t-checkbox-group :default-value="item.correctAnswer " v-else  :readonly="onlyread">
+            <t-checkbox :key="'answer' + answerIndex" :label="answer.content" :value="answer.prefix" v-for="answer, answerIndex in item.content" />
           </t-checkbox-group>
         </div>
         <!-- 简答 -->
@@ -58,11 +58,11 @@
         </div>
         <div class="knowledge" v-if="disabled">
           <div class="text-blue-600 text-md font-bold my-2">解题思路</div>
-          <div>{{ item.questionAnalyze || '暂无' }}</div>
-          <!-- <div class="text-blue-600 text-md font-bold my-2">涉及知识点</div>
-          <div>{{ item.questionAnalyze || '暂无' }}</div>
+          <div>{{ item.analysis?.review_and_analysis || '暂无' }}</div>
+          <div class="text-blue-600 text-md font-bold my-2">涉及知识点</div>
+          <div>{{ item.analysis?.concept_analysis || '暂无' }}</div>
           <div class="text-blue-600 text-md font-bold my-2">最佳答案</div>
-          <div>{{ item.questionAnalyze || '暂无' }}</div> -->
+          <div>{{ item.analysis?.options_analysis || '暂无' }}</div>
         </div>
       </div>
     </div>
@@ -83,6 +83,7 @@ const props = defineProps({
     default: false
   },
 })
+
 const questionList = defineModel('questionList', {})
 const answerMap = ref(["A", "B", "C", "D", "E"]);
 const questionTypeMap = ref([

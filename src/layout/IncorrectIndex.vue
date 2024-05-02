@@ -54,11 +54,15 @@ const activeRecord = ref()
 const { submit } = useCommitExam(questionList,activeRecord)
 getQuestionList().then(res => {
     loading.record = false
-    records.value.push(...res?.data?.data)
-    console.log(res.data.data)
-    getIncorrectData()
+    if(res?.data?.code == 200){
+        records.value.push(...res?.data?.data)
+        getIncorrectData()
+    }
+    else{
+        loading.question = false
+    }
+   
 })
-
 const recordChange = (e) =>{
     loading.question = true
     activeRecord.value = e.examId
@@ -71,21 +75,25 @@ const getIncorrectData = (id)=>{
     params.id = id
     getIncorrectList(params).then(res=>{
         loading.question = false
-        questionList.value = res?.data?.data.map(res=>{
-        res.questionVoList = res.questionVoList.map(i=>{
-            i.content = JSON.parse(i?.content)
-            if(res.type == 2)
-            i.correctAnswer = JSON.parse(i.correctAnswer).map(i=> i.prefix + '：' + i.content).join(' ')
-            return i
+        console.log(res.data.data)
+        if(res.code != 500){
+            questionList.value = res?.data?.data.map(res=>{
+                res.questionVoList = res.questionVoList.map(i=>{
+                    i.content = JSON.parse(i?.content)
+                    // if(res.type == 2)
+                    // i.correctAnswer = JSON.parse(i.correctAnswer).map(i=> i.prefix + '：' + i.content).join(' ')
+                    if(res.type == '11')
+                    i.correctAnswer = JSON.parse(i.correctAnswer)
+                    return i
+                })
+            return res
         })
-      return res
-    })
-        console.log(res)
+        }
     }).catch(err=>{
         console.log(err)
     })
 }
-
+getQuestionList()
 const reExam = () => {
     router.replace('/incorrect?type=re')
 }

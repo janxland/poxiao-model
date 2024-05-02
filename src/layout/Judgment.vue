@@ -41,7 +41,7 @@
                             <div class="flex p-4 flex-wrap">
                                 <div v-for="(i,index) in question.questionVoList" class="text-center text-black flex items-center m-2">
                                     <div class="flex flex-col">
-                                        <div class="w-12 h-12 rounded-full bg-slate-400 mx-2 leading-[48px]" :class="checkAnswer(question,i)">
+                                        <div class="w-12 h-12 rounded-full mx-2 leading-[48px]" :class="checkAnswer(question,i)">
                                             <icon name="check" v-if="i.answerContent == i.correctAnswer.toLowerCase()" size="30"></icon>
                                             <icon name="close" v-else size="30"></icon>
                                         </div>
@@ -102,9 +102,11 @@ const getExamData = ()=>{
         examLoading.value = false
         questionList.value = res?.data?.data.map(res=>{
         res.questionVoList = res.questionVoList.map(i=>{
+            
             i.content = JSON.parse(i?.content)
-            if(res.type == 2)
-            i.correctAnswer = JSON.parse(i.correctAnswer).map(i=> i.prefix + '：' + i.content).join(' ')
+            if(res.type == '11')
+            i.correctAnswer = JSON.parse(i.correctAnswer)
+            i.analysis = JSON.parse(i.analysis)
             return i
         })
       return res

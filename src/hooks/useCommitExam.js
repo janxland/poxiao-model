@@ -26,12 +26,13 @@ export default function useCommitExam(source,examId){
           examId:examId.value,
           flag
         }
+        console.log(source.value)
         params.answerList = source.value.reduce((pre,cur)=>{
           return [
             ...pre,
             ...cur.questionVoList.map(question=>
               ({questionId: question.questionId ,
-              answerContent: question.ans ,
+              answerContent: Array.isArray(question.ans) ? question.ans.join(',') : (question.ans || '' ) ,
               answerType:cur.type}))
             ]
         },[])

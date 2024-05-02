@@ -10,7 +10,7 @@
         </t-head-menu>
       </t-header>
       <t-layout>
-        <t-aside class="myexam-left-side select-none" style="border-top: 1px solid var(--component-border)">
+        <t-aside class="myexam-left-side select-none min-h-[80vh]" style="border-top: 1px solid var(--component-border)">
           <t-menu v-model="activeExamId" class="myexam-subjects-items" theme="light" value="dashboard" style="margin-right: 74px;width:100%;border-radius: 0px 32px 0px 0px;">
             <t-menu-item class="subjects-item" :class="{ active:activeExamId === index }" :key="index" v-for="ExamRecord,index in ExamRecords" :value="index">
               <icon class="icon" name="folder-1" color="#2F3CF4" style="margin:0 10px;font-size: 20px;" />
@@ -30,7 +30,7 @@
         </t-aside>
         <t-layout>
           <t-content>
-            <div class="myexam-main-content">
+            <div class="myexam-main-content min-h-[80vh]">
               <t-space direction="vertical">
                 <Exam :questionList="questionList" :onlyread="true"></Exam>
               </t-space>
@@ -91,17 +91,17 @@ const questionList = ref([]);
   };
   const fetchExamQuestions = (examId) => {
     getMyExamList(examId).then(res => {
-      const { data } = res 
-      if(data.code === 200) {
-        const targetIndex = data.data.findIndex(obj => obj.type === "1");
-        if (targetIndex !== -1 && data.data[targetIndex].questionVoList) {
-          data.data[targetIndex].questionVoList.forEach(question => {
-            question.content = JSON.parse(question.content);
-          });
+      if(res.code != 500){
+            questionList.value = res?.data?.data.map(res=>{
+                res.questionVoList = res.questionVoList.map(i=>{
+                    i.content = JSON.parse(i?.content)
+                    if(res.type == '11')
+                    i.ans = Array.isArray(i.ans) ? i.ans : []
+                    return i
+                })
+            return res
+        })
         }
-        if(data.data.length!=0) questionList.value = data.data;
-        
-      }
     })
   };
   watch(activeExamId, (newValue) => {

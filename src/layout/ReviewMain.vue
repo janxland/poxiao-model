@@ -53,7 +53,7 @@
                     </div>
                     <div class="h-[300px] mt-4 overflow-auto"  v-loading="recordLoading">
                       <div
-                        @click="recordClick(i)" v-for="i, index in recordList?.filter(i=>i?.qustionsStatus == activeRecord)"
+                        @click="recordClick(i)" v-for="i, index in recordList"
                         class="rounded-2xl text-left px-4 py-2 flex items-center justify-between my-1 cursor-pointer"
                         :key="'recordListData' + index" :class="i.examId == route.query.id ? 'bg-blue-500/90 ':'bg-record_bg/75'">
                         <div class="w-5/6 text-ellipsis text-nowrap overflow-hidden">{{ i?.qustionsContent }}</div>
@@ -136,22 +136,32 @@ const activeRecord = ref(0)
 const recordShow = ref(false)
 const recordLoading = ref(true)
 const getRecordList = (str) => {
-  let params = {}
-  if(str){
-    params.title = str
-  }
-  getQuestionList(params).then(res => {
-    recordList.value = res.data.data
-    recordLoading.value = false
-    console.log(res.data.data,11)
-  })
+    recordLoading.value = true
+    let params = {
+        qustionsMethod:activeRecord.value
+    }
+    if(str){
+        params.title = str
+    }
+    getQuestionList(params).then(res => {
+        recordList.value = res.data.data
+        recordLoading.value = false
+    }).catch(err=>{
+        recordLoading.value = false
+    })
 }
+watch(activeRecord,()=>{
+    getRecordList()
+})
 const recordClick = (i) =>{
   if(i.examStatus == 1){
     MessagePlugin.warning('正在出题中')
   }
-  else if(i.examStatus == 2 || i.examStatus == 3){
+  else if(i.examStatus == 2){
     router.push('/examPage?id='+ i?.examId)
+  }
+  else if(i.examStatus == 3){
+    router.push(`/examPage?id=${i?.examId}&type=3`)
   }
   else if(i.examStatus == 4 || i.examStatus == 5){
     MessagePlugin.warning('判卷中')
@@ -167,14 +177,12 @@ getRecordList()
 const search = ref('')
 const searchRecord = (str) =>{
   if(str != ''){
-    recordLoading.value = true
     getRecordList(str)
   }  
 }
 const clearSearch = () =>{
   if(search.value != ''){
     search.value = ''
-    recordLoading.value = true
     getRecordList()
   } 
 }

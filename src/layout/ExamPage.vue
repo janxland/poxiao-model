@@ -37,7 +37,7 @@
 <script setup>
 import Exam from '@/components/Exam.vue';
 import { Icon } from 'tdesign-icons-vue-next';
-import { getMyExamList } from '@/api/question'
+import { getMyExamList,getResult } from '@/api/question'
 import { useRoute } from 'vue-router'
 import { ref,watch } from 'vue'
 import useCommitExam from '@/hooks/useCommitExam'
@@ -47,6 +47,12 @@ const examLoading = ref(true)
 const questionList = ref([])
 const activeRecord = ref()
 const { submit } = useCommitExam(questionList,activeRecord)
+if(route.query.type == 3){
+
+}
+else{
+
+}
 const getExamData = ()=>{
   getMyExamList(route.query.id).then(res=>{
     console.log(res.data)
@@ -63,6 +69,22 @@ const getExamData = ()=>{
     })
   })
 }
+const getExamStoreData = () =>{
+    getResult(route.query.id).then(res=>{
+        examLoading.value = false
+        questionList.value = res.data.data.map(res=>{
+        res.questionVoList = res.questionVoList.map(i=>{
+            i.content = JSON.parse(i?.content)
+            // 初始化多选题答案
+            if(res.type == '11')
+            i.ans = JSON.parse(i.answerContent)
+            i.ans = i.answerContent
+            return i
+        })
+        return res
+        })
+    })
+}
 const time = ref('')
 if(!localStorage.getItem(`exam${route.query.id}`))
 localStorage.setItem(`exam${route.query.id}`,Date.now())
@@ -73,7 +95,13 @@ const openDialog = () =>{
 watch(()=>route.query.id,()=>{
     examLoading.value = true
     activeRecord.value = route.query.id
-    getExamData()
+    if(route.query.type == 3){
+        getExamStoreData()
+    }
+    else{
+        getExamData()
+    }
+    
 },{immediate:true})
 
 const visible = ref(false)

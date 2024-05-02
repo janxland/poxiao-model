@@ -85,3 +85,17 @@ export function getIncorrectList(data) {
     params: data
   })
 }
+/**
+ * 获取用户提交的答卷
+ * @param {Number} examId
+ * @returns
+ */
+export function getResult(examId) {
+  return request({
+    url: '/reviewmaster/question/result',
+    method: 'get',
+    params: {
+        examId,
+    }
+  })
+}
