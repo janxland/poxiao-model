@@ -65,8 +65,10 @@
                     </div>
                   </div>
                 </div>
-                <!-- Foot info  -->
-                <div class="flex p-[10px] flex-col h-[200px] justify-around text-white">
+                <div @click="()=>{if(userStore.user.isLogin)stateStore.setVisible('firstLoginDaily',true)}">
+                  每日拆盲盒
+                </div>
+                <div class="flex p-[10px] flex-col h-[200px] justify-around text-white" @click.stop="()=>{if(!userStore.user.isLogin)stateStore.setVisible('loginByMobile',true)}">
                   <div class="flex flex-row justify-center items-center">
                     <t-avatar class="w-[32px] h-[32px] mr-[10px]" :image="userStore.user.avatar" :hide-on-load-failed="false" />
                     <router-link :to="{ path: '/myindex' }"> {{ userStore.user.nickname || "学生" }} </router-link>
@@ -112,8 +114,10 @@ import { Icon } from 'tdesign-icons-vue-next';
 import { useRoute, useRouter } from 'vue-router';
 import { getQuestionList } from '@/api/question'
 import { useUserStore } from '@/store/user';
+import { useStateStore } from '@/store/state';
 import { MessagePlugin } from 'tdesign-vue-next';
 const userStore = useUserStore();
+const stateStore = useStateStore();
 // 获取当前路由对象  
 const route = useRoute();
 const router = useRouter()
