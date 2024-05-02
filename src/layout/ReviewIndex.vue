@@ -286,7 +286,6 @@ function handleSelectChange(files, context) {
 
 const handleSuccess = (params) => {
   console.log('success', params);
-   
   const res =params.response[0].data[0]
   console.log('log', res);
   const fileId = res.id
