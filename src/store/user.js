@@ -3,6 +3,7 @@ import { getUserInfo } from '@/api/user';
 export const useUserStore = defineStore('user', {
   state: () => ({
     user: {
+      id:0, 
       isLogin: localStorage.getItem("token")?true:false,
       name:"未登录",
       nickname:'未登录',
@@ -10,13 +11,14 @@ export const useUserStore = defineStore('user', {
       background:"",
       point: 458,
       sex:0,
-      inviteCode:"TS13QUEEN"
+      invitationCode:""
     }
   }),
   actions: {
     setUser(user) {
       this.user = Object.assign({}, this.user, user);
       const avatar = [require('@/assets/images/male.png'),require('@/assets/images/female.png'),]
+      this.user.invitationCode = this.user.id
       if(true || this.user.avatar){
         this.user.avatar = avatar[this.user.sex]
       }
@@ -25,12 +27,7 @@ export const useUserStore = defineStore('user', {
       getUserInfo().then(res => {
         const { data } = res
         if(data.code === 200) {
-          this.user = Object.assign({},this.user,data.data)
-          const avatar = [require('@/assets/images/male.png'),require('@/assets/images/female.png'),]
-          if(true || this.user.avatar){
-            this.user.avatar = avatar[this.user.sex]
-            this.user.isLogin = true
-          }
+          this.setUser(data.data)
         } 
       })
     },
@@ -44,7 +41,7 @@ export const useUserStore = defineStore('user', {
         background:"",
         point: 458,
         sex:0,
-        inviteCode:"TS13QUEEN"
+        invitationCode:"TS13QUEEN"
       };
     }
   },

@@ -8,6 +8,10 @@ export const useStateStore = defineStore('state', {
       editProfile: false, // 修改个人信息
       messageList: false, // 收信箱
       messageView: false, // 收信箱
+      firstLoginDaily:false, // 每日首次登录（盲盒点开
+    },
+    transfer:{
+      activeProductId: 0, // 当前激活的产品id
     }
   }),
   actions: {
@@ -19,6 +23,10 @@ export const useStateStore = defineStore('state', {
     },
     setVisible(name,value) {
       this.visible[name] = value;
+    },
+
+    setTransfer(name,value) {
+      this.transfer[name] = value;
     }
   },
 });

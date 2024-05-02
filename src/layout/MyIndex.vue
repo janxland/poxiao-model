@@ -11,11 +11,11 @@
       </t-header>
       <t-layout class="header-layout">
           <t-content>
-            <div class="user-header" :style="{'background-image': `url( ${userStore.user.background || 'https://mybox-1257251314.cos.ap-chengdu.myqcloud.com/www/image_2496.png'})`}"> 
+            <div class="user-header bg-[#888]" :style="{'background-image': `url( ${userStore.user.background || 'https://mybox-1257251314.cos.ap-chengdu.myqcloud.com/www/image_2496.png'})`}"> 
               <div class="user-avatar">
                 <t-image :src="userStore.user.avatar || iconUrl.defaultAvatar" shape="circle"></t-image>
               </div>
-              <div class="user-info">
+              <div class="user-info select-none" @click.stop="()=>{if(!userStore.user.isLogin)stateStore.setVisible('loginByMobile',true)}">
                 <div class="user-name">{{ userStore.user.nickname || "未设置用户名" }}</div>
                 <div class="user-desc">绑定手机号: {{ userStore.user.mobile }}</div>
               </div>
@@ -35,21 +35,24 @@
             <t-aside class="content-layout-left">
               <div class="flex justify-between text-[length:var(--td-size-7)] px-10 py-5">
                 <span>积分充值</span>
-                <span>当前积分剩余:<span style="color:#4566FC">{{ user.point }}</span></span>
+                <span>当前积分剩余:<span style="color:#4566FC">{{ userStore.user.point }}</span></span>
               </div>
               <div class="chonzhi-content">
                 <div  style="width:100%;position: relative;">
                   <t-image class="w-[100%] min-h-[400px]" lazy="true"  :src="iconUrl.jifenImage" style="width:100%;z-index:0"></t-image>
                   <div class="vip-list no-scrollbar">
-                    <div class="vip-list-box flex overflow-auto no-scrollbar">
-                      <li class="vip-list-item" :key="index" v-for="item,index in vipList" @click="()=>{stateStore.toggleVisible('deposit')}">
+                    <div class="vip-list-box flex overflow-auto overflow-x-scroll no-scrollbar" ref="scrollContainer">
+                      <!-- <li class="vip-list-item" :key="index" v-for="item,index in vipList" @click="()=>{stateStore.toggleVisible('deposit')}">
                         <div class="vip-list-item-name"><span style="font-size: var(--td-size-12);letter-spacing: 1.68px;">{{item.num}}</span>积分</div>
                         <div class="vip-list-item-price">¥ {{item.price}}</div>
                         <div class="vip-list-item-value">立减{{item.value - item.price}}</div>
+                      </li> -->
+                      <li @click="()=>{stateStore.setTransfer('activeProductId',item.id);stateStore.toggleVisible('deposit')}" class="flex cursor-pointer rounded-[24px] mx-[10px] relative flex-col justify-center w-[168px] h-[168px]" :key="index" v-for="item,index in vipList">
+                          <img class="w-[168px] max-w-[168px]" :src="item.picUrl" alt="">
                       </li>
                     </div>
                     <div class="w-20 h-100 flex justify-center">
-                      <icon class="icon mt-14" name="chevron-right" color="#F2D7A0" style="font-size: 60px;" />
+                      <icon class="icon mt-14" @click="scrollTo('right')" name="chevron-right" color="#F2D7A0" style="font-size: 60px;" />
                     </div>
                   </div>
                   <img :src="iconUrl.vipTips" 
@@ -82,7 +85,7 @@
                   <li class="flex flex-row items-center  py-[5px]">
                     <icon class="icon text-[40px] bg-[#0062E3] mr-2.5 p-2.5 rounded-[50%]" name="link-1" color="#fff" />
                     <div class="flex flex-col">
-                      <span class="text-[14px] leading-[24px]">链接邀请</span>
+                      <span class="text-[14px] leading-[24px]">链接邀请 <button class="transition hover:bg-[#4566FC] select-none bg-[#4566FCaa] text-[#fff] px-[10px] rounded-[5px]" @click="copyLink">复制链接</button></span>
                       <span class="text-[14px] leading-[24px]">好友通过此链接注册成功，双方均可获得积分</span>
                     </div>
                   </li>
@@ -90,7 +93,7 @@
                   <li class="flex flex-row items-center py-[5px]">
                     <icon class="icon text-[40px] bg-[#00BAAD] mr-2.5 p-2.5 rounded-[50%]" name="code" color="#fff" />
                     <div class="flex flex-col">
-                      <span class="text-[14px] leading-[24px]">邀请码邀请：{{user.inviteCode}}</span>
+                      <span class="text-[14px] leading-[24px]">邀请码邀请：{{userStore.user.invitationCode}}</span>
                       <span class="text-[14px] leading-[24px]">好友注册时填入该邀请码，双方均可获得积分</span>
                     </div>
                   </li>
@@ -108,6 +111,8 @@ import {  ref,onMounted,watch  } from 'vue'
 import { Icon } from 'tdesign-icons-vue-next';
 import { useUserStore } from '@/store/user';
 import { useStateStore } from '@/store/state';
+import { getProducts } from '@/api/pay';
+import { MessagePlugin } from 'tdesign-vue-next';
 const userStore = useUserStore();
 const stateStore = useStateStore();
 const user  = userStore.user;
@@ -152,37 +157,88 @@ const dailyTask = ref([
     status: false
   },
 ])
-const vipList = ref([{
-  name: '',
-  num: 300,
-  price: 5.8,
-  value: 12
-},
-{
-  name: '',
-  num: 500,
-  price: 9.9,
-  value: 20
-},
-{
-  name: '',
-  num: 900,
-  price: 16.8,
-  value: 35
-},
-{
-  name: '',
-  num: 1600,
-  price: 28.8,
-  value: 60
-},
-{
-  name: '',
-  num: 2000,
-  price: 38.8,
-  value: 80
-},
+
+const scrollContainer = ref()
+const scrollTo = (direction) => {
+  const container = scrollContainer.value;
+  console.log(scrollContainer);
+  const containerWidth = container.offsetWidth;
+  const contentWidth = container.scrollWidth;
+  const scrollLeft = container.scrollLeft;
+  let targetScrollLeft;
+
+  if (direction === 'right') {
+    targetScrollLeft = scrollLeft + containerWidth;
+    console.log(targetScrollLeft,contentWidth);
+    if (targetScrollLeft >= (contentWidth-20)) {
+      targetScrollLeft = 0
+    }
+  }
+
+  container.scrollTo({
+    left: targetScrollLeft,
+    behavior: 'smooth'
+  });
+}
+const vipList = ref([
+  {
+    "id": 1,
+    "picUrl": "http://www.masterreview.com.cn:28080/prod-api/profile/upload/2024/05/02/300_20240502174554A009.png",
+    "price": "5.80"
+  },
+  {
+    "id": 2,
+    "picUrl": "http://www.masterreview.com.cn:28080/prod-api/profile/upload/2024/05/02/500_20240502174900A010.png",
+    "price": "0.01"
+  },
+  {
+    "id": 3,
+    "picUrl": "http://www.masterreview.com.cn:28080/prod-api/profile/upload/2024/05/02/900_20240502174908A011.png",
+    "price": "0.01"
+  },
+  {
+    "id": 4,
+    "picUrl": "http://www.masterreview.com.cn:28080/prod-api/profile/upload/2024/05/02/1600_20240502174919A012.png",
+    "price": "0.01"
+  },
+  {
+    "id": 5,
+    "picUrl": "http://www.masterreview.com.cn:28080/prod-api/profile/upload/2024/05/02/3000_20240502180238A013.png",
+    "price": "0.01"
+  },
+  {
+    "id": 6,
+    "picUrl": "http://www.masterreview.com.cn:28080/prod-api/profile/upload/2024/05/02/4100_20240502180258A014.png",
+    "price": "0.01"
+  },
+  {
+    "id": 7,
+    "picUrl": "http://www.masterreview.com.cn:28080/prod-api/profile/upload/2024/05/02/5600_20240502180311A015.png",
+    "price": "0.01"
+  },
+  {
+    "id": 8,
+    "picUrl": "http://www.masterreview.com.cn:28080/prod-api/profile/upload/2024/05/02/6400_20240502180543A016.png",
+    "price": "0.01"
+  }
 ])
+getProducts().then(res=>{
+    const { data } = res;
+    if(data.code == 200){
+        vipList.value = data.data;
+    }
+})
+const copyLink = () => {
+  const link = `${window.location.origin}?invitationCode=${userStore.user.invitationCode || ''}`;
+  
+  navigator.clipboard.writeText(link)
+    .then(() => {
+      MessagePlugin.success({content:'复制成功',placement:'bottom'});
+    })
+    .catch((error) => {
+      MessagePlugin.error({content:'复制失败',placement:'bottom'});
+    });
+}
 const toggleLogin = () =>{
   if(userStore.user.mobile) {
     userStore.logout();
@@ -257,7 +313,6 @@ watch(userStore.user, (newVal) => {
   position: relative;
   padding: 50px 0 50px 60px;
   border-radius: 32px;
-  background-color: #fff;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

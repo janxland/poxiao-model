@@ -1,8 +1,7 @@
 <template>
   <div class="LoginView">
-      <!-- <t-button theme="primary" @click="onClick">基础确认对话框</t-button> -->
-      <t-dialog  width="500px" v-model:visible="stateStore.visible.loginByMobile" header="对话框标题" placement="center"
-        showOverlay showInAttachedElement destroyOnClose :footer="false" :confirm-on-enter="true">
+      <t-dialog  width="500px" class="fixed" v-model:visible="stateStore.visible.loginByMobile" placement="center"
+          destroyOnClose :footer="false">
         <template #header>
           <t-row class="login-header-main">
             <t-col class="login-header-bg">
@@ -46,7 +45,10 @@
                       </t-input>
                     </t-row>
                     <t-row>
-                      <t-input v-model="userLogin3Input.smsCode" placeholder="请输入收到的短信验证码" clearable></t-input>
+                      <t-col class="flex flex-row">
+                        <t-input class="flex-1" v-model="userLogin3Input.smsCode" placeholder="请输入收到的短信验证码"></t-input>
+                        <t-input class="ml-[20px] w-[150px]" v-model="userLogin3Input.invitationCode" placeholder="请输入邀请码(可选)"></t-input>
+                      </t-col>
                     </t-row>
                   </t-space>
                 </div>
@@ -132,6 +134,11 @@
           
         </template>
       </t-dialog>
+      <t-dialog class="select-none" width="560px" v-model:visible="stateStore.visible.firstLoginDaily" header=" " showOverlay placement="center" :footer="false" :confirm-on-enter="true">
+        <template #body>
+              每日首次登录奖励
+        </template>
+      </t-dialog>
   </div>
 </template>
 
@@ -142,6 +149,10 @@ import { useUserStore } from '@/store/user';
 import { useStateStore } from '@/store/state';
 import { login, getSmsCode,setUserProfile } from '@/api/user';
 import { Avatar } from 'tdesign-vue-next';
+import { useRoute,useRouter  } from 'vue-router';  
+import { MessagePlugin } from 'tdesign-vue-next'; 
+const route = useRoute()
+const router = useRouter()
 const userStore = useUserStore();
 const stateStore = useStateStore();
 const iconUrl = ref({
@@ -175,7 +186,8 @@ const handleSetProfile = () => {
 const userLogin3Input = ref({
   stayTime: 0,
   phone: "",
-  smsCode: ""
+  smsCode: "",
+  invitationCode:0
 });
 // 短信验证码登录
 
@@ -201,32 +213,49 @@ const getSmsCodeHandler = () => {
 
 //登录控制
 const login3Handler = () => {
-  if (userLogin3Input.value.phone && userLogin3Input.value.smsCode) {
-    login({
-      mobile: userLogin3Input.value.phone,
-      smsCode: userLogin3Input.value.smsCode
-    }).then(res => {
+  const { phone, smsCode, invitationCode } = userLogin3Input.value;
+  if (phone && smsCode) {
+    login({ mobile: phone, smsCode, invitationCode }).then(res => {
       const { data } = res;
-      if (data.code == 200) {
+      if (data.code === 200) {
         stateStore.toggleVisible("loginByMobile");
         localStorage.setItem("token", data.data.token);
-        if(!(data.data.nickname || data.data.nickName)) {
+        userStore.setUser(data.data.ssoUserVo);
+        if (!userStore.user.nickname) {
           userStore.setUser({
-            mobile:userLogin3Input.value.phone,
-            nickname: userLogin3Input.value.phone,
+            mobile: phone,
+            nickname: phone,
             sex: 0,
           });
-          stateStore.setVisible("editProfile",true)
+          stateStore.setVisible("editProfile", true);
         }
+        if (data.data.point) {
+          stateStore.setVisible("firstLoginDaily", true);
+        }
+      } else {
+        showErrorMsg("验证码错误");
       }
-    })
+    });
+  } else {
+    showErrorMsg("请输入手机号和验证码");
   }
-}
-onMounted(() => {
-  console.log(stateStore.visible.loginByMobile);
+};
+
+const showErrorMsg = (content) => {
+  MessagePlugin.error({
+    content,
+    placement: "bottom",
+    duration: 3000,
+  });
+};
+
+onMounted(async () => {
   localStorage.getItem("token") ? stateStore.setVisible("loginByMobile",false)  : stateStore.setVisible("loginByMobile", true);
   userStore.user.nickname =="" ? stateStore.setVisible("editProfile",true)  : stateStore.setVisible("editProfile", false);
-});
+  await router.isReady();
+  const { query } = route;
+  userLogin3Input.value.invitationCode = query.invitationCode || "";
+})
 
 </script>
 

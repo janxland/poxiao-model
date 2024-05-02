@@ -33,15 +33,21 @@ const ExamRecords = ref([
   {
     "examId": 0,
     "qustions": "30,31,32,33,34,35,38,39,40",
-    "examStatus": "1",
-    "qustionsContent": localStorage.getItem("token") ? "正在获取状态..." : "你还没有登录",
+    "examStatus": "0",
+    "qustionsContent": localStorage.getItem("token") ? "正在获取状态..." : "你还没有登录哦！",
     "qustionsStatus": "0"
   }
 ])
 // 设置自动轮播的定时器
 let autoplayInterval;
 //出题状态1=出题中,2=已出题,3=考试中,4=已交卷,5=判卷中,6=已判卷，-1=异常退出
-const statusMap = ref([{
+const statusMap = ref([
+{
+  id:0,
+  name:"等待操作",
+  icon:"round",
+  color:"#0052d9"
+},{
   id:1,
   name:"出题中",
   icon:"loading",
