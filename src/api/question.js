@@ -1,5 +1,4 @@
 import request from '@/utils/request'
-import { data } from 'autoprefixer'
 
 
 
@@ -7,7 +6,10 @@ export function questionstart(data) {
   return request({
     url: '/reviewmaster/question/start',
     method: 'post',
-    params: data
+    data: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json'
+    }
   })
 }
 
