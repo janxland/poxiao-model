@@ -5,10 +5,14 @@
       <!-- <input type="text" placeholder="查找状态" class="w-full p-[5px] rounded-[10px] border-[1px] border-[#ccc]"> -->
       <div v-for="i,index in ExamRecords" @click="clickHandle(i)" :key="i?.qustionsContent" class="flex flex-row items-center h-[40px] px-[10px] justify-between cursor-pointer transition 
       hover:bg-[#f5f5f5] hover:text-[#0052d9]">
-        <div class="w-5/6 text-left whitespace-nowrap overflow-hidden text-ellipsis max-w-[160px] overflow-hidden flex-1" :title="i?.qustionsContent">{{ i?.qustionsContent }}</div>
-        <div class="h-[25px] w-[25px] rounded-full " :title="checkStatus(i).name">
-          <icon :name="checkStatus(i).icon" :color="checkStatus(i).color" size="25"></icon>
-        </div>
+      <t-tooltip placement="right"  :content="i?.qustionsContent+' '+checkStatus(i).name">
+        <div class="w-5/6 text-left whitespace-nowrap overflow-hidden text-ellipsis max-w-[160px] overflow-hidden flex-1">{{ i?.qustionsContent }}</div>
+      </t-tooltip>
+        <t-tooltip placement="right" :content="checkStatus(i).name">
+          <div class="h-[25px] w-[25px] rounded-full ">
+            <icon :name="checkStatus(i).icon" :color="checkStatus(i).color" size="25"></icon>
+          </div>
+        </t-tooltip>
       </div>
     </div>
   </div>
@@ -25,7 +29,6 @@ const props = defineProps({
 });
 const isDragging = ref(false);
 const dragElement = ref();
-const activeIndex = ref(0);
 const ExamRecords = ref([
   {
     "examId": 0,

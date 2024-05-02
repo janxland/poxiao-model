@@ -524,7 +524,19 @@ const fileRequest = {
 
 
 const handleQuestionStart = () => {
-  questionstart(questionForm.value)
+  if(questionForm.value.qustionsContent=='') {
+    MessagePlugin.info(`请输入出题内容！`)
+    return;
+  };
+  questionstart(questionForm.value).then((res)=>{
+    const { data } = res;
+    if(data.code == 200) {
+      MessagePlugin.success(`出题中，请注意悬浮窗等待！`);
+      questionForm.value.qustionsContent = '';
+    } else {
+      MessagePlugin.error(`出题错误！`);
+    }
+  })
 }
 
 
