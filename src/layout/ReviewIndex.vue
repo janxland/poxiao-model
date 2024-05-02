@@ -62,12 +62,12 @@
                     <div class="search-input">
                       <!-- <t-input disabled placeholder="从此处检索你要提问的科目"></t-input> -->
                     </div>
-                    <t-tabs :default-value="1"  class="main-content-footer-tabs flex-1">
+                    <t-tabs :default-value="1"  class="main-content-footer-tabs flex-1" @change="handleChange">
                       <t-tab-panel :value="1" label="知识点出题">
                         <div class="footer-tabs-first-input-p">
                           <div class="footer-tabs-first-input-c">
                             <t-textarea  
-                              
+                              v-model="questionForm.qustionsContent"
                               placeholder="从这里输入你的问题 "
                               name="description" 
                               :style="{height:'100%'}" 
@@ -101,8 +101,8 @@
                                       <!-- <t-text @click="none">{{ uploadTips }}</t-text>  -->
                                       <t-upload
                                         v-model="files"
-                                        action="https://service-bv448zsw-1257786608.gz.apigw.tencentcs.com/api/upload-demo"
-                                        
+                                        action="http://47.95.6.197:18080/api/reviewmaster/question/upload"
+                                        :headers = fileRequest.headers
                                         theme="custom"
                                         :before-upload="beforeUpload"
                                         multiple
@@ -111,13 +111,12 @@
                                         @success="handleSuccess"
                                       > 
                                         <div class="upload-layout" >
-                                          
                                           <t-button theme="primary">上传文件</t-button>
                                         </div>  
                                       </t-upload>  
                                     </div> 
                                     <div class="upload-layout-textarea">
-                                      <t-textarea placeholder="从这里输入你的基于该文件的出题要求" ></t-textarea>
+                                      <t-textarea v-model="questionForm.qustionsContent" placeholder="从这里输入你 的基于该文件的出题要求" ></t-textarea>
                                     </div> 
                                   <!-- </t-space> -->
                                   
@@ -166,7 +165,7 @@
                             
                         </t-content>
                         <t-aside  width="30%" id="id-t-aside-footer-operation">
-                          <div class="footer-operation">
+                          <div class="footer-operation" @click="handleQuestionStart">
                             <t-image :src="quickItemIShareIcon" fit="fill" :style="{ width: '40px', height: '40px',borderRadius: '50%'}"></t-image>
                           </div> 
                             
@@ -230,6 +229,8 @@ import {  ref,onMounted  } from 'vue'
 import { MessagePlugin } from 'tdesign-vue-next'; 
 import { Icon } from 'tdesign-icons-vue-next';
 import IncorrectIndex from './IncorrectIndex.vue';
+import { useUserStore } from '@/store/user';
+import { questionstart } from '@/api/question'
 // import Carousel from '@/components/swiper.vue';
 const quickItemIShareIcon=require("@/assets/images/分享.png");
 const userIcon=require("@/assets/images/book.jpg");
@@ -240,7 +241,8 @@ const loading = ref(false);
 //   fileIcon: require("@/assets/images/fileIcon.png"),
 //   IncorrectIcon: require("@/assets/images/IncorrectIcon.png")
 // }
-const size = 0
+const size = 0;
+const userStore = useUserStore();
 function splitArray(array) {
   const middle = Math.ceil(array.length / 2);
   return [array.slice(0, middle), array.slice(middle)];
@@ -276,14 +278,24 @@ const beforeUpload = (file) => {
 const uploadTips = ref('已上传'+files.value.length+'个文件，复习大师可以基于您上传的智能生成问题');
 
 function handleSelectChange(files, context) {
-  console.log('onSelectChange', files, context);
+  // console.log('onSelectChange', files, context);
 }
 
 const handleSuccess = (params) => {
-  console.log('success', params);
+  console.log('success', params.response[0].data);
+  const res =params.response[0].data[0]
+  console.log('log', res);
+  const fileId = res.id
+  questionForm.value.fileIds.push(fileId)
+  console.log('Form', questionForm.value);
+  // questionForm.value.fileIds = 
   MessagePlugin.success('上传成功');
 };
 
+
+const formatResponse = (res) => {
+  console.log('response', res);
+}
 
 
 
@@ -398,16 +410,16 @@ const quick_conf_icon_9=require("@/assets/images/9-材料分析.png");
 const quick_conf_icon_10=require("@/assets/images/10-简答.png");
 
 const quick_conf_icon_data=[
-  {id:0,q_name:'填空',icon_path:quick_conf_icon_1},
-{id:1,q_name:'选择',icon_path:quick_conf_icon_2},
-{id:2,q_name:'作文',icon_path:quick_conf_icon_3},
-{id:3,q_name:'课程设计',icon_path:quick_conf_icon_4},
-{id:4,q_name:'论述',icon_path:quick_conf_icon_5},
-{id:5,q_name:'判断',icon_path:quick_conf_icon_6},
-{id:6,q_name:'名词解释',icon_path:quick_conf_icon_7},
-{id:7,q_name:'多选',icon_path:quick_conf_icon_8},
+  {id:0,q_name:'单选',icon_path:quick_conf_icon_2},
+{id:1,q_name:'填空',icon_path:quick_conf_icon_1},
+{id:2,q_name:'简答',icon_path:quick_conf_icon_10},
+{id:3,q_name:'判断',icon_path:quick_conf_icon_6},
+{id:4,q_name:'多选',icon_path:quick_conf_icon_8},
+{id:5,q_name:'写作题',icon_path:quick_conf_icon_3},
+{id:6,q_name:'论述题',icon_path:quick_conf_icon_5},
+{id:7,q_name:'课程设计',icon_path:quick_conf_icon_4},
 {id:8,q_name:'材料分析',icon_path:quick_conf_icon_9},
-{id:9,q_name:'简答',icon_path:quick_conf_icon_10}
+{id:9,q_name:'名词解释',icon_path:quick_conf_icon_7}
 
 ];
 // const quick_conf_icon_data=[
@@ -424,6 +436,8 @@ const quick_conf_icon_data=[
 // ];
 
 
+
+
 const quick_conf_input_0= ref(0);
 const quick_conf_input_ary=ref([0,0,0,0,0,0,0,0,0,0]);
 const quick_conf_input_index=ref(-1);
@@ -437,12 +451,82 @@ const quick_conf_click_sure=(id,e)=>{
   quick_conf_input_index.value=-1;
   let temp_value= quick_conf_input_0.value;
   quick_conf_input_ary.value.splice(id,1,temp_value);
-  // console.info(quick_conf_input_ary)
+  const countArray = questionForm.value.getExamRMAnswerTypeList
+  countArray[id].questionNum = Number(temp_value)
+  // console.info("###",quick_conf_input_ary)
   quick_conf_input_0.value=0;
+  console.log("ques",questionForm.value)
+  
 }
 const quick_conf_click_cancel=()=>{
   quick_conf_input_index.value=-1;
 }
+const questionForm = ref({
+  "fileIds": [],
+  "getExamRMAnswerTypeList": [
+    {
+      "answerType": 1,
+      "questionNum": 0
+    },
+    {
+      "answerType": 2,
+      "questionNum": 0
+    },
+    {
+      "answerType": 3,
+      "questionNum": 0
+    },
+    {
+      "answerType": 4,
+      "questionNum": 0
+    },
+    {
+      "answerType": 11,
+      "questionNum": 0
+    },
+    {
+      "answerType": 32,
+      "questionNum": 0
+    },
+    {
+      "answerType": 33,
+      "questionNum": 0
+    },
+    {
+      "answerType": 34,
+      "questionNum": 0
+    },
+    {
+      "answerType": 35,
+      "questionNum": 0
+    },
+    {
+      "answerType": 36,
+      "questionNum": 0
+    },
+  ],
+  "questionMethod": 0,
+  "qustionsContent": ""
+})
+
+const handleChange = () => {
+  const method = questionForm.value.questionMethod
+  if (method ===1 ) {
+    questionForm.value.questionMethod = 0
+  }else {
+    questionForm.value.questionMethod = 1
+  }
+}
+
+const fileRequest = {
+  headers: { Authorization: localStorage.getItem("token")}
+}
+
+
+const handleQuestionStart = () => {
+  questionstart(questionForm.value)
+}
+
 
 //prompt
 const promptIcon = require('@/assets/images/prompt.png')
@@ -485,6 +569,8 @@ const CommonStyle = {
 // 生命周期钩子
 onMounted(() => {
   console.log(`onMounted.`)
+
+  
 })
 
 </script>

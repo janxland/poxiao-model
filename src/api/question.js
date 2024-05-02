@@ -1,5 +1,17 @@
 import request from '@/utils/request'
 import { data } from 'autoprefixer'
+
+
+
+export function questionstart(data) {
+  return request({
+    url: '/reviewmaster/question/start',
+    method: 'post',
+    params: data
+  })
+}
+
+
 /**
  * 获取用户出题列表
  * @param {object} data
