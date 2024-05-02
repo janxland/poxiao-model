@@ -8,10 +8,10 @@
         </t-head-menu>
     </div>
     <div class="min-h-[calc(100vh-82px)] bg-primary flex py-10 relative justify-between flex-nowrap overflow-auto">
-        <div class="w-[15vw] bg-white rounded-xl p-4" v-loading="loading.record">
+        <div class="w-[240px] bg-white rounded-xl p-4" v-loading="loading.record">
             <ExamRecord @change="recordChange" :records="records"></ExamRecord>
         </div>
-        <div class="bg-white w-[70vw] mr-[10vw] rounded-xl p-6" v-loading="loading.question">
+        <div class="bg-white flex-1 mx-[32px] rounded-xl p-6" v-loading="loading.question">
             <Exam v-model:questionList="questionList" :disabled="route.query?.type !== 're'"></Exam>
             <t-button @click="submit(0)" v-if="activeRecord && route.query?.type === 're'">立即提交</t-button>
         </div>

@@ -2,7 +2,7 @@
     <div v-for="i, index in records" :key="index" class="menu-item group"
         :class="activeArea == index ? 'active-menu-item' : ''" @click="activeArea = index">
         <icon class="icon mx-3 text-xl group-hover:text-white" name="folder-1" :color="activeIcon" />
-        <span class="flex-1 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">{{ i.qustionsContent }}</span>
+        <span class="truncate flex-1">{{ i.qustionsContent }}</span>
         <icon class="icon edit-icon mx-3 text-xl group-hover:text-white" name="edit-2" :color="activeIcon"
             v-show="activeArea == index" />
     </div>
