@@ -136,14 +136,14 @@
       </t-dialog>
       <t-dialog class="select-none" width="560px" v-model:visible="stateStore.visible.firstLoginDaily" header=" " showOverlay placement="center" :footer="false" :confirm-on-enter="true">
         <template #body>
-              每日首次登录奖励
+            今日登录获得 {{ userStore.user.dailyPoint }}  积分
         </template>
       </t-dialog>
   </div>
 </template>
 
 <script setup>
-import { ref, defineProps ,watch,onMounted } from 'vue'
+import { ref, nextTick ,watch,onMounted } from 'vue'
 import { Icon } from 'tdesign-icons-vue-next';
 import { useUserStore } from '@/store/user';
 import { useStateStore } from '@/store/state';
@@ -230,6 +230,10 @@ const login3Handler = () => {
           stateStore.setVisible("editProfile", true);
         }
         if (data.data.point) {
+          localStorage.setItem("dailyPoint", data.data.point);
+          userStore.setUser({
+            dailyPoint: data.data.point,
+          });
           stateStore.setVisible("firstLoginDaily", true);
         }
       } else {
@@ -252,11 +256,9 @@ const showErrorMsg = (content) => {
 onMounted(async () => {
   localStorage.getItem("token") ? stateStore.setVisible("loginByMobile",false)  : stateStore.setVisible("loginByMobile", true);
   userStore.user.nickname =="" ? stateStore.setVisible("editProfile",true)  : stateStore.setVisible("editProfile", false);
-  await router.isReady();
-  const { query } = route;
-  userLogin3Input.value.invitationCode = query.invitationCode || "";
+  await router.isReady()
+  userLogin3Input.value.invitationCode = route.query.invitationCode;
 })
-
 </script>
 
 <style scoped>
