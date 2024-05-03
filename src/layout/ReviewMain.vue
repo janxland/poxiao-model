@@ -67,11 +67,11 @@
                     </div>
                   </div>
                 </div>
-                <div class="flex p-[10px] flex-col h-[200px] justify-around text-white" @click.stop="()=>{if(!userStore.user.isLogin)stateStore.setVisible('loginByMobile',true)}">
+                <div class="flex p-[10px] flex-col h-[200px] justify-around text-white">
                   <div @click="()=>{if(userStore.user.isLogin)stateStore.setVisible('firstLoginDaily',true)}">
                     <img :src="icon_manghe" class="h-[32px] cursor-pointer" alt="">
                   </div>
-                  <div class="flex flex-row justify-center items-center">
+                  <div class="flex flex-row justify-center items-center" @click.stop="()=>{if(!userStore.user.isLogin)stateStore.setVisible('loginByMobile',true)}">
                     <t-avatar class="w-[32px] h-[32px] mr-[10px]" :image="userStore.user.avatar" :hide-on-load-failed="false" />
                     <router-link :to="{ path: '/myindex' }"> {{ userStore.user.nickname || "学生" }} </router-link>
                   </div>
