@@ -27,14 +27,15 @@
                       </div>
                       <div class="main-content-itemary">
                           <div class="main-content-item">
-                            <t-link theme="primary"> 请给我出关于教资<弗洛伊德的心理分析理论>这一章节的题目 </t-link>
+                            <t-link theme="primary"> 公式一：我想复习 <领域及科目>内容 ,请涉及以下内容：<知识点1>、<知识点2>、<知识点3>，进行出题操作。 </t-link>
                           </div>
                           <div class="main-content-item">
-                            <t-link theme="primary"> 请围绕教资<教育观法律观基本知识>这一知识点给我出题 </t-link>
+                            <t-link theme="primary"> 公式二：我想复习 <领域及科目>内容，请依据接下来的三个核心概念：<核心概念A>、<核心概念B>，设计相应的考核题目。题目难度要求 <简单/中等/困难> </t-link>
                             </div>
-                          <div class="main-content-item">
-                            <t-link theme="primary"> 我需要关于教资<学生的权利与保护>这一知识点的题目 </t-link>
-                            </div>
+                          <!-- <div class="main-content-item">
+                            <t-link theme="primary"> 公式三：我想复习 <领域及科目>内容，请根据以下要点制定相关的试题：首先，确保题目覆盖了核心概念<概念A>；其次，包含对<概念B>的考查；最后，融入对<概念C>的评估。请依据这些指导原则，设计题目。 </t-link>
+                          </div> -->
+                          
                       </div>
                   </div>
 
@@ -44,11 +45,14 @@
                       </div>
                       <div class="main-content-itemary">
                           <div class="main-content-item">
-                            <t-link theme="primary"> 请根据文档内容给我出关于教资<教育促进社会生产力发展>的题目 </t-link>
+                            <t-link theme="primary"> 公式一：请你根据文档内容出题，涉及<文档内容1>、<文档内容1>、<文档内容1>等内容。题目难度要求 <简单/中等/困难> </t-link>
                             </div>
                           <div class="main-content-item">
-                            <t-link theme="primary"> 结合我上传的文档内容给我出教资的写作题 </t-link>
+                            <t-link theme="primary"> 公式二：请依据所提供的文档材料，设计题目，确保题目围绕文档中的<文档内容1>、<文档内容2>、<文档内容3>。题目应深入文档中的主要概念。 </t-link>
                           </div>
+                          <!-- <div class="main-content-item">
+                            <t-link theme="primary"> 根据提供的文档资料，进行出题，问题应当紧扣文档中关于<文档内容1>、<文档内容2>、<文档内容3>等内容。 </t-link>
+                          </div> -->
                       </div>
                   </div>
                 </div>
@@ -187,31 +191,34 @@
                 <t-row class="t-row--head--content">
                   让复习大师更快、更好助你学习
                 </t-row>
-
+                <t-divider></t-divider>
                 <t-row>
                   <t-space direction="vertical">  
                     <!-- <t-switch v-model="loading" class="mb-20"></t-switch> -->
 
                     <t-skeleton :loading="loading" theme="tab">
                       <div class="t-skeleton-demo-paragraph">
-                        <t-row id="step1-title">Step1 根据不同出题方式提问</t-row>
+                        <t-row id="step-title">出题方式</t-row>
                         <div class="step1" v-for="(item, index) in promptText" :key="index">
                           <div class="left">
                             <t-image :src="item.url" fit="fill" :style="{ width: '40px', height: '40px',borderRadius: '50%'}"></t-image>
                           </div>
                           <div class="right">
-                            <h2>{{item.methodName}}</h2>
+                            <h1>{{item.methodName}}</h1>
                             <span>{{item.methodText}}</span>
+                            <h2>{{ item.methodTip }}</h2>
                             <span>{{item.methodExample}}</span>
                           </div>
                         </div>
-                        <t-row id="step1-title">Step2 选择题型数量并作答</t-row>
+                        <t-divider></t-divider>
+                        <t-row id="step-title">出题流程</t-row>
                         <div class="step2">
-                          <t-steps layout="vertical" theme="dot" :current="4" readonly>
-                            <t-step-item :style="{ textAlign: 'left' }" title="用户选择想要的题型和对应题目的数量"/>
-                            <t-step-item :style="{ textAlign: 'left' }" title="选择完毕后点击出题按钮"/>
-                            <t-step-item :style="{ textAlign: 'left' }" title="用户答题并提交答案"/>
-                            <t-step-item :style="{ textAlign: 'left' }" title="系统智能判卷并提供完整答案，用户可将错题记录至错题本"/>
+                          <t-steps layout="vertical" theme="dot" :current="5" readonly id="step-content">
+                            <t-step-item :style="{ textAlign: 'left' }" title="按照提示模板输入对应想要复习的领域及知识点"/>
+                            <t-step-item :style="{ textAlign: 'left' }" title="选择想要的题型和对应题目的数量"/>
+                            <t-step-item :style="{ textAlign: 'left' }" title="选择完毕后点击出题按钮，在复习大师助手查看出题进度"/>
+                            <t-step-item :style="{ textAlign: 'left' }" title="用户答题并提交答案，在复习大师助手查看判题进度"/>
+                            <t-step-item :style="{ textAlign: 'left' }" title="系统智能判卷并提供完整答案，系统自动将考试报告存入历史记录"/>
                           </t-steps>
                         </div>
                       </div>
@@ -558,20 +565,22 @@ const iconImagePaths = {
 
 const promptText = [{
   url:require('@/assets/images/knowledgeIcon.png'), 
-  methodName:'方式1 知识点出题',
-  methodText:'用户输入想要出题的科目和知识点',
-  methodExample:'如：给我出教资<弗洛伊德的心理分析理论>这一知识点的题目'
+  methodName:'方式1：知识点出题',
+  methodText:'用户输入想要出题的知识点',
+  methodTip: '出题模板：',
+  methodExample:'我想复习 <领域及科目>内容，问题应当紧扣关于<知识点1>、<知识点1>、<知识点1>等内容。'
 },{
   url:require('@/assets/images/fileIcon.png'), 
-  methodName:'方式2 文件出题',
-  methodText:'用户上传出题所需要的文档等类型的文件，并针对文件提出个性化要求',
-  methodExample:'如：根据此文档内容给我出教资<弗洛伊德的心理分析理论>这一章节的题目'
+  methodName:'方式2：文件出题',
+  methodText:'用户上传出题所需要的文档，并针对文件提出个性化要求',
+  methodTip: '出题模板：',
+  methodExample:'根据提供的文档资料，进行出题，问题应当紧扣文档中关于<文档内容1>、<文档内容2>、<文档内容3>等内容。'
 },
 {
   url:require('@/assets/images/IncorrectIcon.png'),
-  methodName:'方式3 错题出题',
-  methodText:'用户选择错题出题，并输入需要的错题数量',
-  methodExample:'如：根据此文档内容给我出教资<弗洛伊德的心理分析理论>这一章节的题目'
+  methodName:'方式3：错题出题',
+  methodText:'用户基于错题集，选择对应的错题进行重做',
+  methodExample:''
 }
 ]
 
@@ -632,16 +641,16 @@ aside{
 
 /* prompt */
 
-#step1-title {
-  margin-top: 15px;
+#step-title {
+  margin-top: 5px;
   font-weight: 800;
-  font-size: 16px;
+  font-size: 18px;
   text-align: left;
 }
 .step1 {
   display: flex;
   align-items: flex-start; /* 使图标和文本的第一行对齐 */
-  margin-top: 10px
+  margin-top: 20px
 }
 
 .left {
@@ -660,8 +669,12 @@ aside{
   text-align: left;
 }
 
+.right h1 {
+  font-weight: 800;
+  font-size: 15px;
+}
 .right h2 {
-  
+  margin-top: 5px;
   font-weight: 800;
   font-size: 13px;
 }
@@ -669,10 +682,11 @@ aside{
 .right span {
     line-height: 1.5;
     font-size: 12px;
+    color: #6d6d6d
 }
 
 .right span:last-child {
-   color: #808080
+  color: #6d6d6d
 }
 
 /* 步骤条 */
@@ -681,5 +695,9 @@ aside{
   margin-top: 15px;
 }
 
+
+#step-content {
+  margin-left: 20px;
+}
 
 </style>

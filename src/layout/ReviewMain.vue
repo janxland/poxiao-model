@@ -5,7 +5,7 @@
         <div class="w-[100%] flex flex-row">
           <div class="sticky z-[2] h-[100vh] top-[0] select-none text-white w-[200px]" :class="{ 'hiddenNav': route.meta.hiddenNav }">
             <div class="h-[100%] w-[200px]">
-              <div class="h-[100%] flex flex-col justify-between items-center" style="background:linear-gradient(-210deg, rgb(57, 76, 200), rgb(61, 101, 191), rgb(43, 72, 146))">
+              <div class="h-[100%] flex flex-col justify-between items-center" style="background:radial-gradient(at right center, rgb(56, 189, 248), rgb(49, 46, 129))">
                 <div class="mt-[32px]">
                   <div class="flex flex-row justify-center items-center">
                     <t-image class="bg-[transparent] w-[32px] h-[32px] mr-[10px]" :src="logo"></t-image>
@@ -22,8 +22,7 @@
                     <icon name="system-log" size="20px" class="w-[30px] h-[30px] mr-4" />
                     错题本
                   </div>
-                  <div class="m-lf-layout-row" @click.stop="recordShow = !recordShow"
-                    :class="recordShow ? 'bg-record_bg' : ''">
+                  <div class="m-lf-layout-row" @click.stop="recordShow = !recordShow">
                     <icon name="time" size="20px" class="w-[30px] h-[30px] mr-4" />
                     历史记录
                   </div>
@@ -75,7 +74,7 @@
                     <t-avatar class="w-[32px] h-[32px] mr-[10px]" :image="userStore.user.avatar" :hide-on-load-failed="false" />
                     <router-link :to="{ path: '/myindex' }"> {{ userStore.user.nickname || "学生" }} </router-link>
                   </div>
-                  <div>在线客服</div>
+                  <!-- <div>在线客服</div> -->
                   <div class="text-[12px]">版本：V 1.0.1</div>
                   <!-- <div class="text-[12px]">《复习大师用户协议》|《复习大师隐私策略》</div> -->
                 </div>

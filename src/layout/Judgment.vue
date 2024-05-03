@@ -2,15 +2,15 @@
     <div class=" bg-primary p-10 pb-0 h-[100vh]">
         <div class="bg-white rounded-xl p-2 h-[calc(100vh-50px)] overflow-auto">
             <div class="header">
-                <div class="text-white text-2xl font-semibold">恭喜完成作答，您的考试评价为:</div>
+                <div class="text-black text-xl font-semibold pt-4">恭喜完成作答，您的考试评价为:</div>
                 <div class="">
                     <img :src="checkScore()?.label" class="m-auto w-[100px] h-[100px]">
                 </div>
             </div>
             <div class="flex justify-between pt-2 h-10 bg- items-end subHeader">
                 <div class="w-[20vw] flex justify-around ">
-                    <div class="cursor-pointer hover:bg-slate-300 p-2" @click="all=true;" :class="all?'bg-slate-300':''">所有题目</div>
-                    <div class="cursor-pointer hover:bg-slate-300 p-2" @click="all=false;" :class="!all?'bg-slate-300':''">只看错题</div>
+                    <div class="cursor-pointer  p-2" @click="all=true;" :class="all?' font-extrabold':''">所有题目</div>
+                    <div class="cursor-pointer  p-2" @click="all=false;" :class="!all?' font-extrabold':''">只看错题</div>
                 </div>
                 <div class="text-sm text-gray-400">题目已自动保存至我的题库，错题已自动归纳至错题本</div>
             </div> 
@@ -242,7 +242,8 @@ const getIndex = (question) => {
 }
 .header{
     // background: linear-gradient(-210deg, rgb(57, 76, 200), rgb(61, 101, 191), rgb(43, 72, 146));
-    background-image:linear-gradient(-225deg,#3D4E81 0%, #5753C9 48%, #6E7FF3 100%)
+    background-color: rgba(241, 247, 250, 1);
+    border-radius: 10px
 }
 .subHeader{
     background: rgba(241, 247, 250, 1)

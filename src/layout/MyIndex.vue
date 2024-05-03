@@ -11,7 +11,7 @@
       </t-header>
       <t-layout class="header-layout">
           <t-content>
-            <div class="user-header bg-[#888]" :style="{'background-image': `url( ${userStore.user.background || 'https://mybox-1257251314.cos.ap-chengdu.myqcloud.com/www/image_2496.png'})`}"> 
+            <div class="user-header bg-[#888]" :style="{'background-image': 'conic-gradient(at center top, rgb(17, 24, 39), rgb(243, 244, 246), rgb(17, 24, 39))'}"> 
               <div class="user-avatar">
                 <t-image :src="userStore.user.avatar || iconUrl.defaultAvatar" shape="circle"></t-image>
               </div>
@@ -20,13 +20,13 @@
                 <div class="user-desc">绑定手机号: {{ userStore.user.mobile }}</div>
               </div>
               <div class="absolute top-5 right-5 select-none" style="text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
-                <span class="cursor-pointer"></span> <span class="mx-2">|</span> <span class="cursor-pointer" @click="toggleLogin">{{userStore.user.mobile ? "退出登录" : "立即登录"}}</span>
+                <span class="cursor-pointer"></span> <span class="mx-2"></span><span class="cursor-pointer" @click="toggleLogin">{{userStore.user.mobile ? "退出登录" : "立即登录"}}</span>
               </div>
               <div class="filter drop-shadow selcet-none flex absolute bottom-5 right-5 text-xl justify-around" style="width:150px">
                 <t-badge  count="new">
                   <icon class="icon text-3xl" @click="stateStore.setVisible('messageList',true)" name="mail" color="#fff"  />
                 </t-badge>
-                <icon class="icon text-3xl" name="image" color="#fff" />
+                <!-- <icon class="icon text-3xl" name="image" color="#fff" /> -->
                 <icon @click="()=>{ stateStore.setVisible('editProfile',true)}" class="icon text-3xl" name="edit-2" color="#fff"/>
               </div>
             </div>
@@ -304,7 +304,7 @@ watch(userStore.user, (newVal) => {
 }
 
 #MyIndex .user-header {
-  height:280px;
+  height:240px;
   width: 85%;
   margin:auto;
   display: flex;
