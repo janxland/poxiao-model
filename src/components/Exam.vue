@@ -6,8 +6,12 @@
     <div class="text-left">
       <span class="text-xl font-bold">{{ questionTypeMap.find(v=>i.type == v.value)?.label }}</span>
       <div v-for="item, index in i.questionVoList" :key="'exams' + index" class="mt-4">
-        <div class="leading-relaxed">
+        <div class="leading-relaxed" v-if="i.type != 35">
           {{ index + 1 + '.' + item.stem }}
+        </div>
+        <div class="leading-relaxed" v-if="i.type == 35">
+          {{ index + 1 + '.'  }}<b>材料：</b>{{ JSON.parse(item.stem)?.materials_part}} <hr>
+          <b>问题：</b>{{ JSON.parse(item.stem)?.question_part }}
         </div>
         <!-- 单选 -->
         <div v-if="i.type == 1">
@@ -39,6 +43,18 @@
             <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :readonly="onlyread" v-model="item.ans" :defaultValue="item.ans"  v-else/>
           </div>
         </div>
+                <!-- 简答 -->
+        <div v-else-if="i.type?.toString().startsWith('3') || i.type == 2" >
+          <div class="my-4" v-if="disabled">
+            答案：
+            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :defaultValue="item.correctAnswer" disabled />
+          </div>
+          <div class="my-4">
+            你的答案：
+            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :defaultValue="item.answerContent" disabled v-if="disabled"/>
+            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :readonly="onlyread" v-model="item.ans" :defaultValue="item.ans"  v-else/>
+          </div>
+        </div>
         <!-- 判断 -->
         <div v-else-if="i.type == 4">
           <div>
@@ -56,13 +72,25 @@
             </t-radio-group>
           </div>
         </div>
-        <div class="knowledge" v-if="disabled">
+        <div class="knowledge" v-if="disabled && !(i.type?.toString().startsWith('3'))">
           <div class="text-blue-600 text-md font-bold my-2">解题思路</div>
           <div>{{ item.analysis?.review_and_analysis || '暂无' }}</div>
           <div class="text-blue-600 text-md font-bold my-2">涉及知识点</div>
           <div>{{ item.analysis?.concept_analysis || '暂无' }}</div>
           <div class="text-blue-600 text-md font-bold my-2">最佳答案</div>
           <div>{{ item.analysis?.options_analysis || '暂无' }}</div>
+        </div>
+        <div class="knowledge" v-if="disabled && (i.type?.toString().startsWith('3'))">
+          <div class="text-blue-600 text-md font-bold my-2">审题及分析</div>
+          <div>{{ item.analysis?.review_and_analysis || '暂无' }}</div>
+          <div class="text-blue-600 text-md font-bold my-2">解题思路</div>
+          <div>{{ item.analysis?.questions_solving_ideas  || '暂无' }}</div>
+          <div class="text-blue-600 text-md font-bold my-2">答题要点</div>
+          <div>{{ item.analysis?.key_points_to_answer_the_question  || '暂无' }}</div>
+          <div class="text-blue-600 text-md font-bold my-2">用户答案分析</div>
+          <div>{{ item.analysis?.user_answer_analysis  || '暂无' }}</div>
+          <div class="text-blue-600 text-md font-bold my-2">建议与总结</div>
+          <div>{{ item.analysis?.suggestions_and_summary || '暂无' }}</div>
         </div>
       </div>
     </div>

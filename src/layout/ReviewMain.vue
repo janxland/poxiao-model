@@ -59,23 +59,25 @@
                         <div class="w-5/6 text-ellipsis text-nowrap overflow-hidden">{{ i?.qustionsContent }}</div>
                         <div class="h-[25px] w-[25px] rounded-full "
                           :style="{ background: +i?.qustionsStatus == 1 ? 'rgba(67, 207, 124, 1)' : 'rgba(255, 87, 51, 1)' }">
-                          <icon :name="+i?.qustionsStatus == 1 ? 'check' : 'error'" color="white" size="25"></icon>
+                          <t-tooltip placement="right"  :content="checkStatus(i).name">
+                            <icon :name="+i?.qustionsStatus == 1 ? 'check' : 'error'" color="white" size="25"></icon>
+                          </t-tooltip>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div @click="()=>{if(userStore.user.isLogin)stateStore.setVisible('firstLoginDaily',true)}">
-                  每日拆盲盒
-                </div>
                 <div class="flex p-[10px] flex-col h-[200px] justify-around text-white" @click.stop="()=>{if(!userStore.user.isLogin)stateStore.setVisible('loginByMobile',true)}">
+                  <div @click="()=>{if(userStore.user.isLogin)stateStore.setVisible('firstLoginDaily',true)}">
+                    <img :src="icon_manghe" class="h-[32px] cursor-pointer" alt="">
+                  </div>
                   <div class="flex flex-row justify-center items-center">
                     <t-avatar class="w-[32px] h-[32px] mr-[10px]" :image="userStore.user.avatar" :hide-on-load-failed="false" />
                     <router-link :to="{ path: '/myindex' }"> {{ userStore.user.nickname || "学生" }} </router-link>
                   </div>
                   <div>在线客服</div>
-                  <div class="text-[12px]">版本：V0.1</div>
-                  <div class="text-[12px]">《复习大师用户协议》|《复习大师隐私策略》</div>
+                  <div class="text-[12px]">版本：V 1.0.1</div>
+                  <!-- <div class="text-[12px]">《复习大师用户协议》|《复习大师隐私策略》</div> -->
                 </div>
               </div>
 
@@ -125,10 +127,54 @@ const isLogin2 = ref(false);
 localStorage.getItem("token") ? isLogin2.value = true : isLogin2.value = false;
 
 const logo = require("@/assets/images/logo.png");
+const icon_manghe = require("@/assets/images/icon-manghe.png")
 const visible = ref(false);
 // 对话框2
 const visible2 = ref(false);
-
+const statusMap = ref([
+{
+  id:0,
+  name:"等待操作",
+  icon:"round",
+  color:"#0052d9"
+},{
+  id:1,
+  name:"出题中",
+  icon:"loading",
+  color:"#0052d9"
+},{
+  id:2,
+  name:"已出题",
+  icon:"check",
+  color:"#0052d9"
+},{
+  id:3,
+  name:"考试中",
+  icon:"loading",
+  color:"#0052d9"
+},{
+  id:4,
+  name:"已交卷",
+  icon:"check",
+  color:"green"//绿色
+},{
+  id:5,
+  name:"判卷中",
+  icon:"loading"
+},{
+  id:6,
+  name:"已判卷",
+  icon:"check",
+  color:"green"//绿色
+},{
+  id:-1,
+  name:"异常退出",
+  icon:"error",
+  color:"red"//红色
+}])
+const checkStatus = (i) => {
+  return statusMap.value.find(item => item.id === +i?.examStatus)
+}
 //出题记录
 const recordList = ref([])
 const recordTypeList = ref(['知识点出题','文件出题'])
@@ -145,6 +191,8 @@ const getRecordList = (str) => {
     }
     getQuestionList(params).then(res => {
         recordList.value = res.data.data
+        // 顾虑掉 recordList
+        recordList.value = recordList.value.filter(i=>i.examStatus != -1)
         recordLoading.value = false
     }).catch(err=>{
         recordLoading.value = false

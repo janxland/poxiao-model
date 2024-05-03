@@ -3,7 +3,9 @@
         <div class="bg-white rounded-xl p-2 h-[calc(100vh-50px)] overflow-auto">
             <div class="header">
                 <div class="text-white text-2xl font-semibold">恭喜你完成作答</div>
-                <div class="text-[60px] font-extrabold text-amber-400 leading-tight">s</div>
+                <div class="text-[60px] font-extrabold text-amber-400 leading-tight">
+                    <img :src="checkScore()?.label" class="m-auto">
+                </div>
             </div>
             <div class="flex justify-between pt-2 h-10 bg- items-end subHeader">
                 <div class="w-[20vw] flex justify-around ">
@@ -20,7 +22,7 @@
                             <span>({{ getIndex(question).join('') }})</span>
                             <div class="flex p-4 flex-wrap">
                                 <div v-for="(i,index) in question.questionVoList" class="text-center text-black">
-                                    <div class="w-12 h-12 rounded-full mx-4 leading-[48px] " :class="checkAnswer(question,i)">{{ i.correctAnswer }}</div>
+                                    <div class="w-6 h-6 rounded-full mx-4 leading-[24px] " :class="checkAnswer(question,i)">{{ i.correctAnswer }}</div>
                                     {{ index + 1 }}
                                 </div>
                             </div>
@@ -30,7 +32,7 @@
                             <span>({{getIndex(question).join('')}})</span>
                             <div class="flex p-4 flex-wrap">
                                 <div v-for="(i,index) in question.questionVoList" class="text-center text-black flex items-center m-2">
-                                    <div class="w-12 h-12 rounded-full  mx-2 leading-[48px]"  :class="checkAnswer(question,i)">{{ getIndex(question)[0] + index }}</div>
+                                    <div class="w-6 h-6 rounded-full  mx-2 leading-[24px]"  :class="checkAnswer(question,i)">{{ getIndex(question)[0] + index }}</div>
                                     <div class="flex-1">{{ i.correctAnswer }}</div>
                                 </div>
                             </div>
@@ -52,12 +54,12 @@
                         </div>
                         
                     </div>
-                    <div class="text-left">
+                    <!-- <div class="text-left">
                         跳转入口：
                         <span v-for="i in extraIndex" class="text-blue-600 hover:underline cursor-pointer">
                             {{ `题型${i.index + i.label}` }}
                         </span>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="mt-10 border-t-2 border-gray-500">
                     <Exam :questionList="questionList" disabled></Exam>
@@ -77,7 +79,7 @@ import Exam from '@/components/Exam.vue';
 import { Icon } from 'tdesign-icons-vue-next';
 import { getIncorrectList } from '@/api/question'
 import { useRoute } from 'vue-router'
-import { ref } from 'vue'
+import { ref,watch } from 'vue'
 const questionTypeMap = ref([
   { label: "NAN", value: "0" },
   { label: "单选题", value: "1" },
@@ -97,8 +99,56 @@ const examLoading = ref(true)
 const all = ref(true)
 const questionList = ref([])
 const extraIndex = ref([])
-const getExamData = ()=>{
-    getIncorrectList().then(res=>{
+const countScore = () =>{
+    let totalScore = 0
+    let userScore = 0
+    questionList.value.forEach(i=>{
+        totalScore += i.totalScore;
+        i.questionVoList.forEach(n=>{
+            userScore += n.userScore
+        })
+    })
+    console.log(userScore,totalScore)
+    let score = (userScore/totalScore*100).toFixed(2)
+    return score
+}
+const scoreMap = ref([
+    {
+        label:require("@/assets/images/score/S.png"),
+        value1:100,
+        value2:90
+    },
+    {
+        label:require("@/assets/images/score/A.png"),
+        value1:89,
+        value2:70
+    },
+    {
+        label:require("@/assets/images/score/B.png"),
+        value1:69,
+        value2:60
+    },
+    {
+        label:require("@/assets/images/score/C.png"),
+        value1:59,
+        value2:30
+    },
+    {
+        label:require("@/assets/images/score/D.png"),
+        value1:29,
+        value2:0
+    }
+])
+const checkScore = ()=>{
+    let score = countScore()
+    let scoreValue = scoreMap.value.find(i => i.value1 >= score && i.value2 <= score)
+    console.log(score,scoreValue);
+    return scoreValue
+}
+const getExamData = (id)=>{
+    let params = {}
+    if(id) params.examId = id;
+    getIncorrectList(params).then(res=>{
         examLoading.value = false
         questionList.value = res?.data?.data.map(res=>{
         res.questionVoList = res.questionVoList.map(i=>{
@@ -111,6 +161,7 @@ const getExamData = ()=>{
         })
       return res
     })  
+    countScore();
     questionTypeMap.value.forEach(i=>{
         if(i.value.startsWith('3')){
             let index =  questionList.value.findIndex(n=>n.type == i.value)
@@ -155,7 +206,16 @@ const getErrorData = () =>{
         console.log(err)
     })
 }
-getExamData()
+watch(route,(newVal,oldVal)=>{
+    if(newVal.query.id){
+        all.value = true
+        getExamData(newVal.query.id)
+    }else{
+        all.value = false
+        getErrorData()
+    }
+})
+getExamData(route.query.id)
 const checkAnswer = (question,i) =>{
     return i.answerContent == i.correctAnswer.toLowerCase() ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
 }

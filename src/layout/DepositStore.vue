@@ -25,7 +25,7 @@
                     <div class="w-20 h-100 flex justify-center items-center">
                         <icon @click="scrollTo('left')" class="icon" name="chevron-left" color="#F2D7A0" style="font-size: 60px;" />
                     </div>
-                    <div ref="scrollContainer" class="flex flex-1 justify-around w-[640px] overflow-x-scroll  no-scrollbar">
+                    <div ref="scrollContainer" class="flex flex-1 w-[640px] overflow-x-scroll  no-scrollbar">
                         <!-- <li @click="selectProduct(item)" class="flex cursor-pointer relative flex-col justify-center rounded-[24px] w-[150px] h-[150px]" :key="index" v-for="item,index in vipList" style="background: linear-gradient(213.8deg, rgba(255, 227, 199, 1) 0%, rgba(255, 235, 189, 1) 49.86%, rgba(255, 254, 250, 1) 100%);">
                             <div><span style="font-size: var(--td-size-12);letter-spacing: 1.68px;">{{item.name?.match(/\d+/g)?.[0]}}</span>积分</div>
                             <div class="text-[20px]">¥ {{item.price}}</div>
@@ -33,7 +33,7 @@
                             <div class="w-[80px] h-8 leading-8 text-white shadow-[0px_2px_4px_rgba(0,0,0,0.25)] absolute -translate-x-2/4 rounded-[20px] left-2/4 -bottom-5" style="  background: linear-gradient(90deg,rgba(255, 88, 51, 1) 0%,rgba(255, 147, 122, 1) 100%);">立减{{item.value - item.price}}</div>
                         </li> -->
                         <li @click="selectProduct(item)" class="flex cursor-pointer relative flex-col justify-center rounded-[24px]  mx-[10px] w-[160px] h-[168px]" :key="index" v-for="item,index in vipList">
-                            <img class="w-[160px] max-w-[160px]" :src="item.picUrl" alt="">
+                            <img class="w-[154px] max-w-[154px]" :src="item.picUrl" alt="">
                         </li>
                     </div>
                     <div class="w-20 h-100 flex justify-center items-center">

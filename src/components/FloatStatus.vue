@@ -3,6 +3,13 @@
     <div class="fixed select-none top-[32px] right-[300px] z-[999] w-[200px] h-[40px] bg-[#fff] rounded-[20px] shadow
     hover:h-[unset] overflow-hidden" ref="dragElement">
       <!-- <input type="text" placeholder="查找状态" class="w-full p-[5px] rounded-[10px] border-[1px] border-[#ccc]"> -->
+      <div  class="flex flex-row items-center h-[40px] px-[10px] justify-between cursor-pointer transition 
+      hover:bg-[#f5f5f5] hover:text-[#0052d9]">
+        <div class="w-5/6 text-left whitespace-nowrap overflow-hidden text-ellipsis max-w-[160px] overflow-hidden flex-1">复习大师助手</div>
+        <div class="h-[25px] w-[25px] rounded-full ">
+            <icon name="book" color="#0052d9" size="25"></icon>
+          </div>
+      </div>
       <div v-for="i,index in ExamRecords" @click="clickHandle(i)" :key="i?.qustionsContent" class="flex flex-row items-center h-[40px] px-[10px] justify-between cursor-pointer transition 
       hover:bg-[#f5f5f5] hover:text-[#0052d9]">
       <t-tooltip placement="right"  :content="i?.qustionsContent+' '+checkStatus(i).name">

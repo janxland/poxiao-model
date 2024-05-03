@@ -72,7 +72,7 @@ const recordChange = (e) =>{
 const getIncorrectData = (id)=>{
     let params = {}
     if(id)
-    params.id = id
+    params.examId = id
     getIncorrectList(params).then(res=>{
         loading.question = false
         console.log(res.data.data)

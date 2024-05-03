@@ -41,14 +41,14 @@
                 <div  style="width:100%;position: relative;">
                   <t-image class="w-[100%] min-h-[400px]" lazy="true"  :src="iconUrl.jifenImage" style="width:100%;z-index:0"></t-image>
                   <div class="vip-list no-scrollbar">
-                    <div class="vip-list-box flex overflow-auto overflow-x-scroll no-scrollbar" ref="scrollContainer">
+                    <div class="vip-list-box flex ml-[20px] overflow-auto overflow-x-scroll no-scrollbar" ref="scrollContainer">
                       <!-- <li class="vip-list-item" :key="index" v-for="item,index in vipList" @click="()=>{stateStore.toggleVisible('deposit')}">
                         <div class="vip-list-item-name"><span style="font-size: var(--td-size-12);letter-spacing: 1.68px;">{{item.num}}</span>积分</div>
                         <div class="vip-list-item-price">¥ {{item.price}}</div>
                         <div class="vip-list-item-value">立减{{item.value - item.price}}</div>
                       </li> -->
                       <li @click="()=>{stateStore.setTransfer('activeProductId',item.id);stateStore.toggleVisible('deposit')}" class="flex cursor-pointer rounded-[24px] mx-[10px] relative flex-col justify-center w-[168px] h-[168px]" :key="index" v-for="item,index in vipList">
-                          <img class="w-[168px] max-w-[168px]" :src="item.picUrl" alt="">
+                          <img class="w-[154px] max-w-[154px]" :src="item.picUrl" alt="">
                       </li>
                     </div>
                     <div class="w-20 h-100 flex justify-center">
