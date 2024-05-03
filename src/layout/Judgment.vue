@@ -2,9 +2,9 @@
     <div class=" bg-primary p-10 pb-0 h-[100vh]">
         <div class="bg-white rounded-xl p-2 h-[calc(100vh-50px)] overflow-auto">
             <div class="header">
-                <div class="text-white text-2xl font-semibold">恭喜你完成作答</div>
-                <div class="text-[60px] font-extrabold text-amber-400 leading-tight">
-                    <img :src="checkScore()?.label" class="m-auto">
+                <div class="text-white text-2xl font-semibold">恭喜完成作答，您的考试评价为:</div>
+                <div class="">
+                    <img :src="checkScore()?.label" class="m-auto w-[100px] h-[100px]">
                 </div>
             </div>
             <div class="flex justify-between pt-2 h-10 bg- items-end subHeader">
@@ -22,7 +22,7 @@
                             <span>({{ getIndex(question).join('') }})</span>
                             <div class="flex p-4 flex-wrap">
                                 <div v-for="(i,index) in question.questionVoList" class="text-center text-black">
-                                    <div class="w-6 h-6 rounded-full mx-4 leading-[24px] " :class="checkAnswer(question,i)">{{ i.correctAnswer }}</div>
+                                    <div class="w-8 h-8 rounded-full mx-4 leading-[32px] " :class="checkAnswer(question,i)">{{ i.correctAnswer.toUpperCase() }}</div>
                                     {{ index + 1 }}
                                 </div>
                             </div>
@@ -32,7 +32,7 @@
                             <span>({{getIndex(question).join('')}})</span>
                             <div class="flex p-4 flex-wrap">
                                 <div v-for="(i,index) in question.questionVoList" class="text-center text-black flex items-center m-2">
-                                    <div class="w-6 h-6 rounded-full  mx-2 leading-[24px]"  :class="checkAnswer(question,i)">{{ getIndex(question)[0] + index }}</div>
+                                    <div class="w-8 h-8 rounded-full  mx-2 leading-[32px]"  :class="checkAnswer(question,i)">{{ getIndex(question)[0] + index }}</div>
                                     <div class="flex-1">{{ i.correctAnswer }}</div>
                                 </div>
                             </div>
@@ -43,7 +43,7 @@
                             <div class="flex p-4 flex-wrap">
                                 <div v-for="(i,index) in question.questionVoList" class="text-center text-black flex items-center m-2">
                                     <div class="flex flex-col">
-                                        <div class="w-12 h-12 rounded-full mx-2 leading-[48px]" :class="checkAnswer(question,i)">
+                                        <div class="w-8 h-8 rounded-full mx-2 leading-[32px]" :class="checkAnswer(question,i)">
                                             <icon name="check" v-if="i.answerContent == i.correctAnswer.toLowerCase()" size="30"></icon>
                                             <icon name="close" v-else size="30"></icon>
                                         </div>
@@ -61,7 +61,7 @@
                         </span>
                     </div> -->
                 </div>
-                <div class="mt-10 border-t-2 border-gray-500">
+                <div class="mt-10 border-dash pt-4">
                     <Exam :questionList="questionList" disabled></Exam>
                 </div>
             </div>
@@ -155,7 +155,7 @@ const getExamData = (id)=>{
             
             i.content = JSON.parse(i?.content)
             if(res.type == '11')
-            i.correctAnswer = JSON.parse(i.correctAnswer)
+            i.correctAnswer = i.correctAnswer ? JSON.parse(i.correctAnswer) : []
             i.analysis = JSON.parse(i.analysis)
             return i
         })
@@ -241,9 +241,17 @@ const getIndex = (question) => {
     @apply text-blue-600 text-left  font-bold
 }
 .header{
-    background: linear-gradient(-210deg, rgb(57, 76, 200), rgb(61, 101, 191), rgb(43, 72, 146));
+    // background: linear-gradient(-210deg, rgb(57, 76, 200), rgb(61, 101, 191), rgb(43, 72, 146));
+    background-image:linear-gradient(-225deg,#3D4E81 0%, #5753C9 48%, #6E7FF3 100%)
 }
 .subHeader{
     background: rgba(241, 247, 250, 1)
+}
+.border-dash{
+    width: 100%;
+    height: 1px;
+    background-image: linear-gradient(to right, #ccc 0%, #ccc 50%, transparent 50%);
+    background-size: 30px 1px;
+    background-repeat: repeat-x;
 }
 </style>

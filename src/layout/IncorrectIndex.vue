@@ -55,7 +55,7 @@ const { submit } = useCommitExam(questionList,activeRecord)
 getQuestionList().then(res => {
     loading.record = false
     if(res?.data?.code == 200){
-        records.value.push(...res?.data?.data)
+        records.value.push(...res?.data?.data.filter(i=>i.examStatus==6))
         getIncorrectData()
     }
     else{
@@ -83,7 +83,7 @@ const getIncorrectData = (id)=>{
                     // if(res.type == 2)
                     // i.correctAnswer = JSON.parse(i.correctAnswer).map(i=> i.prefix + '：' + i.content).join(' ')
                     if(res.type == '11')
-                    i.correctAnswer = JSON.parse(i.correctAnswer)
+                    i.correctAnswer = i.correctAnswer ? JSON.parse(i.correctAnswer) : []
                     return i
                 })
             return res

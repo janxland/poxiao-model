@@ -74,11 +74,13 @@ const getExamStoreData = () =>{
         examLoading.value = false
         questionList.value = res.data.data.map(res=>{
         res.questionVoList = res.questionVoList.map(i=>{
+            if(i.content)
             i.content = JSON.parse(i?.content)
-            // 初始化多选题答案
-            if(res.type == '11')
-            i.ans = JSON.parse(i.answerContent)
             i.ans = i.answerContent
+            // 初始化多选题答案
+            if(res.type == '11' )
+            i.ans = i.answerContent ? JSON.parse(i.answerContent) : []
+            
             return i
         })
         return res

@@ -3,10 +3,10 @@
     暂无数据
   </div>
   <div v-for="i, examIndex in questionList" :key="'examList' + examIndex" v-else >
-    <div class="text-left">
+    <div class="text-left my-4">
       <span class="text-xl font-bold">{{ questionTypeMap.find(v=>i.type == v.value)?.label }}</span>
       <div v-for="item, index in i.questionVoList" :key="'exams' + index" class="mt-4">
-        <div class="leading-relaxed" v-if="i.type != 35">
+        <div class="leading-relaxed mt-4" v-if="i.type != 35" >
           {{ index + 1 + '.' + item.stem }}
         </div>
         <div class="leading-relaxed" v-if="i.type == 35">
@@ -25,9 +25,9 @@
         <!-- 多选 -->
         <div v-else-if="i.type == 11">
           <t-checkbox-group v-model="item.ans" v-if="!disabled">
-            <t-checkbox :key="'answer' + answerIndex" :label="answer.content" :value="answer.prefix" v-for="answer, answerIndex in item.content" />
+            <t-checkbox :key="'answer' + answerIndex" :label="answer.content" :value="answer.prefix" v-for="answer, answerIndex in item.content"/>
           </t-checkbox-group>
-          <t-checkbox-group :default-value="item.correctAnswer " v-else  :readonly="onlyread">
+          <t-checkbox-group :default-value="item.correctAnswer " v-else  :readonly="onlyread" disabled>
             <t-checkbox :key="'answer' + answerIndex" :label="answer.content" :value="answer.prefix" v-for="answer, answerIndex in item.content" />
           </t-checkbox-group>
         </div>
@@ -35,24 +35,24 @@
         <div v-else-if="i.type?.toString().startsWith('3') || i.type == 2" >
           <div class="my-4" v-if="disabled">
             答案：
-            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :defaultValue="item.correctAnswer" disabled />
+            <t-textarea placeholder="在此输入您的作答内容" :autosize="{ minRows: 3 }" :defaultValue="item.correctAnswer" disabled />
           </div>
           <div class="my-4">
-            你的答案：
-            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :defaultValue="item.answerContent" disabled v-if="disabled"/>
-            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :readonly="onlyread" v-model="item.ans" :defaultValue="item.ans"  v-else/>
+            您的答案：
+            <t-textarea placeholder="在此输入您的作答内容" :autosize="{ minRows: 3 }" :defaultValue="item.answerContent" disabled v-if="disabled"/>
+            <t-textarea placeholder="在此输入您的作答内容" :autosize="{ minRows: 3 }" :readonly="onlyread" v-model="item.ans" :defaultValue="item.ans"  v-else/>
           </div>
         </div>
                 <!-- 简答 -->
         <div v-else-if="i.type?.toString().startsWith('3') || i.type == 2" >
           <div class="my-4" v-if="disabled">
             答案：
-            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :defaultValue="item.correctAnswer" disabled />
+            <t-textarea placeholder="在此输入您的作答内容" :autosize="{ minRows: 3 }" :defaultValue="item.correctAnswer" disabled />
           </div>
           <div class="my-4">
-            你的答案：
-            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :defaultValue="item.answerContent" disabled v-if="disabled"/>
-            <t-textarea placeholder="在此输入你的作答内容" :autosize="{ minRows: 3 }" :readonly="onlyread" v-model="item.ans" :defaultValue="item.ans"  v-else/>
+            您的答案：
+            <t-textarea placeholder="在此输入您的作答内容" :autosize="{ minRows: 3 }" :defaultValue="item.answerContent" disabled v-if="disabled"/>
+            <t-textarea placeholder="在此输入您的作答内容" :autosize="{ minRows: 3 }" :readonly="onlyread" v-model="item.ans" :defaultValue="item.ans"  v-else/>
           </div>
         </div>
         <!-- 判断 -->
@@ -78,9 +78,11 @@
           <div class="text-blue-600 text-md font-bold my-2">涉及知识点</div>
           <div>{{ item.analysis?.concept_analysis || '暂无' }}</div>
           <div class="text-blue-600 text-md font-bold my-2">最佳答案</div>
-          <div>{{ item.analysis?.options_analysis || '暂无' }}</div>
+          <div>{{ item.analysis?.options_analysis || (Array.isArray(item.correctAnswer)?item.correctAnswer.join(''):item.correctAnswer) }}</div>
         </div>
         <div class="knowledge" v-if="disabled && (i.type?.toString().startsWith('3'))">
+          <div class="text-blue-600 text-md font-bold my-2">您的得分</div>
+          <div>{{  item.score }}</div>
           <div class="text-blue-600 text-md font-bold my-2">审题及分析</div>
           <div>{{ item.analysis?.review_and_analysis || '暂无' }}</div>
           <div class="text-blue-600 text-md font-bold my-2">解题思路</div>
@@ -164,5 +166,14 @@ const formatter = (item,i) =>{
 ::v-deep .t-is-disabled {
   color: black !important;
   background: white !important;
+}
+::v-deep .t-checkbox-group {
+    @apply block;
+    & > .t-checkbox{
+        @apply block  my-2
+    }
+}
+::v-deep .t-checkbox__label{
+    color: black!important;
 }
 </style>

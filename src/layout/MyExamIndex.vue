@@ -84,7 +84,7 @@ const questionList = ref([]);
     getQuestionList(0).then(res => {
       const { data } = res 
       if(data.code === 200) {
-        ExamRecords.value.push(...data.data)
+        ExamRecords.value.push(...data?.data.filter(i=>i.examStatus!=-1))
         // activeExamId.value =  ExamRecords?.value[0]?.examId
       }
     })
