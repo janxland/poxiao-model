@@ -12,9 +12,9 @@
       </div>
       <div v-for="i,index in ExamRecords" @click="clickHandle(i)" :key="i?.qustionsContent" class="flex flex-row items-center h-[40px] px-[10px] justify-between cursor-pointer transition 
       hover:bg-[#f5f5f5] hover:text-[#0052d9]">
-      <t-tooltip placement="right"  :content="i?.qustionsContent+' '+checkStatus(i).name">
-        <div class="w-5/6 text-left whitespace-nowrap overflow-hidden text-ellipsis max-w-[160px] overflow-hidden flex-1">{{ i?.qustionsContent }}</div>
-      </t-tooltip>
+        <t-tooltip placement="left"  :content="i?.qustionsContent+' '+checkStatus(i).name">
+          <div class="w-5/6 text-left whitespace-nowrap overflow-hidden text-ellipsis max-w-[160px] overflow-hidden flex-1">{{ i?.qustionsContent }}</div>
+        </t-tooltip>
         <t-tooltip placement="right" :content="checkStatus(i).name">
           <div class="h-[25px] w-[25px] rounded-full ">
             <icon :name="checkStatus(i).icon" :color="checkStatus(i).color" size="25"></icon>
@@ -97,7 +97,7 @@ const clickHandle = (i) =>{
   }
   // 已判卷跳转
   if(i?.examStatus == 6){
-    router.push('/incorrect?id='+i?.examId)
+    router.push('/judgment?id='+i?.examId)
   }
 }
 const checkStatus = (i) => {

@@ -24,11 +24,11 @@
                   </div>
                   <div class="m-lf-layout-row" @click.stop="recordShow = !recordShow">
                     <icon name="time" size="20px" class="w-[30px] h-[30px] mr-4" />
-                    历史记录
+                    出题记录
                   </div>
-                  <div class="absolute h-[50vh] w-[20vw] top-[20vh] left-[200px] z-[9999] rounded-2xl p-4"
+                  <div class="absolute flex flex-col h-[50vh] w-[20vw] top-[20vh] left-[200px] z-[9999] rounded-2xl p-4"
                     v-show="recordShow" id="record" style="background-color: rgba(26, 71, 126, 1);" @click.stop="">
-                    <div class="text-left ">历史记录</div>
+                    <div class="text-left ">出题记录</div>
                     <div class="flex items-center mt-2">
                       <t-input placeholder="搜索历史出题记录" v-model="search" class="flex-1 *:bg-record_bg  *:border-0 " @blur="searchRecord" @enter="searchRecord">
                         <template #suffixIcon>

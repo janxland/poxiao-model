@@ -82,7 +82,7 @@
         </div>
         <div class="knowledge" v-if="disabled && (i.type?.toString().startsWith('3'))">
           <div class="text-blue-600 text-md font-bold my-2">您的得分</div>
-          <div>{{  item.score }}</div>
+          <div> 该题总分值为 {{  item.score }} 分值，您的得分是 {{ item.userScore }} 分 </div>
           <div class="text-blue-600 text-md font-bold my-2">审题及分析</div>
           <div>{{ item.analysis?.review_and_analysis || '暂无' }}</div>
           <div class="text-blue-600 text-md font-bold my-2">解题思路</div>

@@ -32,7 +32,7 @@
                             <div class="line-through text-[#aaa]">¥ {{item.value}}</div>
                             <div class="w-[80px] h-8 leading-8 text-white shadow-[0px_2px_4px_rgba(0,0,0,0.25)] absolute -translate-x-2/4 rounded-[20px] left-2/4 -bottom-5" style="  background: linear-gradient(90deg,rgba(255, 88, 51, 1) 0%,rgba(255, 147, 122, 1) 100%);">立减{{item.value - item.price}}</div>
                         </li> -->
-                        <li @click="selectProduct(item)" class="flex cursor-pointer relative flex-col justify-center rounded-[24px]  mx-[10px] w-[160px] h-[168px]" :key="index" v-for="item,index in vipList">
+                        <li @click="selectProduct(item)" ref="refProductElements" :key="item.id" class="flex cursor-pointer relative flex-col justify-center rounded-[24px]  mx-[10px] w-[160px] h-[168px]" v-for="item,index in vipList">
                             <img class="w-[154px] max-w-[154px]" :src="item.picUrl" alt="">
                         </li>
                     </div>
@@ -114,12 +114,13 @@ const vipList = ref([
 const scrollContainer = ref()
 const scrollTo = (direction) => {
   const container = scrollContainer.value;
-  console.log(scrollContainer);
   const containerWidth = container.offsetWidth;
   const contentWidth = container.scrollWidth;
   const scrollLeft = container.scrollLeft;
   let targetScrollLeft;
-
+  if (typeof direction === 'number') {
+    targetScrollLeft = direction;
+  }
   if (direction === 'right') {
     targetScrollLeft = scrollLeft + containerWidth;
     if (targetScrollLeft >= (contentWidth-20)) {
@@ -149,9 +150,13 @@ const userStore = useUserStore();
 const stateStore = useStateStore();
 user.value = userStore.user;
 const activeProduct = ref(vipList.value[0]); 
+const refProductElements = ref()
 watch(() => stateStore.transfer.activeProductId, (newProductId) => {
     activeProduct.value = vipList.value.find(item => item.id === newProductId);
-    console.log(activeProduct.value);
+    // 获取当前元素通过数组Index
+    const index = vipList.value.findIndex(item => item.id === newProductId);
+    const activeProductElement = refProductElements.value[index];
+    scrollTo(activeProductElement?.offsetLeft - activeProductElement?.parentElement.offsetLeft)
 });
 
 const selectProduct = (item) => {

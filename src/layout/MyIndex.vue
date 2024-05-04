@@ -11,7 +11,7 @@
       </t-header>
       <t-layout class="header-layout">
           <t-content>
-            <div class="user-header bg-[#888]" :style="{'background-image': 'conic-gradient(at center top, rgb(17, 24, 39), rgb(243, 244, 246), rgb(17, 24, 39))'}"> 
+            <div class="user-header bg-[#888]" :style="{'background-image': 'radial-gradient(at right center, rgb(56, 189, 248), rgb(49, 46, 129))'}"> 
               <div class="user-avatar">
                 <t-image :src="userStore.user.avatar || iconUrl.defaultAvatar" shape="circle"></t-image>
               </div>

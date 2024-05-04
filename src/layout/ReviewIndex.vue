@@ -1,8 +1,8 @@
 <template>
-  <div class="common-layout h-[100vh]">
-    <t-layout class="fill-layout">
+  <div class="common-layout min-h-[100vh]">
+    <t-layout class="fill-layout min-h-[100vh]">
       <t-content>
-        <t-layout class="flex flex-col justify-between h-[100vh]">
+        <t-layout class="flex flex-col justify-between min-h-[100vh]">
           <t-content class="flex-1">
               <div class="main-content"> 
                 <div class="main-content-head">
@@ -26,11 +26,11 @@
                         知识点出题 
                       </div>
                       <div class="main-content-itemary">
-                          <div class="main-content-item">
+                          <!-- <div class="main-content-item">
                             <t-link theme="primary"> 公式一：我想复习 <领域及科目>内容 ,请涉及以下内容：<知识点1>、<知识点2>、<知识点3>，进行出题操作。 </t-link>
-                          </div>
+                          </div> -->
                           <div class="main-content-item">
-                            <t-link theme="primary"> 公式二：我想复习 <领域及科目>内容，请依据接下来的三个核心概念：<核心概念A>、<核心概念B>，设计相应的考核题目。题目难度要求 <简单/中等/困难> </t-link>
+                            <t-link theme="primary"> 我想复习 <领域及科目>内容，请依据接下来的三个核心概念：<核心概念A>、<核心概念B>，设计相应的考核题目。题目难度要求 <简单/中等/困难> </t-link>
                             </div>
                           <!-- <div class="main-content-item">
                             <t-link theme="primary"> 公式三：我想复习 <领域及科目>内容，请根据以下要点制定相关的试题：首先，确保题目覆盖了核心概念<概念A>；其次，包含对<概念B>的考查；最后，融入对<概念C>的评估。请依据这些指导原则，设计题目。 </t-link>
@@ -45,11 +45,11 @@
                       </div>
                       <div class="main-content-itemary">
                           <div class="main-content-item">
-                            <t-link theme="primary"> 公式一：请你根据文档内容出题，涉及<文档内容1>、<文档内容1>、<文档内容1>等内容。题目难度要求 <简单/中等/困难> </t-link>
+                            <t-link theme="primary"> 请你根据文档内容出题，涉及<文档内容1>、<文档内容1>、<文档内容1>等内容。题目难度要求 <简单/中等/困难> </t-link>
                             </div>
-                          <div class="main-content-item">
+                          <!-- <div class="main-content-item">
                             <t-link theme="primary"> 公式二：请依据所提供的文档材料，设计题目，确保题目围绕文档中的<文档内容1>、<文档内容2>、<文档内容3>。题目应深入文档中的主要概念。 </t-link>
-                          </div>
+                          </div> -->
                           <!-- <div class="main-content-item">
                             <t-link theme="primary"> 根据提供的文档资料，进行出题，问题应当紧扣文档中关于<文档内容1>、<文档内容2>、<文档内容3>等内容。 </t-link>
                           </div> -->
@@ -130,7 +130,7 @@
                       
                     </t-tabs>
                   </t-content>
-                  <t-aside class="!w-[500px]">  
+                  <t-aside class="!w-[540px]">  
                       <t-layout id="id-t-layout-quick-conf">
                         <t-content id="id-t-content-quick-conf"  > 
                           <div class="quick-conf-item-list"  >  
@@ -182,7 +182,7 @@
           </t-footer>
         </t-layout>
       </t-content>
-      <t-aside width="240px" class="no-scrollbar overflow-y-scroll">
+      <t-aside width="240px" class="sticky top-0 no-scrollbar overflow-y-scroll !h-[100vh]">
                 <t-row class="t-row--head--title1">
                   <t-avatar :image="promptIcon" :hide-on-load-failed="false" />
                   <router-link :to="{path:'/'}">个性化使用指南</router-link>
@@ -546,7 +546,7 @@ const handleQuestionStart = () => {
   questionstart(questionForm.value).then((res)=>{
     const { data } = res;
     if(data.code == 200) {
-      MessagePlugin.success(`出题中，请注意悬浮窗等待！`);
+      MessagePlugin.success(`出题中，请在出题记录中查看！`);
       questionForm.value.qustionsContent = '';
     } else {
       MessagePlugin.error(`出题错误！`);
