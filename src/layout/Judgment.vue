@@ -66,7 +66,7 @@
                 </div>
             </div>
             <div v-else>
-                <Exam :questionList="questionList" disabled></Exam>
+                <Exam :questionList="questionErrList" disabled></Exam>
             </div>
         </div>
        
@@ -98,6 +98,7 @@ const route = useRoute()
 const examLoading = ref(true)
 const all = ref(true)
 const questionList = ref([])
+const questionErrList = ref([])
 const extraIndex = ref([])
 const countScore = () =>{
     let totalScore = 0
@@ -178,21 +179,26 @@ const getExamData = (id)=>{
         console.log(err)
     })
 }
-const getErrorData = () =>{
-    getResult().then(res=>{
+const getErrorData = (id) =>{
+    let params = {}
+    if(id) params.examId = id;
+    getIncorrectList(params).then(res=>{
         examLoading.value = false
-        questionList.value = res?.data?.data.map(res=>{
+        questionErrList.value = res?.data?.data.map(res=>{
         res.questionVoList = res.questionVoList.map(i=>{
+            
             i.content = JSON.parse(i?.content)
-            if(res.type == 2)
-            i.correctAnswer = JSON.parse(i.correctAnswer).map(i=> i.prefix + '：' + i.content).join(' ')
+            if(res.type == '11')
+            i.correctAnswer = i.correctAnswer ? JSON.parse(i.correctAnswer) : []
+            i.analysis = JSON.parse(i.analysis)
             return i
         })
       return res
     })  
+    // countScore();
     questionTypeMap.value.forEach(i=>{
         if(i.value.startsWith('3')){
-            let index =  questionList.value.findIndex(n=>n.type == i.value)
+            let index =  questionErrList.value.findIndex(n=>n.type == i.value)
             if(index!=-1){
                 extraIndex.value.push({
                     label:i.label,
@@ -213,6 +219,13 @@ watch(route,(newVal,oldVal)=>{
     }else{
         all.value = false
         getErrorData()
+    }
+})
+watch(all,(newVal,oldVal)=>{
+    if(newVal){
+        getExamData(route.query.id)
+    }else{
+        getErrorData(route.query.id)
     }
 })
 getExamData(route.query.id)
