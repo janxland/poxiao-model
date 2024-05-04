@@ -154,27 +154,27 @@ const getExamData = (id)=>{
         questionList.value = res?.data?.data.map(res=>{
         res.questionVoList = res.questionVoList.map(i=>{
             
-            i.content = JSON.parse(i?.content)
-            if(res.type == '11')
-            i.correctAnswer = i.correctAnswer ? JSON.parse(i.correctAnswer) : []
-            i.analysis = JSON.parse(i.analysis)
-            return i
-        })
-      return res
-    })  
-    countScore();
-    questionTypeMap.value.forEach(i=>{
-        if(i.value.startsWith('3')){
-            let index =  questionList.value.findIndex(n=>n.type == i.value)
-            if(index!=-1){
-                extraIndex.value.push({
-                    label:i.label,
-                    index:index+1
-                })
+                i.content = JSON.parse(i?.content)
+                if(res.type == '11')
+                i.correctAnswer = i.correctAnswer ? JSON.parse(i.correctAnswer) : []
+                i.analysis = JSON.parse(i.analysis)
+                return i
+            })
+        return res
+        })  
+        countScore();
+        questionTypeMap.value.forEach(i=>{
+            if(i.value.startsWith('3')){
+                let index =  questionList.value.findIndex(n=>n.type == i.value)
+                if(index!=-1){
+                    extraIndex.value.push({
+                        label:i.label,
+                        index:index+1
+                    })
+                }
             }
-        }
-        
-    })
+            
+        })
     }).catch(err=>{
         console.log(err)
     })

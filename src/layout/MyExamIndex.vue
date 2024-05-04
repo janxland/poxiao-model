@@ -32,7 +32,7 @@
         </t-aside>
         <t-layout>
           <t-content>
-            <div class="myexam-main-content min-h-[80vh]">
+            <div class="myexam-main-content min-h-[80vh] text-left">
               <t-space direction="vertical">
                 <Exam :questionList="questionList" :onlyread="true"></Exam>
               </t-space>
@@ -47,11 +47,11 @@
           </t-footer>
         </t-layout>
         <t-aside class="myexam-menu-side" style="border-top: 1px solid var(--component-border)">
-          <!-- <div title="出卷组题" class="myexam-menu-side-item"><icon title="出卷组题" name="article" ></icon></div> -->
+          <!-- <div title="出卷组题" class="myexam-menu-side-item"><icon title="出卷组题" name="article" ></icon></div>
           <div @click="visibleMenu.transformQuestion = !visibleMenu.transformQuestion" title="迁移" class="myexam-menu-side-item"><icon title="二级——所有迁移" name="folder-import" ></icon></div>
           <t-popconfirm placement="left" :visible="visibleMenu.deleteQuestion" content="确认删除吗">
             <div @click="visibleMenu.deleteQuestion = !visibleMenu.deleteQuestion" title="删除" class="myexam-menu-side-item"><icon title="删除" name="delete" ></icon></div>
-          </t-popconfirm>
+          </t-popconfirm> -->
         </t-aside>
         <t-drawer :visible="visibleMenu.transformQuestion"  @close="visibleMenu.transformQuestion = !visibleMenu.transformQuestion" :closeBtn="true" header="选择要迁移到的题库">
             <p>This is a Drawer</p>

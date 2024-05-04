@@ -17,10 +17,10 @@
         </div>
         <div class="fixed bottom-20 right-10 mr-2">
             <div class="flex items-start flex-col" v-if="activeRecord && route.query?.type !== 're'">
-                <div class="flex items-center my-2 hover:bg-slate-200 p-1 cursor-pointer bg-slate-300" @click="reExam">
+                <!-- <div class="flex items-center my-2 hover:bg-slate-200 p-1 cursor-pointer bg-slate-300" @click="reExam">
                     <div class="w-10 h-10 rounded-full bg-slate-100 text-center leading-10 mr-2"><icon name="rollback" size="20"></icon></div>
                     重做错题
-                </div>
+                </div> -->
                 <!-- <div class="flex items-center my-2 hover:bg-slate-300 p-1 cursor-pointer" @click="reExam">
                     <div class="w-10 h-10 rounded-full bg-slate-100 text-center leading-10 mr-2"><icon name="task" size="20"></icon></div>
                     根据错题出题
@@ -55,7 +55,7 @@ const { submit } = useCommitExam(questionList,activeRecord)
 getQuestionList().then(res => {
     loading.record = false
     if(res?.data?.code == 200){
-        records.value.push(...res?.data?.data.filter(i=>i.examStatus==6))
+        records.value.push(...res?.data?.data)
         getIncorrectData()
     }
     else{
@@ -83,12 +83,13 @@ const getIncorrectData = (id)=>{
                     // if(res.type == 2)
                     // i.correctAnswer = JSON.parse(i.correctAnswer).map(i=> i.prefix + '：' + i.content).join(' ')
                     if(res.type == '11')
-                    i.correctAnswer = i.correctAnswer ? JSON.parse(i.correctAnswer) : []
+                    i.correctAnswer = JSON.parse(i.correctAnswer)
+                    i.analysis = JSON.parse(i.analysis)
                     return i
                 })
             return res
         })
-        }
+    }
     }).catch(err=>{
         console.log(err)
     })
