@@ -78,8 +78,10 @@ const getExamStoreData = () =>{
             i.content = JSON.parse(i?.content)
             i.ans = i.answerContent
             // 初始化多选题答案
-            if(res.type == '11' )
-            i.ans = i.answerContent ? JSON.parse(i.answerContent) : []
+            if(res.type == '11'){
+                i.ans = i.answerContent ? i.answerContent.split(',') : []
+            }
+            
             
             return i
         })
@@ -88,7 +90,8 @@ const getExamStoreData = () =>{
     })
 }
 const time = ref('')
-if(!localStorage.getItem(`exam${route.query.id}`))
+console.log(localStorage.getItem(`exam${route.query.id}`))
+if(localStorage.getItem(`exam${route.query.id}`)==null)
 localStorage.setItem(`exam${route.query.id}`,Date.now())
 const openDialog = () =>{
   time.value = ((Date.now() - localStorage.getItem(`exam${route.query.id}`))/1000/60).toFixed(2)

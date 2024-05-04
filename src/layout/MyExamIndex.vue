@@ -14,7 +14,9 @@
           <t-menu v-model="activeExamId" class="myexam-subjects-items" theme="light" value="dashboard" style="margin-right: 74px;width:100%;border-radius: 0px 32px 0px 0px;">
             <t-menu-item class="subjects-item" :class="{ active:activeExamId === index }" :key="index" v-for="ExamRecord,index in ExamRecords" :value="index">
               <icon class="icon" name="folder-1" color="#2F3CF4" style="margin:0 10px;font-size: 20px;" />
+              <t-tooltip :content="ExamRecord.qustionsContent">
               <span class="truncate flex-1">{{ ExamRecord.qustionsContent }}</span>
+              </t-tooltip>
               <icon class="icon edit-icon" :class="{ active:activeExamId === index }" name="edit-2" color="#2F3CF4" style="margin:0 10px;font-size: 20px;" />
             </t-menu-item>
             <!-- <t-menu-item class="subjects-item"  value="创建新题库" @click="$router.push('/')">

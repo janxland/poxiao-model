@@ -11,7 +11,7 @@
       </t-header>
       <t-layout class="header-layout">
           <t-content>
-            <div class="user-header bg-[#888]" :style="{'background-image': 'radial-gradient(at right center, rgb(56, 189, 248), rgb(49, 46, 129))'}"> 
+            <div class="user-header bg-[#888]" style="background:radial-gradient(at top center, rgb(56, 189, 248), rgb(49, 46, 129))"> 
               <div class="user-avatar">
                 <t-image :src="userStore.user.avatar || iconUrl.defaultAvatar" shape="circle"></t-image>
               </div>
@@ -60,7 +60,7 @@
                 </div>
               </div>
             </t-aside>
-            <t-aside class="content-layout-right flex flex-col justify-between w-[400px] p-[20px] rounded-[32px] p-[10px]">
+            <t-aside class="content-layout-right flex flex-col justify-between rounded-[32px] p-[10px]">
               <div class="content-item huodong-center flex-1">
                 <span  class="text-[16px] leading-[28px]">活动中心</span>
                 <div class="flex justify-center items-center h-[80%] my-2.5 p-2.5 bg-[#F1F7FA] rounded-[10px]">
@@ -70,7 +70,7 @@
               <div class="content-item daily-task">
                 <span class="text-[16px] leading-[28px]">每日任务</span>
                 <div class="flex items-center py-[5px] justify-around rounded-[10px] text-center">
-                  <div class="flex flex-col cursor-pointer items-center" @click="i.handle" v-for="i,index in dailyTask">
+                  <div class="flex flex-col cursor-pointer items-center flex-1" @click="i.handle" v-for="i,index in dailyTask">
                     
                     <icon class="p-[18px]  rounded-[10px] shadow-[1px_1px_3px_#aaa] text-[72px] hover:bg-[#4566FC] hover:text-[#fff]" color="#4566FC" :name="i.icon"/>
  
@@ -251,9 +251,12 @@ watch(userStore.user, (newVal) => {
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .t-icon {
   cursor: pointer;
+}
+.t-layout__sider{
+    width:auto!important
 }
 #MyIndex .header-layout{
   max-width: 1600px;

@@ -120,7 +120,7 @@ const startAutoplay = () => {
     } else {
       ExamRecords.value.qustionsContent = "你还没有登录..."
     }
-  }, 5000);
+  }, 10000);
 };
 
 onMounted(() => {

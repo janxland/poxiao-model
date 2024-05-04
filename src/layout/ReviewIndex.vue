@@ -1,8 +1,8 @@
 <template>
-  <div class="common-layout min-h-[100vh]">
-    <t-layout class="fill-layout min-h-[100vh]">
+  <div class="common-layout min-h-[98vh]">
+    <t-layout class="fill-layout min-h-[98vh]">
       <t-content>
-        <t-layout class="flex flex-col justify-between min-h-[100vh]">
+        <t-layout class="flex flex-col justify-between min-h-[98vh]">
           <t-content class="flex-1">
               <div class="main-content"> 
                 <div class="main-content-head">
@@ -126,7 +126,13 @@
                                   
 
                       </t-tab-panel>
-                      
+                      <t-tab-panel :value="3" label="试题预测" id="id-main-content-footer-tab-panel" >
+                        <div class="footer-tabs-first-input-p">
+                          <div class="footer-tabs-first-input-c">
+                            <img class="w-full h-[150px]" src="../assets/images/敬请期待.svg" alt="">
+                          </div>
+                        </div>
+                      </t-tab-panel>
                       
                     </t-tabs>
                   </t-content>
@@ -375,7 +381,6 @@ const showLine = ref(false);
 //   return `<Icon name=${name} />`;
 // };
 
-
 const isCheckable = ref(false);
 // const isOperateAble = ref(true);
 const items = ref(virtualTree.items);
@@ -521,14 +526,17 @@ const questionForm = ref({
   "questionMethod": 0,
   "qustionsContent": ""
 })
-
-const handleChange = () => {
+const tab = ref('')
+const handleChange = (n) => {
   const method = questionForm.value.questionMethod
   if (method ===1 ) {
     questionForm.value.questionMethod = 0
   }else {
     questionForm.value.questionMethod = 1
   }
+  if(n==3)
+  MessagePlugin.warning('功能开发中，敬请期待')
+  tab.value = n
 }
 
 const fileRequest = {
@@ -537,12 +545,18 @@ const fileRequest = {
 
 
 const handleQuestionStart = () => {
+    if(tab.value == 3){
+    MessagePlugin.warning('功能开发中，敬请期待')
+    return
+  }
   if(questionForm.value.qustionsContent=='') {
     MessagePlugin.info(`请输入出题内容！`)
     return;
   } if (!localStorage.getItem("token")){
     MessagePlugin.warning('请先登录账号')
   }
+  
+  
   questionstart(questionForm.value).then((res)=>{
     const { data } = res;
     if(data.code == 200) {
@@ -604,10 +618,14 @@ onMounted(() => {
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 @import './mytheme.css';
 .t-space{
   width: 100%;
+}
+::v-deep .t-steps .t-steps-item__title{
+    font-size: 12px;
+    color:gray
 }
 header{
   background-color: var(--td-success-color-5);

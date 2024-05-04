@@ -25,10 +25,10 @@
         <!-- 多选 -->
         <div v-else-if="i.type == 11">
           <t-checkbox-group v-model="item.ans" v-if="!disabled">
-            <t-checkbox :key="'answer' + answerIndex" :label="answer.content" :value="answer.prefix" v-for="answer, answerIndex in item.content"/>
+            <t-checkbox :key="'answer' + answerIndex" :label="answerMap[answerIndex]+'. '+answer.content" :value="answer.prefix" v-for="answer, answerIndex in item.content"/>
           </t-checkbox-group>
           <t-checkbox-group :default-value="item.correctAnswer " v-else  :readonly="onlyread" disabled>
-            <t-checkbox :key="'answer' + answerIndex" :label="answer.content" :value="answer.prefix" v-for="answer, answerIndex in item.content" />
+            <t-checkbox :key="'answer' + answerIndex" :label="answerMap[answerIndex]+'. '+answer.content" :value="answer.prefix" v-for="answer, answerIndex in item.content" />
           </t-checkbox-group>
         </div>
         <!-- 简答 -->

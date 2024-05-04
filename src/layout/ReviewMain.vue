@@ -22,7 +22,7 @@
                     <icon name="system-log" size="20px" class="w-[30px] h-[30px] mr-4" />
                     错题本
                   </div>
-                  <div class="m-lf-layout-row" @click.stop="recordShow = !recordShow">
+                  <div class="m-lf-layout-row" @click.stop="recordShow = !recordShow;getRecordList()">
                     <icon name="time" size="20px" class="w-[30px] h-[30px] mr-4" />
                     出题记录
                   </div>
@@ -56,10 +56,10 @@
                         class="rounded-2xl text-left px-4 py-2 flex items-center justify-between my-1 cursor-pointer"
                         :key="'recordListData' + index" :class="i.examId == route.query.id ? 'bg-blue-500/90 ':'bg-record_bg/75'">
                         <div class="w-5/6 text-ellipsis text-nowrap overflow-hidden">{{ i?.qustionsContent }}</div>
-                        <div class="h-[25px] w-[25px] rounded-full "
-                          :style="{ background: +i?.qustionsStatus == 1 ? 'rgba(67, 207, 124, 1)' : 'rgba(255, 87, 51, 1)' }">
+                        <div class="h-[25px] w-[25px] rounded-full !bg-blue-200">
                           <t-tooltip placement="right"  :content="checkStatus(i).name">
-                            <icon :name="+i?.qustionsStatus == 1 ? 'check' : 'error'" color="white" size="25"></icon>
+                            <!-- <icon :name="+i?.qustionsStatus == 1 ? 'check' : 'error'" color="white" size="25"></icon> -->
+                            <icon :name="checkStatus(i).icon" :color="checkStatus(i).color" size="25"></icon>
                           </t-tooltip>
                         </div>
                       </div>
@@ -220,7 +220,6 @@ const recordClick = (i) =>{
     MessagePlugin.warning('后台错题，请联系管理员')
   }
 }
-getRecordList()
 const search = ref('')
 const searchRecord = (str) =>{
   if(str != ''){

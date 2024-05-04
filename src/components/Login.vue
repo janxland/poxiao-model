@@ -134,9 +134,19 @@
           
         </template>
       </t-dialog>
-      <t-dialog class="select-none" width="560px" v-model:visible="stateStore.visible.firstLoginDaily" header=" " showOverlay placement="center" :footer="false" :confirm-on-enter="true">
+      <t-dialog class="select-none score" width="660px" v-model:visible="stateStore.visible.firstLoginDaily" :header="false" showOverlay placement="center" :footer="false" :confirm-on-enter="true">
+        <template #header>
+            
+        </template>
         <template #body>
-            今日登录获得 {{ userStore.user.dailyPoint }}  积分
+            <!-- 今日登录获得 {{ userStore.user.dailyPoint }}  积分 -->
+            <t-image
+                :src="iconUrl.bg"
+                fit="cover"
+                :style="{ marginLeft: '10px', marginRight: '5px'}"
+              />
+            <div class="absolute top-[150px] left-[80px] text-[80px]  z-[999] font-extrabold" style="color:rgb(245,198,122)">{{ userStore?.user?.dailyPoint || 0 }}</div>
+            <div class="absolute top-[220px] left-[275px] text-xl text-yellow-600 z-[999]">恭喜您！<span class="font-extrabold">{{ userStore?.user?.dailyPoint || 0 }}</span>积分已到账</div>
         </template>
       </t-dialog>
   </div>
@@ -159,6 +169,7 @@ const iconUrl = ref({
   male: require('@/assets/images/male.png'),
   female: require('@/assets/images/female.png'),
   availableIcon: require('@/assets/images/right.png'),
+  bg:require('@/assets/images/bg.png')
 });
 const isAvailable = ref(true)
 const userProfileInput = ref({
@@ -261,7 +272,7 @@ onMounted(async () => {
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .title-text {
   @apply text-2xl font-black tracking-[1px] mb-5;
   font-family: Arial, Helvetica, sans-serif;
@@ -286,5 +297,15 @@ onMounted(async () => {
 }
 .nickname-input span {
   @apply whitespace-nowrap mr-2.5;
+}
+::v-deep .score   .t-dialog{
+    background-color: transparent!important;
+    border:0px;
+}
+::v-deep .score  .t-image__wrapper{
+    background-color: transparent!important;
+}
+::v-deep .score  .t-dialog__close{
+    right:-50px
 }
 </style>

@@ -41,11 +41,11 @@ export default function useCommitExam(source,examId){
           if(res.data.code == 200){
             
             if(flag == 0){
-                MessagePlugin.success('提交成功,请耐心等待判卷完成,注意悬浮窗状态！')
-                console.log(1)
+                MessagePlugin.success('提交成功,请耐心等待判卷完成,请在出题记录查看！')
                 router.push('/')
+                localStorage.removeItem(`exam${examId.value}`)    
             }
-            localStorage.removeItem(`exam${examId.value}`)      
+              
           }
         }).catch(err=>{
           console.log(err)
