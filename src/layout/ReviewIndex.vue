@@ -545,12 +545,28 @@ const fileRequest = {
 
 
 const handleQuestionStart = () => {
-    if(tab.value == 3){
+  //判断是否0道题目
+  const countArray = questionForm.value.getExamRMAnswerTypeList
+  let count=0;
+  for(let i=0;i<countArray.length;i++){
+    if(countArray[i].questionNum>0){
+      count++;
+    }
+  }
+  if(count==0){
+    MessagePlugin.info({ content:`请至少选择一道题目！`,placement:'bottom' })
+    return;
+  }
+  //判断是否选择题目类型
+  if(questionForm.value.questionMethod==0){
+    
+  }
+  if(tab.value == 3){
     MessagePlugin.warning('功能开发中，敬请期待')
     return
   }
   if(questionForm.value.qustionsContent=='') {
-    MessagePlugin.info(`请输入出题内容！`)
+    MessagePlugin.info({ content:`请输入出题内容`,placement:'bottom' })
     return;
   } if (!localStorage.getItem("token")){
     MessagePlugin.warning('请先登录账号')

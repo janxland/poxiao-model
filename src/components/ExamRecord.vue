@@ -14,10 +14,10 @@
             <span class="flex-1 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">创建新题库</span>
         </div> -->
     <!-- <div class="mt-4">
-                <span class="cursor-pointer hover:text-blue-300">删除</span>
-                |
-                <span class="cursor-pointer hover:text-blue-300">合并</span>
-            </div> -->
+            <span class="cursor-pointer hover:text-blue-300">删除</span>
+            |
+            <span class="cursor-pointer hover:text-blue-300">合并</span>
+        </div> -->
 </template>
 <script setup>
 import { ref, watch } from 'vue';
@@ -35,4 +35,4 @@ watch(activeArea, () => {
     emit('change', props.records[activeArea.value])
 })
 </script>
-    <style lang="scss" scoped></style>
+<style lang="scss" scoped></style>

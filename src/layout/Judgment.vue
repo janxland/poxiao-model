@@ -77,7 +77,7 @@
 <script setup>
 import Exam from '@/components/Exam.vue';
 import { Icon } from 'tdesign-icons-vue-next';
-import { getIncorrectList } from '@/api/question'
+import { getIncorrectList,getResult } from '@/api/question'
 import { useRoute } from 'vue-router'
 import { ref,watch } from 'vue'
 const questionTypeMap = ref([
@@ -148,7 +148,7 @@ const checkScore = ()=>{
 const getExamData = (id)=>{
     let params = {}
     if(id) params.examId = id;
-    getIncorrectList(params).then(res=>{
+    getResult(params).then(res=>{
         examLoading.value = false
         questionList.value = res?.data?.data.map(res=>{
         res.questionVoList = res.questionVoList.map(i=>{
@@ -179,7 +179,7 @@ const getExamData = (id)=>{
     })
 }
 const getErrorData = () =>{
-    getIncorrectList().then(res=>{
+    getResult().then(res=>{
         examLoading.value = false
         questionList.value = res?.data?.data.map(res=>{
         res.questionVoList = res.questionVoList.map(i=>{

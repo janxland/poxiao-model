@@ -90,12 +90,10 @@ export function getIncorrectList(data) {
  * @param {Number} examId
  * @returns
  */
-export function getResult(examId) {
+export function getResult(data) {
   return request({
     url: '/reviewmaster/question/result',
     method: 'get',
-    params: {
-        examId,
-    }
+    params: data
   })
 }

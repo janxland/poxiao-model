@@ -143,9 +143,10 @@
             <t-image
                 :src="iconUrl.bg"
                 fit="cover"
+                class=""
                 :style="{ marginLeft: '10px', marginRight: '5px'}"
               />
-            <div class="absolute top-[150px] left-[80px] text-[80px]  z-[999] font-extrabold" style="color:rgb(245,198,122)">{{ userStore?.user?.dailyPoint || 0 }}</div>
+            <div class="absolute top-[150px] left-[80px] text-[80px] text-center  z-[999] font-extrabold" style="color:rgb(245,198,122)">{{ userStore?.user?.dailyPoint || 0 }}</div>
             <div class="absolute top-[220px] left-[275px] text-xl text-yellow-600 z-[999]">恭喜您！<span class="font-extrabold">{{ userStore?.user?.dailyPoint || 0 }}</span>积分已到账</div>
         </template>
       </t-dialog>
@@ -241,9 +242,8 @@ const login3Handler = () => {
           stateStore.setVisible("editProfile", true);
         }
         if (data.data.point) {
-          localStorage.setItem("dailyPoint", data.data.point);
           userStore.setUser({
-            dailyPoint: data.data.point,
+            boxPoint: data.data.point,
           });
           stateStore.setVisible("firstLoginDaily", true);
         }

@@ -107,7 +107,7 @@ const startAutoplay = () => {
   clearInterval(autoplayInterval)
   autoplayInterval = setInterval(() => {
     if(localStorage.getItem("token")){
-      getQuestionList().then(res => {
+      getQuestionList({flag:0}).then(res => {
         const { data } = res 
         if(data.code === 200) {
           if(data.data.length > 0) {

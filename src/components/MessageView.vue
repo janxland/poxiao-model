@@ -44,7 +44,7 @@ const mailObject = ref({
     "messageId": 0,
     "sendTime": "",
     "sendUserName": "",
-    "status": "0"
+    "status": "1"
 })
 const checkMail = (messageId) => {
     stateStore.setVisible('messageView',true)
@@ -53,6 +53,11 @@ const checkMail = (messageId) => {
         const { data } = res;
         if(data.code==200) {
             mailObject.value = data.data;
+            mailList.value.forEach(i => {
+                if(i.messageId == messageId) {
+                    i.status = "2"
+                }
+            })
         } else {
             mailObject.value = data.data;
         }

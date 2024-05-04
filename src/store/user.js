@@ -10,7 +10,7 @@ export const useUserStore = defineStore('user', {
       avatar:"",
       background:"",
       point: 458,
-      dailyPoint: localStorage.getItem('dailyPoint') | 0, //每日登录奖励
+      dailyPoint: 0,
       sex:0,
       invitationCode:""
     }
@@ -18,9 +18,10 @@ export const useUserStore = defineStore('user', {
   actions: {
     setUser(user) {
       this.user = Object.assign({}, this.user, user);
-      this.user.isLogin = localStorage.getItem("token")?true:false;
+      this.user.isLogin = localStorage.getItem("token") ? true : false;
       const avatar = [require('@/assets/images/male.png'),require('@/assets/images/female.png'),]
-      this.user.invitationCode = this.user.id
+      this.user.invitationCode = this.user.id;
+      this.user.dailyPoint = user.boxPoint;
       if(true || this.user.avatar){
         this.user.avatar = avatar[this.user.sex]
       }

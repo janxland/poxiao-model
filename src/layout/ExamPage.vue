@@ -70,7 +70,7 @@ const getExamData = ()=>{
   })
 }
 const getExamStoreData = () =>{
-    getResult(route.query.id).then(res=>{
+    getResult({examId:route.query.id}).then(res=>{
         examLoading.value = false
         questionList.value = res.data.data.map(res=>{
         res.questionVoList = res.questionVoList.map(i=>{
