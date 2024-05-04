@@ -22,7 +22,7 @@ export const useUserStore = defineStore('user', {
       const avatar = [require('@/assets/images/male.png'),require('@/assets/images/female.png'),]
       this.user.invitationCode = this.user.id;
       this.user.dailyPoint = user.boxPoint;
-      if(true || this.user.avatar){
+      if(true || this.user.avatar) {
         this.user.avatar = avatar[this.user.sex]
       }
     },
